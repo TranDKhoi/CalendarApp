@@ -1,4 +1,5 @@
 ﻿using CalendarApp.Views.Authen;
+using CalendarApp.Views.BottomBarCustom;
 using Xamarin.Forms;
 
 namespace CalendarApp
@@ -9,7 +10,7 @@ namespace CalendarApp
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new LoginScreen());
+            MainPage = new NavigationPage(new BottomBarCustom());
         }
 
         protected override void OnStart()

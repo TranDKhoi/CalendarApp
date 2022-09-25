@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:home="clr-namespace:CalendarApp.Views.Home"
+            xmlns:schedule="clr-namespace:CalendarApp.Views.Schedule"
+            xmlns:note="clr-namespace:CalendarApp.Views.Note"
+            xmlns:task="clr-namespace:CalendarApp.Views.Task"
+            xmlns:profile="clr-namespace:CalendarApp.Views.Profile"
+            xmlns:context="clr-namespace:CalendarApp.ViewModels"
+            x:Class="CalendarApp.Views.BottomBarCustom.BottomBarCustom"
+            xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            BackgroundColor="#202020"
+            UnselectedTabColor="White"
+            SelectedTabColor="{StaticResource greenColor}"
+            NavigationPage.HasNavigationBar="False">
+    <home:HomeScreen Title="Trang chủ"
+                     IconImageSource="home.png" />
+    <schedule:ScheduleScreen Title="Lịch trình"
+                             IconImageSource="calendar.png" />
+    <note:NoteScreen Title="Ghi chú"
+                     IconImageSource="note.png" />
+    <task:TaskScreen Title="Quản lý"
+                     IconImageSource="task.png" />
+    <profile:ProfileScreen Title="Tài khoản"
+                           IconImageSource="profile.png" />
+
+</TabbedPage>

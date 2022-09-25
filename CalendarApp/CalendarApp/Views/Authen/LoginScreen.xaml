@@ -8,6 +8,6 @@
     </ContentPage.BindingContext>
     
     <ContentPage.Content>
-        <Label />
+        <Label/>
     </ContentPage.Content>
 </ContentPage>
