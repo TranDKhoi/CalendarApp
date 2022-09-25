@@ -2,12 +2,48 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CalendarApp.Views.Schedule.ScheduleScreen"
+             xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
              BackgroundColor="White">
+    <ContentPage.BindingContext>
+        <context:ScheduleViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Schedule Screen"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="20, 0, 20, 0">
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="FillAndExpand"
+                         Padding="0, 20, 0, 0">
+                <StackLayout HorizontalOptions="StartAndExpand">
+                    <Label Text="25 Tháng Chín"
+                           FontSize="16" />
+                    <Label Text="Hôm nay"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="20" />
+                </StackLayout>
+                <Button BackgroundColor="{StaticResource greenColor}"
+                        HorizontalOptions="EndAndExpand"
+                        CornerRadius="15"
+                        WidthRequest="120"
+                        Text="+ Thêm task"
+                        TextColor="White"
+                        TextTransform="None"
+                        FontSize="16" />
+            </StackLayout>
+            <CollectionView ItemsLayout="HorizontalList"
+                            ItemsSource="{Binding days}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout VerticalOptions="CenterAndExpand">
+                            <Label Text="{Binding title}" 
+                                   />
+                            <Label Text="{Binding day}"
+                                   FontAttributes="Bold"
+                                   FontSize="20"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

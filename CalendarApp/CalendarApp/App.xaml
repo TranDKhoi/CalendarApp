@@ -4,7 +4,7 @@
              x:Class="CalendarApp.App">
     <Application.Resources>
         <Color x:Key="blackColor">#202020</Color>
-        <Color x:Key="greenColor">#49B5B3</Color>
+        <Color x:Key="greenColor">#49B583</Color>
         <Color x:Key="pinkColor">#FF4171</Color>
         <Color x:Key="yellowColor">#FFBD69</Color>
         <Color x:Key="purpleColor">#7F86FF</Color>
