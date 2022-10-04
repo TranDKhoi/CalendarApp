@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace ChatApp_xamarin.Effects
+namespace CalendarApp.Effects
 {
     public class PlainEntry : RoutingEffect
     {

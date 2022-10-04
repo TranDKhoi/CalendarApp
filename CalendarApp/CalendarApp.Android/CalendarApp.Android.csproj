@@ -72,6 +72,8 @@
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Renderers\BlackEditorRenderer.cs" />
+    <Compile Include="Renderers\RoundEntryRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
