@@ -10,7 +10,7 @@ namespace CalendarApp
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new BottomBarCustom());
+            MainPage = new NavigationPage(new LoginScreen());
         }
 
         protected override void OnStart()

@@ -97,7 +97,9 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\note_logo.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CalendarApp\CalendarApp.csproj">
       <Project>{3130A856-4A91-41F2-A0CE-977B094C3ACB}</Project>
