@@ -2,12 +2,94 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CalendarApp.Views.Profile.ProfileScreen"
-             BackgroundColor="White">
+             BackgroundColor="{StaticResource BackgroundColor}"
+             xmlns:vm="clr-namespace:CalendarApp.ViewModels.Profile"
+             xmlns:local="clr-namespace:CalendarApp.Resources"
+              NavigationPage.HasNavigationBar="True"
+             >
+
+    <ContentPage.BindingContext>
+        <vm:ProfileViewModel />
+    </ContentPage.BindingContext>
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Profile Screen"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="AUTO"/>
+            </Grid.RowDefinitions>
+
+            <!--header backgroud-->
+            <BoxView BackgroundColor="Yellow" Grid.Row="0"/>
+                <Image Source="{Binding ProfileModel.UrlBackground}" Aspect="AspectFill"/>
+            <!--profile name-->
+            <StackLayout Grid.Row="1" Padding="0,50,0,0" Margin="0,20,0,0">
+                    <Label Text="{Binding ProfileModel.NameProfile}" Style="{StaticResource ProfileNameLabel}"/>
+                    <Label Text="{Binding ProfileModel.StatusProfile}" Style="{StaticResource ProfileTagLabel}"/>
+            </StackLayout>
+
+            <!--edit profile-->
+            <Grid Grid.Row="2" HeightRequest="50">
+                <StackLayout >
+                    <Button Text="Sửa hồ sơ" BorderRadius="40"  BackgroundColor="OliveDrab" Margin="100,10"  HeightRequest="50" Command="{Binding EditProfileScreenNavCommand}" />
+                  
+                </StackLayout>
+            </Grid>
+            <!--social stats-->
+            <Grid Grid.Row="3" Margin="0,30" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackLayout Grid.Column="0">
+                    <Label Text="2" Style="{StaticResource StatsNumberLabel}" />
+                    <Label Text="Môn học" Style="{StaticResource StatsCaptionLabel}" />
+                </StackLayout>
+
+                <StackLayout Grid.Column="1">
+
+                    <Label Text="3" Style="{StaticResource StatsNumberLabel}" />
+                    <Label Text="Công việc" Style="{StaticResource StatsCaptionLabel}" />
+                </StackLayout>
+
+            </Grid >
+            <!--profile descript-->
+
+            <Grid Grid.Row="4" Margin="0,30" ColumnSpacing="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <!--  button-->
+            <BoxView BackgroundColor="LightCyan" Grid.Row="5"/>
+
+            <!--profile image-->
+            <StackLayout Padding="40" 
+                         HorizontalOptions="Center" 
+                         VerticalOptions="End" 
+                         TranslationY="80" >
+                <Frame CornerRadius="100"
+                       HeightRequest="100"
+                       WidthRequest="100"
+                       HorizontalOptions="Center"
+                       VerticalOptions="FillAndExpand"
+                       Padding="0"
+                       IsClippedToBounds="True">
+                        <Image  Source="{Binding ProfileModel.UrlAvatar}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        />
+                </Frame>
+                
+            </StackLayout>
+                
+        </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

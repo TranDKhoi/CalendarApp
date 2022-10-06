@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CalendarApp.Models.Profile;
+using CalendarApp.ViewModels.Profile;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +16,11 @@ namespace CalendarApp.Views.Profile
     {
         public ProfileScreen()
         {
+
             InitializeComponent();
+            // this.BindingContext = BindingContext;
         }
     }
+       
+    
 }
