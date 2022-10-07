@@ -39,7 +39,7 @@ namespace CalendarApp.ViewModels.Authen
                     ApiResponse<User> res = await AuthService.ins.Login(Email, Password);
                     UserDialogs.Instance.HideLoading();
 
-                    if (res.IsSuccessStatusCode)
+                    if (res.isSuccess)
                     {
                         SharedPreferenceService.ins.SetUserToken(res.token);
                         App.Current.MainPage = new NavigationPage(new BottomBarCustom());

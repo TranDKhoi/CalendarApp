@@ -35,10 +35,8 @@ namespace CalendarApp.Services
                 Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync("api/auth/login", content);
-                response.EnsureSuccessStatusCode();
-                var responseRead = await response.Content.ReadAsStringAsync();
-                var objResponse = JsonConvert.DeserializeObject<ApiResponse<User>>(responseRead);
-                objResponse.IsSuccessStatusCode = response.IsSuccessStatusCode;
+                var objResponse = await ApiService.ins.ParseResponse<User>(response);
+
                 return objResponse;
             }
             catch (Exception ex)
@@ -59,10 +57,7 @@ namespace CalendarApp.Services
                 Encoding.UTF8, "application/json");
 
                 var response = await client.PostAsync("api/auth/register", content);
-                response.EnsureSuccessStatusCode();
-                var responseRead = await response.Content.ReadAsStringAsync();
-                var objResponse = JsonConvert.DeserializeObject<ApiResponse<string>>(responseRead);
-                objResponse.IsSuccessStatusCode = response.IsSuccessStatusCode;
+                var objResponse = await ApiService.ins.ParseResponse<string>(response);
                 return objResponse;
             }
             catch (Exception ex)

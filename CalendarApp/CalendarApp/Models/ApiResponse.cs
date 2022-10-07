@@ -9,6 +9,6 @@ namespace CalendarApp.Models
         public string message { get; set; }
         public T data { get; set; }
         public string token { get; set; }
-        public bool IsSuccessStatusCode { get; set; }
+        public bool isSuccess { get; set; }
     }
 }

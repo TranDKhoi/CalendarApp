@@ -3,7 +3,10 @@ using CalendarApp.Services;
 using CalendarApp.Views.Authen;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace CalendarApp.ViewModels.Authen
@@ -68,7 +71,7 @@ namespace CalendarApp.ViewModels.Authen
                 var res = await AuthService.ins.Register(Email, RePass);
                 UserDialogs.Instance.HideLoading();
 
-                if (res.IsSuccessStatusCode)
+                if (res.isSuccess)
                 {
                     await Application.Current.MainPage.Navigation.PushAsync(new VerifySignup(this));
                 }
