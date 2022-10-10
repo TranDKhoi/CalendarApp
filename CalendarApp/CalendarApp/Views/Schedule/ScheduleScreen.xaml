@@ -2,23 +2,23 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CalendarApp.Views.Schedule.ScheduleScreen"
-             xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
              xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
+             xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
              BackgroundColor="White">
-    <ContentPage.Resources>
-        <cvt:DayColorTabItemConverter x:Key="dayColorTabItemCVT"/>
-        <cvt:TitleColorTabItemConverter x:Key="titleColorTabItemCVT" />
-    </ContentPage.Resources>
     <ContentPage.BindingContext>
         <context:ScheduleViewModel />
     </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <cvt:DayColorTabItemConverter x:Key="dayColorTabItemCVT" />
+        <cvt:TitleColorTabItemConverter x:Key="titleColorTabItemCVT" />
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Padding="20, 0, 20, 0">
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="FillAndExpand"
                          Padding="0, 20, 0, 30">
                 <StackLayout HorizontalOptions="StartAndExpand">
-                    <Label Text="{Binding today}"
+                    <Label Text="{Binding Today}"
                            FontSize="16" />
                     <Label Text="Hôm nay"
                            TextColor="Black"
@@ -32,10 +32,11 @@
                         Text="+ Thêm task"
                         TextColor="White"
                         TextTransform="None"
-                        FontSize="16" />
+                        FontSize="16"
+                        Command="{Binding OpenAddTaskPopupCM}" />
             </StackLayout>
             <CollectionView ItemsLayout="HorizontalList"
-                            ItemsSource="{Binding days}"
+                            ItemsSource="{Binding Days}"
                             HeightRequest="80"
                             SelectionMode="Single"
                             x:Name="ListDay"
@@ -45,35 +46,34 @@
                         <StackLayout VerticalOptions="CenterAndExpand"
                                      HorizontalOptions="Center"
                                      WidthRequest="50">
-                            <Label Text="{Binding title}"
-                                   TextColor="{Binding isSelected,Converter={StaticResource titleColorTabItemCVT}}"
+                            <Label Text="{Binding Title}"
+                                   TextColor="{Binding IsSelected,Converter={StaticResource titleColorTabItemCVT}}"
                                    HorizontalTextAlignment="Center" />
-                            <Label Text="{Binding day}"
+                            <Label Text="{Binding Day}"
                                    FontAttributes="Bold"
-                                   TextColor="{Binding isSelected,Converter={StaticResource dayColorTabItemCVT}}"
+                                   TextColor="{Binding IsSelected,Converter={StaticResource dayColorTabItemCVT}}"
                                    FontSize="20"
-                                   HorizontalTextAlignment="Center" 
-                                   />
+                                   HorizontalTextAlignment="Center" />
                             <BoxView HeightRequest="3"
                                      BackgroundColor="{StaticResource greenColor}"
-                                     IsVisible="{Binding isSelected}"/>
+                                     IsVisible="{Binding IsSelected}" />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <CollectionView ItemsSource="{Binding todaySubject}">
+            <CollectionView ItemsSource="{Binding TodaySubject}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal"
                                      Padding="0, 0, 0, 20">
                             <StackLayout WidthRequest="60"
                                          MinimumWidthRequest="60">
-                                <Label Text="{Binding startTime}"
+                                <Label Text="{Binding StartTime}"
                                        TextColor="Black"
                                        FontSize="20"
                                        FontAttributes="Bold" />
-                                <Label Text="{Binding endTime}"
+                                <Label Text="{Binding EndTime}"
                                        FontSize="16" />
                             </StackLayout>
                             <StackLayout Margin="0, 0, 10, 0">
@@ -119,20 +119,20 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
-                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="30" />
                                     </Grid.ColumnDefinitions>
                                     <StackLayout Grid.Column="0">
-                                        <Label Text="{Binding title}"
+                                        <Label Text="{Binding Title}"
                                                TextColor="Black"
                                                FontSize="16"
                                                FontAttributes="Bold" />
-                                        <Label Text="{Binding description}" />
+                                        <Label Text="{Binding Description}" />
                                     </StackLayout>
                                     <Label Text="&#xe872;"
                                            FontFamily="Material"
                                            FontSize="30"
-                                           VerticalOptions="Center" 
-                                           Grid.Column="1"/>
+                                           VerticalOptions="Center"
+                                           Grid.Column="1" />
                                 </Grid>
                             </Frame>
                         </StackLayout>
@@ -140,7 +140,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            
+
 
         </StackLayout>
     </ContentPage.Content>

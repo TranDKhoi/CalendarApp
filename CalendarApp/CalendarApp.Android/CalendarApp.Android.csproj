@@ -95,7 +95,9 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\celebration.png" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CalendarApp\CalendarApp.csproj">
       <Project>{3130A856-4A91-41F2-A0CE-977B094C3ACB}</Project>
@@ -117,5 +119,13 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\task.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\subject.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionCalendarAppAndroidHideInfoBar="True" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

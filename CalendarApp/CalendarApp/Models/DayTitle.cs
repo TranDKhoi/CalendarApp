@@ -1,29 +1,21 @@
-﻿using System;
+﻿using CalendarApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
 namespace CalendarApp.Models
 {
-    public class DayTitle : INotifyPropertyChanged
+    public class DayTitle : BaseViewModel
     {
-        public string title { get; set; }
-        public int day { get; set; }
-        private bool _isSelected { get; set; }
-        public bool isSelected
+        public string Title { get; set; }
+        public int Day { get; set; }
+
+        private bool isSelected;
+        public bool IsSelected
         {
-            get
-            {
-                return _isSelected;
-            }
-
-            set
-            {
-                _isSelected = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(isSelected)));
-            }
+            get { return isSelected; }
+            set { isSelected = value; OnPropertyChanged(); }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
