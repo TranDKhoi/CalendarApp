@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:context="clr-namespace:CalendarApp.ViewModels.Authen"
+             xmlns:local="clr-namespace:CalendarApp.Resources"
+             x:Class="CalendarApp.Views.Authen.SignupScreen"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.BindingContext>
+        <context:SignupViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Margin="20">
+                <Label Text="Chỉ với vài bước đơn giản để bắt đầu"
+                       FontSize="45"
+                       FontAttributes="Bold" />
+                <StackLayout VerticalOptions="CenterAndExpand"
+                             Spacing="20">
+                    <Frame CornerRadius="20"
+                           Padding="5,0,5,0"
+                           HasShadow="False">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="&#xe158;"
+                                   VerticalOptions="Center"
+                                   FontFamily="Material"
+                                   FontSize="25" />
+                            <local:RoundEntry  HorizontalOptions="FillAndExpand"
+                                               Placeholder="Tài khoản"
+                                               Text="{Binding Email}" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame CornerRadius="20"
+                           Padding="5,0,5,0"
+                           HasShadow="False">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="&#xe897;"
+                                   VerticalOptions="Center"
+                                   FontFamily="Material"
+                                   FontSize="25" />
+                            <local:RoundEntry  HorizontalOptions="FillAndExpand"
+                                               Placeholder="Mật khẩu"
+                                               Text="{Binding Pass}"
+                                               IsPassword="True" />
+                        </StackLayout>
+                    </Frame>
+                    <Frame CornerRadius="20"
+                           Padding="5,0,5,0"
+                           HasShadow="False">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="&#xe897;"
+                                   VerticalOptions="Center"
+                                   FontFamily="Material"
+                                   FontSize="25" />
+                            <local:RoundEntry  HorizontalOptions="FillAndExpand"
+                                               Placeholder="Nhập lại"
+                                               Text="{Binding RePass}"
+                                               IsPassword="True" />
+                        </StackLayout>
+                    </Frame>
+                    <Button BackgroundColor="{StaticResource primaryColor}"
+                            CornerRadius="20"
+                            Text="Đăng ký"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            Command="{Binding ToVerifyScreenCM}" />
+                    <Label Text="Đăng nhập"
+                           HorizontalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PopCM}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
