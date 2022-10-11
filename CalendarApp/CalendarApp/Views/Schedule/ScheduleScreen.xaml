@@ -29,7 +29,7 @@
                         HorizontalOptions="EndAndExpand"
                         CornerRadius="15"
                         WidthRequest="120"
-                        Text="+ Thêm task"
+                        Text="+ Thêm việc"
                         TextColor="White"
                         TextTransform="None"
                         FontSize="16"
@@ -116,24 +116,13 @@
                                    CornerRadius="20"
                                    Padding="20"
                                    HorizontalOptions="Fill">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="30" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackLayout Grid.Column="0">
-                                        <Label Text="{Binding Title}"
-                                               TextColor="Black"
-                                               FontSize="16"
-                                               FontAttributes="Bold" />
-                                        <Label Text="{Binding Description}" />
-                                    </StackLayout>
-                                    <Label Text="&#xe872;"
-                                           FontFamily="Material"
-                                           FontSize="30"
-                                           VerticalOptions="Center"
-                                           Grid.Column="1" />
-                                </Grid>
+                                <StackLayout>
+                                    <Label Text="{Binding Title}"
+                                           TextColor="Black"
+                                           FontSize="16"
+                                           FontAttributes="Bold" />
+                                    <Label Text="{Binding Description}" />
+                                </StackLayout>
                             </Frame>
                         </StackLayout>
                     </DataTemplate>
