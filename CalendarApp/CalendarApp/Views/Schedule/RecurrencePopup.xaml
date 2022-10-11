@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xct:Popup xmlns="http://xamarin.com/schemas/2014/forms"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+           xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
+           xmlns:behaviors="clr-namespace:CalendarApp.Behaviors"
+           xmlns:effect="clr-namespace:ChatApp_xamarin.Effects"
+           xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
+           x:Class="CalendarApp.Views.Schedule.RecurrencePopup"
+           Size="360, 450"
+           x:Name="recurrencePopup">
+    <xct:Popup.Resources>
+        <cvt:BgColorDayOfWeekConverter x:Key="bgColorDayOfWeekCVT" />
+        <cvt:TextColorDayOfWeekConverter x:Key="textColorDayOfWeekCVT" />
+    </xct:Popup.Resources>
+    <xct:Popup.BindingContext>
+        <context:RecurrenceViewModel />
+    </xct:Popup.BindingContext>
+    <xct:Popup.Content>
+        <StackLayout Padding="10">
+            <Label Text="Lặp lại tùy chỉnh"
+                   FontSize="20"
+                   TextColor="Black"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   VerticalTextAlignment="Center"
+                   HeightRequest="40"
+                   MinimumHeightRequest="40" />
+            <StackLayout Orientation="Horizontal"
+                         HeightRequest="50"
+                         MinimumHeightRequest="40">
+                <Label Text="Lặp lại mỗi"
+                       TextColor="Black"
+                       FontSize="16"
+                       VerticalOptions="Center"
+                       VerticalTextAlignment="Center" />
+                <Entry BackgroundColor="#f1f3f4"
+                       WidthRequest="60"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       Keyboard="Numeric"
+                       Margin="30, 0, 10, 0"
+                       Text="{Binding RecurreneQuantity, Mode=TwoWay}">
+                    <Entry.Behaviors>
+                        <behaviors:EntryMaxLengthBehavior MaxLength="2" />
+                    </Entry.Behaviors>
+                    <Entry.Effects>
+                        <effect:PlainEntry />
+                    </Entry.Effects>
+                </Entry>
+                <Frame BackgroundColor="#f1f3f4"
+                       Padding="5">
+                    <Picker WidthRequest="60"
+                            ItemsSource="{Binding TypeRecurrence}"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center"
+                            SelectedIndex="{Binding TypeRecurrenceIndex}"
+                            SelectedItem="{Binding SelectedTypeRecurrence, Mode=OneWayToSource}">
+                        <Picker.Effects>
+                            <effect:PlainEntry />
+                        </Picker.Effects>
+                    </Picker>
+                </Frame>
+            </StackLayout>
+            <Label Text="Lặp lại vào"
+                   FontSize="16"
+                   TextColor="Black"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   VerticalTextAlignment="Center"
+                   HeightRequest="40"
+                   MinimumHeightRequest="40"
+                   IsVisible="{Binding LoopLabel}" />
+            <Frame BackgroundColor="#f1f3f4"
+                   Padding="10"
+                   IsVisible="{Binding CustomMonth}"
+                   HorizontalOptions="Start"
+                   Margin="10, 0, 10, 0">
+                <Label Text="{Binding MonthLRecurrenceLabel}"
+                       TextColor="Black"
+                       FontSize="16" />
+            </Frame>
+            <CollectionView ItemsLayout="HorizontalList"
+                            ItemsSource="{Binding Days}"
+                            SelectionMode="Single"
+                            HeightRequest="30"
+                            MinimumHeightRequest="30"
+                            x:Name="ListDay"
+                            SelectionChanged="ListDay_SelectionChanged"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            WidthRequest="350"
+                            MinimumWidthRequest="350"
+                            Visual="Material"
+                            IsVisible="{Binding CustomWeek}">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid HeightRequest="30"
+                              WidthRequest="30"
+                              MinimumHeightRequest="30"
+                              MinimumWidthRequest="30"
+                              Padding="10, 0, 10, 0"
+                              VerticalOptions="Center">
+                            <Frame VerticalOptions="FillAndExpand"
+                                   HorizontalOptions="FillAndExpand"
+                                   CornerRadius="90"
+                                   Padding="0"
+                                   Margin="0"
+                                   IsClippedToBounds="False"
+                                   BackgroundColor="{Binding IsSelected, Converter={StaticResource bgColorDayOfWeekCVT}}" />
+                            <Label Text="{Binding Title}"
+                                   HorizontalTextAlignment="Center"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="{Binding IsSelected, Converter={StaticResource textColorDayOfWeekCVT}}" />
+                        </Grid>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label Text="Kết thúc"
+                   FontSize="16"
+                   TextColor="Black"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   VerticalTextAlignment="Center"
+                   HeightRequest="40"
+                   MinimumHeightRequest="40" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackLayout>
+                    <RadioButton Content="Không bao giờ"
+                                 VerticalOptions="FillAndExpand"
+                                 IsChecked="{Binding NeverEnd, Mode=TwoWay}"
+                                 HeightRequest="40" />
+                    <RadioButton Content="Vào ngày"
+                                 VerticalOptions="FillAndExpand"
+                                 IsChecked="{Binding EndAtDate, Mode=TwoWay}"
+                                 HeightRequest="40" />
+                    <RadioButton Content="Sau"
+                                 VerticalOptions="FillAndExpand"
+                                 IsChecked="{Binding EndCount, Mode=TwoWay}"
+                                 HeightRequest="50" />
+                </StackLayout>
+                <StackLayout Grid.Column="1">
+                    <Grid HeightRequest="40" />
+                    <StackLayout Orientation="Horizontal"
+                                 IsVisible="{Binding EndAtDate}"
+                                 Margin="20, 0, 0, 0">
+                        <DatePicker HeightRequest="40"
+                                    HorizontalOptions="Start"
+                                    x:Name="datePicker"
+                                    Date="{Binding EndDate, Mode=TwoWay}"/>
+                        <Label FontFamily="Material"
+                               Text="&#xebcc;"
+                               FontSize="25"
+                               VerticalOptions="Center"
+                               HorizontalOptions="End"
+                               TextColor="{StaticResource blueColor}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <Grid HeightRequest="40"
+                          IsVisible="{Binding EndAtDate}" />
+                    <Grid HeightRequest="40"
+                          IsVisible="{Binding EndCount}" />
+                    <Frame BackgroundColor="#f1f3f4"
+                           Padding="5"
+                           HorizontalOptions="Start"
+                           IsVisible="{Binding EndCount}"
+                           Margin="20, 0, 0, 0">
+                        <StackLayout Orientation="Horizontal">
+                            <Entry HeightRequest="40"
+                                   Keyboard="Numeric"
+                                   VerticalOptions="Center"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="Center"
+                                   WidthRequest="30"
+                                   Text="{Binding EndRecurreneQuantity, Mode=TwoWay}">
+                                <Entry.Behaviors>
+                                    <behaviors:EntryMaxLengthBehavior MaxLength="2" />
+                                </Entry.Behaviors>
+                            </Entry>
+                            <Label Text="lần xuất hiện"
+                                   VerticalOptions="Center"
+                                   TextColor="Black"
+                                   FontSize="16"
+                                   HeightRequest="40"
+                                   VerticalTextAlignment="Center"
+                                   Padding="0, 0, 5, 5" />
+                        </StackLayout>
+                    </Frame>
+
+                </StackLayout>
+
+            </Grid>
+            <StackLayout Orientation="Horizontal"
+                         Margin="0, 10, 0, 0">
+                <Button Text="Xong"
+                        WidthRequest="100"
+                        HorizontalOptions="EndAndExpand"
+                        VerticalOptions="Center"
+                        Visual="Material"
+                        BackgroundColor="#1a73e8"
+                        Command="{Binding DoneCM}"
+                        CommandParameter="{x:Reference recurrencePopup}"/>
+                <Button Text="Hủy"
+                        WidthRequest="100"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Visual="Material"
+                        Clicked="Button_Clicked" />
+            </StackLayout>
+
+        </StackLayout>
+    </xct:Popup.Content>
+</xct:Popup>

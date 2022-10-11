@@ -1,0 +1,675 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xct:Popup xmlns="http://xamarin.com/schemas/2014/forms"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+           xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
+           xmlns:behaviors="clr-namespace:CalendarApp.Behaviors"
+           xmlns:effect="clr-namespace:ChatApp_xamarin.Effects"
+           xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
+           x:Class="CalendarApp.Views.Schedule.AddTaskPopup"
+           Size="360, 450"
+           x:Name="addTaskPopup">
+    <xct:Popup.Resources>
+        <cvt:InverseBooleanConverter x:Key="inverseBooleanCVT" />
+    </xct:Popup.Resources>
+    <xct:Popup.BindingContext>
+        <context:AddTaskViewModel />
+    </xct:Popup.BindingContext>
+
+    <xct:TabView TabStripPlacement="Top"
+                 TabStripBackgroundColor="White"
+                 TabStripHeight="60"
+                 TabIndicatorColor="#5b92e0">
+
+        <xct:TabViewItem Text="Môn học"
+                         TextColor="Black"
+                         TextColorSelected="{StaticResource blueColor}"
+                         FontSize="12">
+            <xct:TabViewItem.IconSelected>
+                <FontImageSource FontFamily="Material"
+                                 Glyph="&#xe8d2;"
+                                 Color="#5b92e0" />
+            </xct:TabViewItem.IconSelected>
+            <xct:TabViewItem.Icon>
+                <FontImageSource FontFamily="Material"
+                                 Glyph="&#xe8d2;"
+                                 Color="Black" />
+            </xct:TabViewItem.Icon>
+            <Grid Margin="10, 10, 10, 10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!--#region Tên môn học-->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Tên môn học"
+                           Grid.Column="0"
+                           VerticalOptions="Center"
+                           TextColor="Black" />
+                    <Entry Grid.Column="1"
+                           VerticalOptions="Center"
+                           Text="{Binding TaskName, Mode=OneWayToSource}" />
+                    <StackLayout Orientation="Horizontal"
+                                 Grid.Column="2">
+                        <Label Text="Màu"
+                               VerticalOptions="Center"
+                               TextColor="Black"
+                               HorizontalOptions="Start"
+                               MinimumWidthRequest="40">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xe887;"
+                               VerticalOptions="Center"
+                               TextColor="{StaticResource blueColor}"
+                               HorizontalOptions="Start"
+                               FontFamily="Material"
+                               FontSize="20">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1" />
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <Frame Padding="5"
+                               CornerRadius="5"
+                               BackgroundColor="{Binding ColorTag}"
+                               WidthRequest="50"
+                               HeightRequest="20"
+                               VerticalOptions="Center"
+                               Margin="10, 0, 0, 0">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenColorPickerCM}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+                </Grid>
+                <!--#endregion-->
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="190" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <!--#region Ngày bắt đầu-->
+                    <Label Text="Ngày bắt đầu"
+                           Grid.Column="0"
+                           VerticalOptions="Center"
+                           TextColor="Black" />
+                    <StackLayout Grid.Column="0"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="End">
+                        <DatePicker VerticalOptions="Center"
+                                    HorizontalOptions="EndAndExpand"
+                                    IsEnabled="True"
+                                    x:Name="startDatePicker"
+                                    Date="{Binding StartDate, Mode=TwoWay}" />
+                    </StackLayout>
+                    <!--#endregion-->
+
+                    <!--#region Nhắc-->
+                    <StackLayout Orientation="Horizontal"
+                                 Grid.Column="1">
+                        <Label Text="Nhắc"
+                               VerticalOptions="Center"
+                               TextColor="Black" />
+                        <Picker VerticalOptions="Center"
+                                HorizontalOptions="FillAndExpand"
+                                ItemsSource="{Binding Reminders, Mode=TwoWay}"
+                                HorizontalTextAlignment="Center"
+                                SelectedItem="{Binding TimeRemind, Mode=TwoWay}"
+                                SelectedIndex="{Binding TimeRemindIndex,Mode=TwoWay}" />
+                        <Label Text="&#xe429;"
+                               VerticalOptions="Center"
+                               TextColor="{StaticResource blueColor}"
+                               HorizontalOptions="Center"
+                               FontFamily="Material"
+                               FontSize="20">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenCustomReminderPopupCM}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <!--#endregion-->
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <!--#region Giờ bắt đầu-->
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Giờ bắt đầu"
+                               Grid.Column="0"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               TextColor="Black" />
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Entry Grid.Column="0"
+                                   VerticalOptions="Center"
+                                   Keyboard="Numeric"
+                                   HorizontalTextAlignment="Center"
+                                   HorizontalOptions="FillAndExpand"
+                                   Text="{Binding StartTimeX, Mode=OneWayToSource}">
+                                <Entry.Behaviors>
+                                    <behaviors:EntryMaxLengthBehavior MaxLength="2" />
+                                </Entry.Behaviors>
+                            </Entry>
+                            <Label Text=":"
+                                   Grid.Column="1"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   FontSize="20" />
+                            <Entry Grid.Column="2"
+                                   VerticalOptions="Center"
+                                   Keyboard="Numeric"
+                                   HorizontalTextAlignment="Center"
+                                   HorizontalOptions="FillAndExpand"
+                                   Text="{Binding StartTimeY, Mode=OneWayToSource}">
+                                <Entry.Behaviors>
+                                    <behaviors:EntryMaxLengthBehavior MaxLength="2" />
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Grid>
+                    </Grid>
+
+                    <!--#endregion-->
+
+                    <!--#region Số tiết-->
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Grid.Column="0"
+                                     Orientation="Horizontal">
+                            <Label Text="Số tiết"
+                                   VerticalOptions="Center"
+                                   TextColor="Black"
+                                   HorizontalOptions="CenterAndExpand" />
+                            <Label Text="&#xe887;"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource blueColor}"
+                                   HorizontalOptions="Center"
+                                   FontFamily="Material"
+                                   FontSize="20">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_2" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+
+                        <Entry Grid.Column="1"
+                               VerticalOptions="Center"
+                               Keyboard="Numeric"
+                               HorizontalTextAlignment="Center"
+                               Text="{Binding LessonPerDay, Mode=TwoWay}">
+                            <Entry.Behaviors>
+                                <behaviors:EntryMaxLengthBehavior MaxLength="1" />
+                            </Entry.Behaviors>
+                        </Entry>
+                    </Grid>
+
+                    <!--#endregion-->
+
+                </Grid>
+
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <!--#region Switch ngày kết thúc-->
+                    <StackLayout Grid.Column="0"
+                                 Orientation="Horizontal">
+                        <Label Text="Ngày kết thúc"
+                               VerticalOptions="Center"
+                               TextColor="Black"
+                               HorizontalOptions="Start">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Text="&#xe887;"
+                               VerticalOptions="Center"
+                               TextColor="{StaticResource blueColor}"
+                               HorizontalOptions="StartAndExpand"
+                               FontFamily="Material"
+                               FontSize="20">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_3" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Switch IsToggled="{Binding HaveEndDate, Mode=TwoWay}"
+                                HorizontalOptions="Center"
+                                Scale="1"
+                                VerticalOptions="Center"
+                                ThumbColor="{StaticResource blueColor}"
+                                OnColor="#e8f0fe" />
+                    </StackLayout>
+                    <!--#endregion-->
+
+                    <!--#region Calendar picker-->
+                    <StackLayout HorizontalOptions="FillAndExpand"
+                                 Orientation="Horizontal"
+                                 Grid.Column="1"
+                                 IsVisible="{Binding HaveEndDate}">
+                        <DatePicker VerticalOptions="Center"
+                                    HorizontalOptions="EndAndExpand"
+                                    x:Name="endDatePicker"
+                                    Date="{Binding EndDate,Mode=TwoWay}" />
+                        <Label FontFamily="Material"
+                               Text="&#xebcc;"
+                               FontSize="25"
+                               VerticalOptions="Center"
+                               HorizontalOptions="End"
+                               TextColor="{StaticResource blueColor}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+
+                    <!--#endregion-->
+
+                    <!--#region Tổng số tiết-->
+                    <Grid Grid.Column="1"
+                          IsVisible="{Binding HaveEndDate, Converter={StaticResource inverseBooleanCVT}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Tổng số tiết"
+                               Grid.Column="0"
+                               VerticalOptions="Center"
+                               TextColor="Black">
+                        </Label>
+                        <Entry Grid.Column="1"
+                               VerticalOptions="Center"
+                               Keyboard="Numeric"
+                               HorizontalOptions="FillAndExpand"
+                               HorizontalTextAlignment="Center"
+                               Text="{Binding TotalLesson, Mode=TwoWay}">
+                            <Entry.Behaviors>
+                                <behaviors:EntryMaxLengthBehavior MaxLength="3" />
+                            </Entry.Behaviors>
+                        </Entry>
+                    </Grid>
+                    <!--#endregion-->
+                </Grid>
+
+                <!--#region Mô tả-->
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Mô tả"
+                           Grid.Column="0"
+                           VerticalOptions="Start"
+                           TextColor="Black"
+                           Margin="0, 15, 0, 0" />
+                    <Frame  Grid.Column="1"
+                            BorderColor="{StaticResource blueColor}"
+                            CornerRadius="5"
+                            Padding="5">
+                        <Editor VerticalOptions="FillAndExpand"
+                                Text="{Binding Description, Mode=OneWayToSource}">
+                            <Editor.Effects>
+                                <effect:PlainEntry />
+                            </Editor.Effects>
+                        </Editor>
+                    </Frame>
+                </Grid>
+                <!--#endregion-->
+
+                <StackLayout Grid.Row="5"
+                             Orientation="Horizontal">
+                    <Button Text="Thêm"
+                            WidthRequest="100"
+                            HorizontalOptions="EndAndExpand"
+                            VerticalOptions="Center"
+                            Visual="Material"
+                            BackgroundColor="#1a73e8"
+                            Command="{Binding AddSubjectCM}"
+                            CommandParameter="{x:Reference addTaskPopup}" />
+                    <Button Text="Hủy"
+                            WidthRequest="100"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            Visual="Material"
+                            Clicked="Button_Clicked" />
+                </StackLayout>
+
+            </Grid>
+        </xct:TabViewItem>
+
+        <xct:TabViewItem Text="Việc cần làm"
+                         TextColor="Black"
+                         TextColorSelected="{StaticResource blueColor}"
+                         FontSize="12">
+            <xct:TabViewItem.IconSelected>
+                <FontImageSource FontFamily="Material"
+                                 Glyph="&#xf075;"
+                                 Color="{StaticResource blueColor}" />
+            </xct:TabViewItem.IconSelected>
+            <xct:TabViewItem.Icon>
+                <FontImageSource FontFamily="Material"
+                                 Glyph="&#xf075;"
+                                 Color="Black" />
+            </xct:TabViewItem.Icon>
+            <Grid Margin="10, 10, 10, 10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="90" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!--#region Tiêu đề-->
+
+                <StackLayout Orientation="Horizontal"
+                             Grid.Row="0">
+                    <Label Text="Tiêu đề"
+                           Grid.Column="0"
+                           VerticalOptions="Center"
+                           TextColor="Black" />
+                    <Entry Grid.Column="1"
+                           VerticalOptions="Center"
+                           Text="{Binding TaskName, Mode=OneWayToSource}"
+                           HorizontalOptions="FillAndExpand" />
+                    <Label Text="Màu"
+                           VerticalOptions="Center"
+                           TextColor="Black"
+                           HorizontalOptions="Start"
+                           MinimumWidthRequest="40">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="&#xe887;"
+                           VerticalOptions="Center"
+                           TextColor="{StaticResource blueColor}"
+                           HorizontalOptions="Start"
+                           FontFamily="Material"
+                           FontSize="20">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Frame Padding="5"
+                           CornerRadius="5"
+                           BackgroundColor="{Binding ColorTag, Mode=TwoWay}"
+                           WidthRequest="50"
+                           HeightRequest="20"
+                           VerticalOptions="Center"
+                           Margin="10, 0, 0, 0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenColorPickerCM}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+
+
+                </StackLayout>
+                <!--#endregion-->
+
+                
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="190" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    
+                    <!--#region Ngày bắt đầu-->
+                    <Label Text="Ngày bắt đầu"
+                           Grid.Column="0"
+                           VerticalOptions="Center"
+                           TextColor="Black" />
+                    <StackLayout Grid.Column="0"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="End">
+                        <DatePicker VerticalOptions="Center"
+                                    HorizontalOptions="EndAndExpand"
+                                    IsEnabled="True"
+                                    x:Name="startTodoDatePicker"
+                                    Date="{Binding StartDate, Mode=TwoWay}" />
+                    </StackLayout>
+                    <!--#endregion-->
+                    
+                    <!--#region  Nhắc nhở-->
+                    <StackLayout Orientation="Horizontal"
+                                 Grid.Column="1">
+                        <Label Text="Nhắc"
+                               VerticalOptions="Center"
+                               TextColor="Black" />
+                        <Picker VerticalOptions="Center"
+                                HorizontalOptions="FillAndExpand"
+                                ItemsSource="{Binding Reminders, Mode=TwoWay}"
+                                HorizontalTextAlignment="Center"
+                                SelectedItem="{Binding TimeRemind, Mode=TwoWay}"
+                                SelectedIndex="{Binding TimeRemindIndex,Mode=TwoWay}" />
+                        <Label Text="&#xe429;"
+                               VerticalOptions="Center"
+                               TextColor="{StaticResource blueColor}"
+                               HorizontalOptions="Center"
+                               FontFamily="Material"
+                               FontSize="20">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenCustomReminderPopupCM}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <!--#endregion-->
+
+                </Grid>
+                
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <!--#region Giờ bắt đầu-->
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Giờ bắt đầu"
+                               Grid.Column="0"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               TextColor="Black" />
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Entry Grid.Column="0"
+                                   VerticalOptions="Center"
+                                   Keyboard="Numeric"
+                                   HorizontalOptions="FillAndExpand"
+                                   Text="{Binding StartTimeX, Mode=OneWayToSource}">
+                                <Entry.Behaviors>
+                                    <behaviors:EntryMaxLengthBehavior MaxLength="2" />
+                                </Entry.Behaviors>
+                            </Entry>
+                            <Label Text=":"
+                                   Grid.Column="1"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   FontSize="20" />
+                            <Entry Grid.Column="2"
+                                   VerticalOptions="Center"
+                                   Keyboard="Numeric"
+                                   HorizontalOptions="FillAndExpand"
+                                   Text="{Binding StartTimeY, Mode=OneWayToSource}">
+                                <Entry.Behaviors>
+                                    <behaviors:EntryMaxLengthBehavior MaxLength="2" />
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Grid>
+                    </Grid>
+
+                    <!--#endregion-->
+
+                    <!--#region Giờ kết thúc-->
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="Giờ kết thúc"
+                               Grid.Column="0"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               TextColor="Black" />
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Entry Grid.Column="0"
+                                   VerticalOptions="Center"
+                                   Keyboard="Numeric"
+                                   HorizontalOptions="FillAndExpand"
+                                   Text="{Binding EndTimeX, Mode=OneWayToSource}">
+                                <Entry.Behaviors>
+                                    <behaviors:EntryMaxLengthBehavior MaxLength="2" />
+                                </Entry.Behaviors>
+                            </Entry>
+                            <Label Text=":"
+                                   Grid.Column="1"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   FontSize="20" />
+                            <Entry Grid.Column="2"
+                                   VerticalOptions="Center"
+                                   Keyboard="Numeric"
+                                   HorizontalOptions="FillAndExpand"
+                                   Text="{Binding EndTimeY, Mode=OneWayToSource}">
+                                <Entry.Behaviors>
+                                    <behaviors:EntryMaxLengthBehavior MaxLength="2" />
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Grid>
+                    </Grid>
+                    <!--#endregion-->
+
+                </Grid>
+                <!--#region Lặp lại-->
+                <StackLayout Grid.Row="3"
+                             Grid.Column="0"
+                             Orientation="Horizontal">
+                    <Label Text="Lặp lại"
+                           VerticalOptions="Center"
+                           TextColor="Black"
+                           HorizontalOptions="Start"
+                           MinimumWidthRequest="40"
+                           WidthRequest="70">
+                    </Label>
+                    <Frame BackgroundColor="#f1f3f4"
+                           CornerRadius="5"
+                           Padding="10"
+                           VerticalOptions="Center">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding RemindLabel, Mode=TwoWay}"
+                                   VerticalOptions="Center"
+                                   TextColor="Black" />
+                            <Label FontFamily="Material"
+                                   Text="&#xe5cf;"
+                                   FontSize="25"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="End"
+                                   TextColor="Black">
+                            </Label>
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenRecurrencePopupCM}"
+                                                  CommandParameter="{Binding StartDate}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+
+                </StackLayout>
+                <!--#endregion-->
+
+                <!--#region Mô tả-->
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Mô tả"
+                           Grid.Column="0"
+                           VerticalOptions="Start"
+                           TextColor="Black"
+                           Margin="0, 15, 0, 0" />
+                    <Frame  Grid.Column="1"
+                            BorderColor="{StaticResource blueColor}"
+                            CornerRadius="5"
+                            Padding="5">
+                        <Editor VerticalOptions="FillAndExpand"
+                                Text="{Binding Description, Mode=OneWayToSource}">
+                            <Editor.Effects>
+                                <effect:PlainEntry />
+                            </Editor.Effects>
+                        </Editor>
+                    </Frame>
+                </Grid>
+                <!--#endregion-->
+
+                <StackLayout Grid.Row="5"
+                             Orientation="Horizontal">
+                    <Button Text="Thêm"
+                            WidthRequest="100"
+                            HorizontalOptions="EndAndExpand"
+                            VerticalOptions="Center"
+                            Visual="Material"
+                            BackgroundColor="#1a73e8"
+                            Command="{Binding AddTodoCM}" 
+                            CommandParameter="{x:Reference addTaskPopup}"/>
+                    <Button Text="Hủy"
+                            WidthRequest="100"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            Visual="Material"
+                            Clicked="Button_Clicked" />
+                </StackLayout>
+
+            </Grid>
+        </xct:TabViewItem>
+    </xct:TabView>
+</xct:Popup>

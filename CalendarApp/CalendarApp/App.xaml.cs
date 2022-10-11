@@ -9,7 +9,6 @@ namespace CalendarApp
         public App()
         {
             InitializeComponent();
-
             MainPage = new NavigationPage(new BottomBarCustom());
         }
 

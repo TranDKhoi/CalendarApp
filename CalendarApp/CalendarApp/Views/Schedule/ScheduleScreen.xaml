@@ -2,12 +2,146 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CalendarApp.Views.Schedule.ScheduleScreen"
+             xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
+             xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
              BackgroundColor="White">
+    <ContentPage.BindingContext>
+        <context:ScheduleViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <cvt:DayColorTabItemConverter x:Key="dayColorTabItemCVT" />
+        <cvt:TitleColorTabItemConverter x:Key="titleColorTabItemCVT" />
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Schedule Screen"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="20, 0, 20, 0">
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="FillAndExpand"
+                         Padding="0, 20, 0, 30">
+                <StackLayout HorizontalOptions="StartAndExpand">
+                    <Label Text="{Binding Today}"
+                           FontSize="16" />
+                    <Label Text="Hôm nay"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="20" />
+                </StackLayout>
+                <Button BackgroundColor="{StaticResource greenColor}"
+                        HorizontalOptions="EndAndExpand"
+                        CornerRadius="15"
+                        WidthRequest="120"
+                        Text="+ Thêm task"
+                        TextColor="White"
+                        TextTransform="None"
+                        FontSize="16"
+                        Command="{Binding OpenAddTaskPopupCM}" />
+            </StackLayout>
+            <CollectionView ItemsLayout="HorizontalList"
+                            ItemsSource="{Binding Days}"
+                            HeightRequest="80"
+                            SelectionMode="Single"
+                            x:Name="ListDay"
+                            SelectionChanged="listDay_SelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout VerticalOptions="CenterAndExpand"
+                                     HorizontalOptions="Center"
+                                     WidthRequest="50">
+                            <Label Text="{Binding Title}"
+                                   TextColor="{Binding IsSelected,Converter={StaticResource titleColorTabItemCVT}}"
+                                   HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding Day}"
+                                   FontAttributes="Bold"
+                                   TextColor="{Binding IsSelected,Converter={StaticResource dayColorTabItemCVT}}"
+                                   FontSize="20"
+                                   HorizontalTextAlignment="Center" />
+                            <BoxView HeightRequest="3"
+                                     BackgroundColor="{StaticResource greenColor}"
+                                     IsVisible="{Binding IsSelected}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <CollectionView ItemsSource="{Binding TodaySubject}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal"
+                                     Padding="0, 0, 0, 20">
+                            <StackLayout WidthRequest="60"
+                                         MinimumWidthRequest="60">
+                                <Label Text="{Binding StartTime}"
+                                       TextColor="Black"
+                                       FontSize="20"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding EndTime}"
+                                       FontSize="16" />
+                            </StackLayout>
+                            <StackLayout Margin="0, 0, 10, 0">
+                                <Frame HeightRequest="20"
+                                       WidthRequest="20"
+                                       MinimumHeightRequest="20"
+                                       MinimumWidthRequest="20"
+                                       BackgroundColor="{StaticResource purpleColor}"
+                                       CornerRadius="40"
+                                       Padding="0"
+                                       HorizontalOptions="Center">
+                                    <Frame HeightRequest="15"
+                                           WidthRequest="15"
+                                           MinimumHeightRequest="15"
+                                           MinimumWidthRequest="15"
+                                           BackgroundColor="White"
+                                           CornerRadius="30"
+                                           Padding="0"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center">
+                                        <Frame HeightRequest="10"
+                                               WidthRequest="10"
+                                               MinimumHeightRequest="10"
+                                               MinimumWidthRequest="10"
+                                               BackgroundColor="{StaticResource purpleColor}"
+                                               CornerRadius="20"
+                                               Padding="0"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center">
+                                        </Frame>
+                                    </Frame>
+                                </Frame>
+                                <BoxView VerticalOptions="FillAndExpand"
+                                         WidthRequest="3"
+                                         MinimumWidthRequest="1"
+                                         BackgroundColor="{StaticResource purpleColor}"
+                                         HorizontalOptions="Center" />
+                            </StackLayout>
+                            <Frame BackgroundColor="#e9fffd"
+                                   CornerRadius="20"
+                                   Padding="20"
+                                   HorizontalOptions="Fill">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="30" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Grid.Column="0">
+                                        <Label Text="{Binding Title}"
+                                               TextColor="Black"
+                                               FontSize="16"
+                                               FontAttributes="Bold" />
+                                        <Label Text="{Binding Description}" />
+                                    </StackLayout>
+                                    <Label Text="&#xe872;"
+                                           FontFamily="Material"
+                                           FontSize="30"
+                                           VerticalOptions="Center"
+                                           Grid.Column="1" />
+                                </Grid>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
