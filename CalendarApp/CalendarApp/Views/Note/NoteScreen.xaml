@@ -1,13 +1,90 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:context="clr-namespace:CalendarApp.ViewModels.NoteViewModel"
+             xmlns:behaviors="http://xamarin.com/schemas/2020/toolkit"
              x:Class="CalendarApp.Views.Note.NoteScreen"
+             xmlns:local="clr-namespace:CalendarApp.Resources"
              BackgroundColor="White">
+    <ContentPage.Resources>
+        <context:NoteViewModel x:Key="context" />
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <context:NoteViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Note Screen"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Margin="10">
+            <!---TITLE HERE-->
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Ghi chú"
+                       FontSize="30"
+                       TextColor="Black" />
+                <Label Text="&#xe745;"
+                       VerticalOptions="End"
+                       FontFamily="Material"
+                       FontSize="40"
+                       TextColor="Black"
+                       HorizontalOptions="EndAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ToAddNoteScreenCM}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+            <!---SEARCH-->
+            <Frame CornerRadius="50"
+                   BackgroundColor="White"
+                   HasShadow="True"
+                   Padding="0"
+                   HorizontalOptions="FillAndExpand">
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="FillAndExpand"
+                             VerticalOptions="Center">
+                    <Label FontFamily="Material"
+                           FontSize="20"
+                           Text="&#xe8b6;"
+                           Margin="20, 0, 0, 0"
+                           VerticalOptions="Center" />
+                    <local:RoundEntry  HorizontalOptions="FillAndExpand"
+                                       Placeholder="Tìm kiếm"
+                                       Text="{Binding SearchNoteText,Mode=OneWayToSource}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior EventName="TextChanged"
+                                                              Command="{Binding SearchNoteCM}"
+                                                              CommandParameter="{x:Reference listNote}" />
+                        </Entry.Behaviors>
+                    </local:RoundEntry>
+                </StackLayout>
+            </Frame>
+            <!---LIST-->
+            <CollectionView ItemsSource="{Binding NoteList}"
+                            SelectionMode="Single"
+                            SelectionChanged="CollectionView_SelectionChanged"
+                            x:Name="listNote">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <BoxView HeightRequest="0.5"
+                                     BackgroundColor="Gray"
+                                     VerticalOptions="End" />
+                            <StackLayout>
+                                <Label Text="{Binding title}"
+                                       MaxLines="1"
+                                       FontSize="20"
+                                       TextColor="Black" />
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding content}"
+                                           MaxLines="1"
+                                           MinimumWidthRequest="300"
+                                           FontSize="18" />
+                                    <Label Text="{Binding createdAt,StringFormat='{0:dd/MM/yyyy}'}"
+                                           HorizontalOptions="EndAndExpand"
+                                           MinimumWidthRequest="80" />
+                                </StackLayout>
+                            </StackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

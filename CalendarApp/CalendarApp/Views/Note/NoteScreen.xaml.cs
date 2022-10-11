@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalendarApp.ViewModels.NoteViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,15 @@ namespace CalendarApp.Views.Note
         public NoteScreen()
         {
             InitializeComponent();
+        }
+
+        private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (listNote.SelectedItem == null) return;
+            var viewModel = (NoteViewModel)this.BindingContext;
+            viewModel.SelectedNote = (Models.Note)listNote.SelectedItem;
+            viewModel.ClickNoteCM.Execute(listNote.SelectedItem);
+            listNote.SelectedItem = null;
         }
     }
 }

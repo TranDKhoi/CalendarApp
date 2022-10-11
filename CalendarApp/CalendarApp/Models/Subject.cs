@@ -9,7 +9,7 @@ namespace CalendarApp.Models
     {
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public string Description { get; set; }
         public int NumOfLessons { get; set; }
         public string StartTime { get; set; }
@@ -20,6 +20,9 @@ namespace CalendarApp.Models
         public int StartTimeInt { get; set; }
         public int NumOfLessonsPerDay { get; set; }
         public int? NotiBeforeTime { get; set; }
+        //for UI only
+        public string NotifyTimeString { get; set; }
+        //---------------------------
         public string ColorCode { get; set; }
     }
 }

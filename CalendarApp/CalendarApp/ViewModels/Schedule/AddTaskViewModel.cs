@@ -230,8 +230,9 @@ namespace CalendarApp.ViewModels.Schedule
                 var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomReminderPopup());
                 if (res != null)
                 {
-                    Reminders.Add(res.ToString());
-                    TimeRemindIndex = reminders.Count - 1;
+                    if (!Reminders.Contains(res.ToString()))
+                        Reminders.Add(res.ToString());
+                    TimeRemind = res.ToString();
                 }
             });
 
@@ -288,6 +289,7 @@ namespace CalendarApp.ViewModels.Schedule
                             NumOfLessonsPerDay = (int)LessonPerDay,
                             EndDate = EndDate,
                             ColorCode = ColorTag.ToHexRgbString(),
+                            NotifyTimeString = TimeRemind,
                         };
                         if (!string.IsNullOrEmpty(Description))
                         {
@@ -324,6 +326,7 @@ namespace CalendarApp.ViewModels.Schedule
                             NumOfLessonsPerDay = (int)LessonPerDay,
                             NumOfLessons = (int)TotalLesson,
                             ColorCode = ColorTag.ToHexRgbString(),
+                            NotifyTimeString = TimeRemind,
                         };
                         if (!string.IsNullOrEmpty(Description))
                         {
@@ -362,12 +365,13 @@ namespace CalendarApp.ViewModels.Schedule
                         StartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
                         EndTimeInt = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60,
                         ColorCode = ColorTag.ToHexRgbString(),
+                        NotifyTimeString = TimeRemind,
                     };
                     if (!string.IsNullOrEmpty(Description))
                     {
                         todo.Description = Description;
                     }
-                    App.Current.MainPage.DisplayAlert("Thành công", "Thêm môn học thành công", "Đóng");
+                    App.Current.MainPage.DisplayAlert("Thành công", "Thêm thành công", "Đóng");
                     Popup popup = p as Popup;
                     popup.Dismiss(todo);
                 }
