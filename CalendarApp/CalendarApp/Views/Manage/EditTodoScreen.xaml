@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:effect="clr-namespace:CalendarApp.Effects"
+             x:Class="CalendarApp.Views.Manage.EditTodoScreen"
+             Title="Sửa việc cần làm">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Lưu"
+                     Command="{Binding UpdateTodoCM}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Margin="10" Spacing="30">
+            <!--#region Tiêu đề-->
+            <StackLayout>
+                <Label Text="Tiêu đề"
+                       VerticalOptions="Center"
+                       TextColor="Black" />
+                <Entry VerticalOptions="Center"
+                       Text="{Binding TaskName, Mode=TwoWay}"
+                       HorizontalOptions="FillAndExpand" />
+            </StackLayout>
+            <!--#endregion-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="190" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <!--#region Ngày bắt đầu-->
+                <Label Text="Ngày bắt đầu"
+                       Grid.Column="0"
+                       VerticalOptions="Center"
+                       TextColor="Black" />
+                <StackLayout Grid.Column="0"
+                             Orientation="Horizontal"
+                             HorizontalOptions="End">
+                    <DatePicker VerticalOptions="Center"
+                                HorizontalOptions="EndAndExpand"
+                                IsEnabled="True"
+                                x:Name="startTodoDatePicker"
+                                Date="{Binding StartDate, Mode=TwoWay}" />
+                </StackLayout>
+                <!--#endregion-->
+                <!--#region  Nhắc nhở-->
+                <StackLayout Orientation="Horizontal"
+                             Grid.Column="1">
+                    <Label Text="Nhắc"
+                           VerticalOptions="Center"
+                           TextColor="Black" />
+                    <Picker VerticalOptions="Center"
+                            HorizontalOptions="FillAndExpand"
+                            ItemsSource="{Binding Reminders, Mode=TwoWay}"
+                            HorizontalTextAlignment="Center"
+                            SelectedItem="{Binding TimeRemind, Mode=TwoWay}" />
+                    <Label Text="&#xe429;"
+                           VerticalOptions="Center"
+                           TextColor="{StaticResource blueColor}"
+                           HorizontalOptions="Center"
+                           FontFamily="Material"
+                           FontSize="20">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenCustomReminderPopupCM}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+                <!--#endregion-->
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <!--#region Giờ bắt đầu-->
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Giờ bắt đầu"
+                           Grid.Column="0"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           TextColor="Black" />
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Entry Grid.Column="0"
+                               VerticalOptions="Center"
+                               Keyboard="Numeric"
+                               HorizontalTextAlignment="Center"
+                               HorizontalOptions="FillAndExpand"
+                               MaxLength="2"
+                               Text="{Binding StartTimeX, Mode=TwoWay}" />
+                        <Label Text=":"
+                               Grid.Column="1"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               FontAttributes="Bold"
+                               FontSize="20" />
+                        <Entry Grid.Column="2"
+                               VerticalOptions="Center"
+                               Keyboard="Numeric"
+                               HorizontalOptions="FillAndExpand"
+                               MaxLength="2"
+                               HorizontalTextAlignment="Center"
+                               Text="{Binding StartTimeY, Mode=TwoWay}" />
+                    </Grid>
+                </Grid>
+                <!--#endregion-->
+                <!--#region Giờ kết thúc-->
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Giờ kết thúc"
+                           Grid.Column="0"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           TextColor="Black" />
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Entry Grid.Column="0"
+                               VerticalOptions="Center"
+                               Keyboard="Numeric"
+                               HorizontalTextAlignment="Center"
+                               HorizontalOptions="FillAndExpand"
+                               MaxLength="2"
+                               Text="{Binding EndTimeX, Mode=TwoWay}" />
+                        <Label Text=":"
+                               Grid.Column="1"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               FontAttributes="Bold"
+                               FontSize="20" />
+                        <Entry Grid.Column="2"
+                               VerticalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               Keyboard="Numeric"
+                               HorizontalOptions="FillAndExpand"
+                               Text="{Binding EndTimeY, Mode=TwoWay}"
+                               MaxLength="2" />
+                    </Grid>
+                </Grid>
+                <!--#endregion-->
+            </Grid>
+            <!--#region Lặp lại-->
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Lặp lại"
+                       VerticalOptions="Center"
+                       TextColor="Black"
+                       HorizontalOptions="Start"
+                       MinimumWidthRequest="40"
+                       WidthRequest="70"></Label>
+                <Frame BackgroundColor="#f1f3f4"
+                       CornerRadius="5"
+                       Padding="10"
+                       VerticalOptions="Center">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding RemindLabel, Mode=TwoWay}"
+                               VerticalOptions="Center"
+                               TextColor="Black" />
+                        <Label FontFamily="Material"
+                               Text="&#xe5cf;"
+                               FontSize="25"
+                               VerticalOptions="Center"
+                               HorizontalOptions="End"
+                               TextColor="Black" />
+                    </StackLayout>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenRecurrencePopupCM}"
+                                              CommandParameter="{Binding StartDate}" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="EndAndExpand">
+                    <Label Text="Màu"
+                           VerticalOptions="Center"
+                           TextColor="Black"
+                           HorizontalOptions="Start"
+                           MinimumWidthRequest="40" />
+                    <Label Text="&#xe887;"
+                           VerticalOptions="Center"
+                           TextColor="{StaticResource blueColor}"
+                           HorizontalOptions="Start"
+                           FontFamily="Material"
+                           FontSize="20">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Frame Padding="5"
+                           CornerRadius="5"
+                           BackgroundColor="{Binding ColorTag, Mode=TwoWay}"
+                           HeightRequest="20"
+                           VerticalOptions="Center"
+                           WidthRequest="100"
+                           Margin="10, 0, 0, 0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenColorPickerCM}" />
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </StackLayout>
+            </StackLayout>
+            <!--#endregion-->
+            <!--#region Mô tả-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Text="Mô tả"
+                       Grid.Column="0"
+                       VerticalOptions="Start"
+                       TextColor="Black"
+                       Margin="0, 15, 0, 0" />
+                <Frame  Grid.Column="1"
+                        BorderColor="{StaticResource blueColor}"
+                        CornerRadius="5"
+                        Padding="5">
+                    <Editor VerticalOptions="FillAndExpand"
+                            Text="{Binding Description, Mode=OneWayToSource}">
+                        <Editor.Effects>
+                            <effect:PlainEntry />
+                        </Editor.Effects>
+                    </Editor>
+                </Frame>
+            </Grid>
+            <!---DELETE-->
+            <StackLayout Orientation="Horizontal"
+                         HorizontalOptions="Center"
+                         Margin="0,50,0,0">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding DeleteTodoCM}" />
+                </StackLayout.GestureRecognizers>
+                <Label FontFamily="Material"
+                       Text="&#xe872;"
+                       FontSize="20"
+                       TextColor="{StaticResource redColor}" />
+                <Label Text="XOÁ CÔNG VIỆC NÀY"
+                       TextColor="{StaticResource redColor}" />
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CalendarApp.Resources"
+             x:Class="CalendarApp.Views.Note.NoteDetails"
+             NavigationPage.HasBackButton="False">
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+            <Label FontFamily="Material"
+                   Text="&#xe5c4;"
+                   FontSize="25"
+                   TextColor="White">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SaveNoteCM}" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label Text="Ghi chú"
+                   FontSize="20"
+                   Margin="20,0,0,0"
+                   TextColor="White" />
+        </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Xoá"
+                     Command="{Binding DeleteNoteCM}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame Padding="10,0,0,0">
+                <local:RoundEntry MinimumHeightRequest="300"
+                                  Placeholder="Tiêu đề"
+                                  Text="{Binding SelectedNote.title}"
+                                  IsReadOnly="True" />
+            </Frame>
+            <Frame>
+                <local:BlankEditor  AutoSize="TextChanges"
+                                    MinimumHeightRequest="300"
+                                    Placeholder="Ghi chú ở đây"
+                                    Text="{Binding SelectedNote.content}"
+                                    IsReadOnly="True" />
+            </Frame>
+            <Label Text="Việc cần làm"
+                   Margin="10,10,0,0"
+                   FontSize="20" />
+            <!--<Button FontFamily="Material"
+                    Text="&#xe145;"
+                    FontSize="25"
+                    Margin="10,0,0,0"
+                    VerticalOptions="End"
+                    HorizontalOptions="Start"
+                    TextColor="Green"
+                    Command="{Binding AddMoreTodoCM}" />-->
+            <CollectionView ItemsSource="{Binding SelectedNote.todo}"
+                            ItemsUpdatingScrollMode="KeepLastItemInView">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal"
+                                     Padding="5">
+                            <CheckBox IsChecked="{Binding isDone,Mode=TwoWay}" />
+                            <Frame HorizontalOptions="FillAndExpand"
+                                   CornerRadius="20"
+                                   HasShadow="False"
+                                   Padding="0">
+                                <local:RoundEntry Text="{Binding description}"
+                                                  IsReadOnly="True" />
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

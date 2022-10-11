@@ -12,7 +12,7 @@
         <ScrollView>
             <StackLayout Margin="20"
                          Spacing="20">
-                <Image Source="note.png"
+                <Image Source="note_logo.png"
                        WidthRequest="300" />
                 <Frame CornerRadius="20"
                        Padding="5,0,5,0"
