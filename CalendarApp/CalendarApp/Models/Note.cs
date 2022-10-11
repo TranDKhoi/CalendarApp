@@ -8,7 +8,7 @@ namespace CalendarApp.Models
     {
         public string title { get; set; }
         public DateTime createdAt { get; set; }
-        public List<Todo> todo { get; set; }
+        public List<NoteTodo> noteTodo { get; set; }
         public string content { get; set; }
     }
 }

@@ -28,6 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Manage\ManageScreen.xaml.cs">
+      <DependentUpon>ManageScreen.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Views\Authen\LoginScreen.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -35,6 +41,12 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Home\HomeScreen.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Manage\EditSubjectScreen.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Manage\EditTodoScreen.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Note\AddNoteScreen.xaml">
@@ -64,7 +76,7 @@
     <EmbeddedResource Update="Views\Schedule\ScheduleScreen.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Task\TaskScreen.xaml">
+    <EmbeddedResource Update="Views\Manage\ManageScreen.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

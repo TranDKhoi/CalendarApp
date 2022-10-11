@@ -4,7 +4,7 @@
            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
            xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
            xmlns:behaviors="clr-namespace:CalendarApp.Behaviors"
-           xmlns:effect="clr-namespace:ChatApp_xamarin.Effects"
+           xmlns:effect="clr-namespace:CalendarApp.Effects"
            xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
            x:Class="CalendarApp.Views.Schedule.RecurrencePopup"
            Size="360, 450"

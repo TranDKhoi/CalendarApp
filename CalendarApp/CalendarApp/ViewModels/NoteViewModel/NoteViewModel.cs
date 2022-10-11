@@ -44,17 +44,17 @@ namespace CalendarApp.ViewModels.NoteViewModel
             NoteList = new ObservableCollection<Note>();
             for (int i = 0; i < 5; i++)
             {
-                List<Todo> td = new List<Todo>();
-                td.Add(new Todo { isDone = true, description = "Ăn cơm" });
-                td.Add(new Todo { isDone = false, description = "Ngủ trưa" });
-                td.Add(new Todo { isDone = true, description = "Học bài" });
+                List<NoteTodo> td = new List<NoteTodo>();
+                td.Add(new NoteTodo { isDone = true, description = "Ăn cơm" });
+                td.Add(new NoteTodo { isDone = false, description = "Ngủ trưa" });
+                td.Add(new NoteTodo { isDone = true, description = "Học bài" });
 
                 NoteList.Add(new Note
                 {
                     title = "Một ngày bận rộn",
                     createdAt = DateTime.Now,
                     content = "Dọn dẹp nhà cửa đồ hết rồi mới được ngủ nghe chưa",
-                    todo = td,
+                    noteTodo = td,
                 }); ;
             }
 

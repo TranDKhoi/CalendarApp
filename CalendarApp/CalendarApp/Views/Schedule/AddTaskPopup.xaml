@@ -4,8 +4,8 @@
            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
            xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
            xmlns:behaviors="clr-namespace:CalendarApp.Behaviors"
-           xmlns:effect="clr-namespace:ChatApp_xamarin.Effects"
            xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
+           xmlns:effect="clr-namespace:CalendarApp.Effects"
            x:Class="CalendarApp.Views.Schedule.AddTaskPopup"
            Size="360, 450"
            x:Name="addTaskPopup">

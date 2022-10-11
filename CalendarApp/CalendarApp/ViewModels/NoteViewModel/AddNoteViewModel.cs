@@ -10,8 +10,8 @@ namespace CalendarApp.ViewModels.NoteViewModel
     public class AddNoteViewModel : BaseViewModel
     {
 
-        private ObservableCollection<Todo> todoList;
-        public ObservableCollection<Todo> TodoList
+        private ObservableCollection<NoteTodo> todoList;
+        public ObservableCollection<NoteTodo> TodoList
         {
             get { return todoList; }
             set { todoList = value; OnPropertyChanged(); }
@@ -23,7 +23,7 @@ namespace CalendarApp.ViewModels.NoteViewModel
 
         public AddNoteViewModel()
         {
-            TodoList = new ObservableCollection<Todo>();
+            TodoList = new ObservableCollection<NoteTodo>();
             AddNewNoteCM = new Command(() =>
             {
                 foreach (var item in TodoList)
@@ -35,7 +35,7 @@ namespace CalendarApp.ViewModels.NoteViewModel
             });
             AddMoreTodoCM = new Command(() =>
             {
-                TodoList.Add(new Todo());
+                TodoList.Add(new NoteTodo());
             });
         }
     }

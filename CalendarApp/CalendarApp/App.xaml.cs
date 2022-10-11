@@ -1,5 +1,6 @@
 ﻿using CalendarApp.Views.Authen;
 using CalendarApp.Views.BottomBarCustom;
+using System.Globalization;
 using Xamarin.Forms;
 
 namespace CalendarApp
