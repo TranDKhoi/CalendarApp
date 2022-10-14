@@ -17,16 +17,31 @@
             <StackLayout Orientation="Horizontal"
                          HorizontalOptions="FillAndExpand"
                          Padding="0, 20, 0, 30">
-                <StackLayout HorizontalOptions="StartAndExpand">
-                    <Label Text="{Binding Today}"
+                <StackLayout HorizontalOptions="Start">
+                    <Label Text="{Binding LabelToday}"
                            FontSize="16" />
                     <Label Text="Hôm nay"
                            TextColor="Black"
                            FontAttributes="Bold"
                            FontSize="20" />
                 </StackLayout>
+                <Label Margin="10, 0, 0, 0"
+                       FontFamily="Material"
+                       Text="&#xebcc;"
+                       FontSize="25"
+                       VerticalOptions="Center"
+                       HorizontalOptions="FillAndExpand"
+                       TextColor="{StaticResource blueColor}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <DatePicker x:Name="datePicker"
+                            HorizontalOptions="StartAndExpand"
+                            Date="{Binding SelectedDay,Mode=TwoWay}"
+                            IsVisible="false" />
                 <Button BackgroundColor="{StaticResource greenColor}"
-                        HorizontalOptions="EndAndExpand"
+                        HorizontalOptions="End"
                         CornerRadius="15"
                         WidthRequest="120"
                         Text="+ Thêm việc"
