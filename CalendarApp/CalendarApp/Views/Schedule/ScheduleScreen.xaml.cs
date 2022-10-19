@@ -29,5 +29,10 @@ namespace CalendarApp.Views.Schedule
             viewModel.SelectDayCM.Execute(ListDay.SelectedItem);
             ListDay.SelectedItem = null;
         }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            datePicker.Focus();
+        }
     }
 }
