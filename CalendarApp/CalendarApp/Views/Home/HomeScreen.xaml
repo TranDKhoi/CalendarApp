@@ -1,21 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:behaviors="clr-namespace:CalendarApp.Behaviors"
-             xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
-             xmlns:effect="clr-namespace:ChatApp_xamarin.Effects"
-             xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
              x:Class="CalendarApp.Views.Home.HomeScreen"
              BackgroundColor="White">
-    <ContentPage.Resources>
-        <cvt:BgColorDayOfWeekConverter x:Key="bgColorDayOfWeekCVT" />
-        <cvt:TextColorDayOfWeekConverter x:Key="textColorDayOfWeekCVT" />
-    </ContentPage.Resources>
-    <ContentPage.BindingContext>
-        <context:RecurrenceViewModel />
-    </ContentPage.BindingContext>
-    <ContentPage.Content>
-        
-    </ContentPage.Content>
 </ContentPage>
