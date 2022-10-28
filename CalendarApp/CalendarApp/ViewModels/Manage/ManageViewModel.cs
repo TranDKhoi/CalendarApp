@@ -21,25 +21,11 @@ namespace CalendarApp.ViewModels.Manage
             set { listSubject = value; OnPropertyChanged(); }
         }
 
-        private ObservableCollection<Todo> listTodo;
-        public ObservableCollection<Todo> ListTodo
-        {
-            get { return listTodo; }
-            set { listTodo = value; OnPropertyChanged(); }
-        }
-
         private Subject selectedSubject;
         public Subject SelectedSubject
         {
             get { return selectedSubject; }
             set { selectedSubject = value; OnPropertyChanged(); }
-        }
-
-        private Todo selectedTodo;
-        public Todo SelectedTodo
-        {
-            get { return selectedTodo; }
-            set { selectedTodo = value; OnPropertyChanged(); }
         }
 
         private string searchSubjectText;
@@ -48,16 +34,6 @@ namespace CalendarApp.ViewModels.Manage
             get { return searchSubjectText; }
             set { searchSubjectText = value; OnPropertyChanged(); }
         }
-
-        private string searchTodoText;
-        public string SearchTodoText
-        {
-            get { return searchTodoText; }
-            set { searchTodoText = value; OnPropertyChanged(); }
-        }
-
-
-
 
         //=====================================================
         private string taskName;
@@ -144,20 +120,6 @@ namespace CalendarApp.ViewModels.Manage
             set { startTimeY = value; OnPropertyChanged(); }
         }
 
-        private string endTimeX;
-        public string EndTimeX
-        {
-            get { return endTimeX; }
-            set { endTimeX = value; OnPropertyChanged(); }
-        }
-
-        private string endTimeY;
-        public string EndTimeY
-        {
-            get { return endTimeY; }
-            set { endTimeY = value; OnPropertyChanged(); }
-        }
-
         private string remindLabel;
         public string RemindLabel
         {
@@ -174,28 +136,25 @@ namespace CalendarApp.ViewModels.Manage
         public Command OpenColorPickerCM { get; set; }
         public Command OpenRecurrencePopupCM { get; set; }
         public Command SearchSubjectCM { get; set; }
-        public Command FirstLoadTaskCM { get; set; }
-        public Command ToEditTodoCM { get; set; }
-        public Command UpdateTodoCM { get; set; }
-        public Command DeleteTodoCM { get; set; }
-        public Command SearchTodoCM { get; set; }
 
         public ManageViewModel()
         {
+            
             FirstLoadSubjectCM = new Command(() =>
             {
                 SelectedSubject = null;
                 ClearSubjectData();
-                ListSubject = new ObservableCollection<Subject>();
-
-                ListSubject.Add(new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 28000, Title = "Phát triển ứng dụng đa phương tiện trên thiết bị di động", Description = "Phòng B4.10, thày Phạm Nguyễn Trường An", NotifyTimeString = "5 phút", NumOfLessonsPerDay = 5, NumOfLessons = 10 });
-                ListSubject.Add(new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 29000, Title = "Kinh tế chính trị Mác – Lênin", Description = "Phòng B6.06, thày Nguyễn Hữu Trinh", NotifyTimeString = "10 phút", NumOfLessonsPerDay = 5, NumOfLessons = 10 });
-                ListSubject.Add(new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 22000, Title = "Công nghệ lập trình đa nền tảng cho ứng dụng di động", Description = "Phòng B1.14, thày Võ Ngọc Tân", NotifyTimeString = "30 phút", NumOfLessonsPerDay = 5, NumOfLessons = 10 });
-                ListSubject.Add(new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 21000, Title = "Công nghệ lập trình đa nền tảng cho ứng dụng di động (TH)", Description = "Phòng C111, thày Phạm Nhật Duy", NotifyTimeString = "1 tiếng", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) });
-                ListSubject.Add(new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 20000, Title = "Phương pháp Phát triển phần mềm hướng đối tượng", Description = "Phòng B1.16, cô Nguyễn Hồng Thủy", NotifyTimeString = "1 ngày", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) });
-                ListSubject.Add(new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 29000, Title = "Pháp luật đại cương", Description = "Phòng C205, cô Phạm Thị Thảo Xuyên", NotifyTimeString = "30 ngày", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) });
-                ListSubject.Add(new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 25000, Title = "Công nghệ .NET", Description = "Phòng B6.02, cô Huỳnh Hồ Thị Mộng Trinh", NotifyTimeString = "5 phút", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) });
-                ListSubject.Add(new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 24000, Title = "Quản lý dự án Phát triển Phần mềm", Description = "Phòng B1.18, cô Đỗ Thị Thanh Tuyền", NotifyTimeString = "5 phút", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) });
+                ListSubject = new ObservableCollection<Subject>
+                {
+                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 28000, Title = "Phát triển ứng dụng đa phương tiện trên thiết bị di động", Description = "Phòng B4.10, thày Phạm Nguyễn Trường An", NotifyTimeString = "5 phút", NumOfLessonsPerDay = 5, NumOfLessons = 10 },
+                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 29000, Title = "Kinh tế chính trị Mác – Lênin", Description = "Phòng B6.06, thày Nguyễn Hữu Trinh", NotifyTimeString = "10 phút", NumOfLessonsPerDay = 5, NumOfLessons = 10 },
+                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 22000, Title = "Công nghệ lập trình đa nền tảng cho ứng dụng di động", Description = "Phòng B1.14, thày Võ Ngọc Tân", NotifyTimeString = "30 phút", NumOfLessonsPerDay = 5, NumOfLessons = 10 },
+                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 21000, Title = "Công nghệ lập trình đa nền tảng cho ứng dụng di động (TH)", Description = "Phòng C111, thày Phạm Nhật Duy", NotifyTimeString = "1 tiếng", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) },
+                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 20000, Title = "Phương pháp Phát triển phần mềm hướng đối tượng", Description = "Phòng B1.16, cô Nguyễn Hồng Thủy", NotifyTimeString = "1 ngày", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) },
+                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 29000, Title = "Pháp luật đại cương", Description = "Phòng C205, cô Phạm Thị Thảo Xuyên", NotifyTimeString = "30 ngày", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) },
+                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 25000, Title = "Công nghệ .NET", Description = "Phòng B6.02, cô Huỳnh Hồ Thị Mộng Trinh", NotifyTimeString = "5 phút", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) },
+                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 24000, Title = "Quản lý dự án Phát triển Phần mềm", Description = "Phòng B1.18, cô Đỗ Thị Thanh Tuyền", NotifyTimeString = "5 phút", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) }
+                };
 
                 for (int i = 0; i < ListSubject.Count; i++)
                 {
@@ -345,138 +304,6 @@ namespace CalendarApp.ViewModels.Manage
                 }
 
             });
-            FirstLoadTaskCM = new Command(() =>
-            {
-                SelectedTodo = null;
-                ClearTodoData();
-                ListTodo = new ObservableCollection<Todo>();
-
-                ListTodo.Add(new Todo { StartTimeInt = 28000, EndTimeInt = 50000, Title = "Cuộc gặp với kiều bá dương", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
-                ListTodo.Add(new Todo { StartTimeInt = 28000, EndTimeInt = 50000, Title = "alo alo tile 2", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
-                ListTodo.Add(new Todo { StartTimeInt = 28000, EndTimeInt = 50000, Title = "Ăn cơm với tổng thống", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
-                ListTodo.Add(new Todo { StartTimeInt = 28000, EndTimeInt = 50000, Title = "Đây là tiêu đề", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
-                ListTodo.Add(new Todo { StartTimeInt = 28000, EndTimeInt = 50000, Title = "Tập thể dục với crush", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
-                ListTodo.Add(new Todo { StartTimeInt = 28000, EndTimeInt = 50000, Title = "Không biết ghi gì", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
-                ListTodo.Add(new Todo { StartTimeInt = 28000, EndTimeInt = 50000, Title = "Cuộc gặp với kiều bá dương", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
-                ListTodo.Add(new Todo { StartTimeInt = 28000, EndTimeInt = 50000, Title = "Cuộc gặp với kiều bá dương", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
-                ListTodo.Add(new Todo { StartTimeInt = 28000, EndTimeInt = 50000, Title = "Cuộc gặp với kiều bá dương", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
-                ListTodo.Add(new Todo { StartTimeInt = 28000, EndTimeInt = 50000, Title = "Cuộc gặp với kiều bá dương", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
-
-                for (int i = 0; i < ListTodo.Count; i++)
-                {
-                    TimeSpan t = TimeSpan.FromSeconds(ListTodo[i].StartTimeInt);
-                    ListTodo[i].StartTime = string.Format("{0:D1}:{1:D2}", t.Hours, t.Minutes);
-
-                    TimeSpan t2 = TimeSpan.FromSeconds(ListTodo[i].EndTimeInt);
-                    ListTodo[i].EndTime = string.Format("{0:D1}:{1:D2}", t2.Hours, t2.Minutes);
-                }
-            });
-            ToEditTodoCM = new Command(() =>
-            {
-                ApplyDataToTodo();
-                App.Current.MainPage.Navigation.PushAsync(new EditTodoScreen(this));
-            });
-            UpdateTodoCM = new Command(() =>
-            {
-                if (!IsValidData())
-                {
-                    return;
-                }
-                if (string.IsNullOrEmpty(EndTimeX) || string.IsNullOrEmpty(EndTimeY))
-                {
-                    App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn giờ kết thúc", "Đóng");
-                    return;
-                }
-                if (!CheckTime(EndTimeY))
-                {
-                    return;
-                }
-                // Gắn data trả về
-                Todo todo = new Todo
-                {
-                    Title = TaskName,
-                    StartDate = StartDate,
-                    NotiBeforeTime = GetRemindTime(),
-                    StartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                    EndTimeInt = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60,
-                    ColorCode = ColorTag.ToHexRgbString(),
-                    NotifyTimeString = TimeRemind,
-                };
-                if (!string.IsNullOrEmpty(Description))
-                {
-                    todo.Description = Description;
-                }
-                App.Current.MainPage.DisplayAlert("Thành công", "Thêm thành công", "Đóng");
-
-            });
-            DeleteTodoCM = new Command(async () =>
-            {
-                var res = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có chắc muốn xoá công việc này không?", "Có", "Không");
-                if (res)
-                    _ = App.Current.MainPage.Navigation.PopAsync();
-            });
-            SearchTodoCM = new Command((p) =>
-            {
-                CollectionView cl = p as CollectionView;
-
-                ObservableCollection<Todo> search = new ObservableCollection<Todo>();
-
-                if (!string.IsNullOrEmpty(SearchTodoText))
-                {
-
-                    for (int i = 0; i < ListTodo.Count; i++)
-                    {
-                        if (ListTodo[i].Title.ToLower().Contains(SearchTodoText.ToLower()))
-                        {
-                            search.Add(ListTodo[i]);
-                        }
-                    }
-                    cl.ItemsSource = search;
-                }
-                else
-                {
-                    cl.ItemsSource = ListTodo;
-                }
-            });
-        }
-
-        private void ApplyDataToTodo()
-        {
-            TaskName = SelectedTodo.Title;
-            ColorTag = Color.FromHex(SelectedTodo.ColorCode);
-            StartDate = SelectedTodo.StartDate;
-
-            //đây là chỗ nhắc
-            if (!Reminders.Contains(SelectedTodo.NotifyTimeString))
-                Reminders.Add(SelectedTodo.NotifyTimeString);
-            TimeRemind = SelectedTodo.NotifyTimeString;
-
-            //start time and end time
-            TimeSpan t1 = TimeSpan.FromSeconds(SelectedTodo.StartTimeInt);
-            TimeSpan t2 = TimeSpan.FromSeconds(SelectedTodo.EndTimeInt);
-            string answer1 = string.Format("{0:D2}h:{1:D2}m", t1.Hours, t1.Minutes);
-            string answer2 = string.Format("{0:D2}h:{1:D2}m", t2.Hours, t2.Minutes);
-            StartTimeX = answer1.Split(':')[0];
-            StartTimeY = answer1.Split(':')[1];
-            EndTimeX = answer2.Split(':')[0];
-            EndTimeY = answer2.Split(':')[1];
-        }
-
-        private void ClearTodoData()
-        {
-            TaskName = null;
-            ColorTag = Color.White;
-            StartDate = DateTime.Now;
-
-            //đây là chỗ nhắc
-            InitData();
-            TimeRemind = null;
-
-            //start time and end time
-            StartTimeX = null;
-            StartTimeY = null;
-            EndTimeX = null;
-            EndTimeY = null;
         }
 
         private void ApplyDataToSubject()

@@ -77,7 +77,10 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <CollectionView ItemsSource="{Binding TodaySubject}">
+            <CollectionView ItemsSource="{Binding TodayTask}"
+                            SelectionMode="Single"
+                            x:Name="CollectionViewTask"
+                            SelectionChanged="CollectionView_SelectionChanged">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal"

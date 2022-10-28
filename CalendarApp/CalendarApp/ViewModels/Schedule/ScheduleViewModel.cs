@@ -1,4 +1,6 @@
-﻿using CalendarApp.Models;
+﻿using Acr.UserDialogs;
+using CalendarApp.Models;
+using CalendarApp.Views.Manage;
 using CalendarApp.Views.Schedule;
 using System;
 using System.Collections.Generic;
@@ -18,20 +20,21 @@ namespace CalendarApp.ViewModels.Schedule
     public class ScheduleViewModel : BaseViewModel
     {
         public ICommand SelectDayCM { get; set; }
+        public ICommand SelectTaskCM { get; set; }
         public ICommand OpenAddTaskPopupCM { get; set; }
 
-        private ObservableCollection<ObservableCollection<Subject>> subjects;
-        public ObservableCollection<ObservableCollection<Subject>> Subjects
+        private ObservableCollection<ObservableCollection<Task>> tasks;
+        public ObservableCollection<ObservableCollection<Task>> Tasks
         {
-            get { return subjects; }
-            set { subjects = value; OnPropertyChanged(); }
+            get { return tasks; }
+            set { tasks = value; OnPropertyChanged(); }
         }
 
-        private ObservableCollection<Subject> todaySubject;
-        public ObservableCollection<Subject> TodaySubject
+        private ObservableCollection<Task> todayTask;
+        public ObservableCollection<Task> TodayTask
         {
-            get { return todaySubject; }
-            set { todaySubject = value; OnPropertyChanged(); }
+            get { return todayTask; }
+            set { todayTask = value; OnPropertyChanged(); }
         }
 
         private ObservableCollection<DayTitle> days;
@@ -49,24 +52,19 @@ namespace CalendarApp.ViewModels.Schedule
             {
                 if (Days != null)
                 {
+                    selectedDay = value;
+                    GetWeekFromSelectedDay(selectedDay);
                     for (int i = 0; i < Days.Count; i++)
                     {
                         Days[i].IsSelected = false;
                     }
-                    selectedDay = value;
-                    GetWeekFromSelectedDay(selectedDay);
-                    bool isTodayWeek = false;
                     for (int i = 0; i < Days.Count; i++)
                     {
-                        if (Days[i].Day == DateTime.Now.Day)
+                        if (selectedDay.Day == Days[i].Day)
                         {
-                            isTodayWeek = true;
+                            SelectDayCM.Execute(Days[i]);
+                            
                         }
-                    }
-                    if (!isTodayWeek)
-                    {
-                        TodaySubject = Subjects[0];
-                        Days[0].IsSelected = true;
                     }
                 }
                 else
@@ -143,33 +141,63 @@ namespace CalendarApp.ViewModels.Schedule
             }
         }
 
+        private void CalculateStartEndTime()
+        {
+            if (TodayTask != null)
+            {
+                for (int i = 0; i < TodayTask.Count; i++)
+                {
+                    TimeSpan t2;
+                    TimeSpan t1 = TimeSpan.FromSeconds(TodayTask[i].StartTimeInt);
+                    if (TodayTask[i] is Todo)
+                    {
+                        var temp = (Todo)TodayTask[i];
+                        t2 = TimeSpan.FromSeconds(temp.EndTimeInt);
+                    }
+                    else
+                    {
+                        var temp = (Subject)TodayTask[i];
+                        t2 = TimeSpan.FromSeconds(temp.StartTimeInt + temp.NumOfLessonsPerDay * 45 * 60);
+                    }
+                    string answer1 = string.Format("{0:D2}:{1:D2}", t1.Hours, t1.Minutes);
+                    string answer2 = string.Format("{0:D2}:{1:D2}", t2.Hours, t2.Minutes);
+                    TodayTask[i].StartTime = answer1;
+                    TodayTask[i].EndTime = answer2;
+                }
+            }
+        }
+
         private void InitData()
         {
             SelectedDay = DateTime.Now;
-            Subjects = new ObservableCollection<ObservableCollection<Subject>>();
+            Tasks = new ObservableCollection<ObservableCollection<Task>>();
             for (int i = 0; i < 6; i++)
             {
-                ObservableCollection<Subject> temp = new ObservableCollection<Subject>();
+                ObservableCollection<Task> temp = new ObservableCollection<Task>();
                 if (i == 0)
-                    temp.Add(new Subject { StartTime = "7:30", EndTime = "9:45", Title = "Phát triển ứng dụng đa phương tiện trên thiết bị di động", Description = "Phòng B4.10, thày Phạm Nguyễn Trường An" });
+                {
+                    temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Phát triển ứng dụng đa phương tiện trên thiết bị di động", Description = "Phòng B4.10, thày Phạm Nguyễn Trường An" });
+                    temp.Add(new Todo { StartTimeInt = 20000, EndTimeInt = 50000, Title = "Cuộc gặp với kiều bá dương", StartDate = DateTime.Today, ColorCode = "#49B583", Description = "Thằng KBD láo cá phải dạy cho nó một bài học", NotifyTimeString = "5 phút" });
+                }
                 if (i == 1)
-                    temp.Add(new Subject { StartTime = "7:30", EndTime = "9:00", Title = "Kinh tế chính trị Mác – Lênin", Description = "Phòng B6.06, thày Nguyễn Hữu Trinh" });
+                    temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Kinh tế chính trị Mác – Lênin", Description = "Phòng B6.06, thày Nguyễn Hữu Trinh" });
                 if (i == 2)
-                    temp.Add(new Subject { StartTime = "13:00", EndTime = "16:15", Title = "Công nghệ lập trình đa nền tảng cho ứng dụng di động", Description = "Phòng B1.14, thày Võ Ngọc Tân" });
+                    temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Công nghệ lập trình đa nền tảng cho ứng dụng di động", Description = "Phòng B1.14, thày Võ Ngọc Tân" });
                 if (i == 3)
-                    temp.Add(new Subject { StartTime = "13:00", EndTime = "17:00", Title = "Công nghệ lập trình đa nền tảng cho ứng dụng di động (TH)", Description = "Phòng C111, thày Phạm Nhật Duy" });
+                    temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Công nghệ lập trình đa nền tảng cho ứng dụng di động (TH)", Description = "Phòng C111, thày Phạm Nhật Duy" });
                 if (i == 4)
                 {
-                    temp.Add(new Subject { StartTime = "9:00", EndTime = "11:30", Title = "Phương pháp Phát triển phần mềm hướng đối tượng", Description = "Phòng B1.16, cô Nguyễn Hồng Thủy" });
-                    temp.Add(new Subject { StartTime = "13:00", EndTime = "14:30", Title = "Pháp luật đại cương", Description = "Phòng C205, cô Phạm Thị Thảo Xuyên" });
+                    temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Phương pháp Phát triển phần mềm hướng đối tượng", Description = "Phòng B1.16, cô Nguyễn Hồng Thủy" });
+                    temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Pháp luật đại cương", Description = "Phòng C205, cô Phạm Thị Thảo Xuyên" });
                 }
                 if (i == 5)
                 {
-                    temp.Add(new Subject { StartTime = "7:30", EndTime = "10:45", Title = "Công nghệ .NET", Description = "Phòng B6.02, cô Huỳnh Hồ Thị Mộng Trinh" });
-                    temp.Add(new Subject { StartTime = "13:45", EndTime = "17:00", Title = "Quản lý dự án Phát triển Phần mềm", Description = "Phòng B1.18, cô Đỗ Thị Thanh Tuyền" });
+                    temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Công nghệ .NET", Description = "Phòng B6.02, cô Huỳnh Hồ Thị Mộng Trinh" });
+                    temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Quản lý dự án Phát triển Phần mềm", Description = "Phòng B1.18, cô Đỗ Thị Thanh Tuyền" });
                 }
-                Subjects.Add(temp);
+                Tasks.Add(temp);
             }
+
 
             GetWeekFromSelectedDay(DateTime.Now);
 
@@ -177,7 +205,8 @@ namespace CalendarApp.ViewModels.Schedule
             {
                 if (Days[i].IsSelected)
                 {
-                    TodaySubject = Subjects[i];
+                    TodayTask = Tasks[i];
+                    CalculateStartEndTime();
                     break;
                 }
             }
@@ -199,11 +228,11 @@ namespace CalendarApp.ViewModels.Schedule
                             Days[i].IsSelected = true;
                             if (i < 6)
                             {
-                                TodaySubject = Subjects[i];
+                                TodayTask = Tasks[i];
                             }
                             else
                             {
-                                TodaySubject = null;
+                                TodayTask = null;
                             }
                         }
                         else
@@ -211,6 +240,21 @@ namespace CalendarApp.ViewModels.Schedule
                             Days[i].IsSelected = false;
                         }
                     }
+                CalculateStartEndTime();
+            });
+
+            SelectTaskCM = new Command((p) =>
+            {
+                if (p == null) return;
+                var selectedTask = p as Task;
+                if (selectedTask is Todo)
+                {
+                    App.Current.MainPage.Navigation.PushAsync(new EditTodoScreen(selectedTask as Todo));
+                }
+                else if (selectedTask is Subject)
+                {
+                    App.Current.MainPage.DisplayAlert("Thông báo", "Cần qua mục môn học để chỉnh sửa môn học này", "Đóng");
+                }
             });
 
             OpenAddTaskPopupCM = new Command(() =>

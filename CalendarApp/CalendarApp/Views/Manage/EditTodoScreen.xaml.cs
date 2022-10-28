@@ -1,4 +1,5 @@
-﻿using CalendarApp.ViewModels.Manage;
+﻿using CalendarApp.Models;
+using CalendarApp.ViewModels.Manage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace CalendarApp.Views.Manage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditTodoScreen : ContentPage
     {
-        public EditTodoScreen(ManageViewModel context)
+        public EditTodoScreen(Todo selectedTodo)
         {
-            this.BindingContext = context;
             InitializeComponent();
+            var viewmodel = (EditTodoViewModel)this.BindingContext;
+            viewmodel.CurrentTodo = selectedTodo;
+            viewmodel.ApplyDataCM.Execute(null);
         }
 
         private void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)

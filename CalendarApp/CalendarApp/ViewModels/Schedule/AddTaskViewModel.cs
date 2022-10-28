@@ -356,6 +356,20 @@ namespace CalendarApp.ViewModels.Schedule
                     {
                         return;
                     }
+                    if (int.Parse(StartTimeX)> int.Parse(EndTimeX))
+                    {
+                        App.Current.MainPage.DisplayAlert("Cảnh báo", "Giờ bắt đầu phải lớn hơn giờ kết thúc", "Đóng");
+                        return;
+                    }
+                    if (int.Parse(StartTimeX) == int.Parse(EndTimeX))
+                    {
+                        if (int.Parse(StartTimeY) >= int.Parse(EndTimeY))
+                        {
+                            App.Current.MainPage.DisplayAlert("Cảnh báo", "Giờ bắt đầu phải lớn hơn giờ kết thúc", "Đóng");
+                            return;
+                        }
+                        
+                    }
                     // Gắn data trả về
                     Todo todo = new Todo
                     {
@@ -377,5 +391,6 @@ namespace CalendarApp.ViewModels.Schedule
                 }
             });
         }
+       
     }
 }

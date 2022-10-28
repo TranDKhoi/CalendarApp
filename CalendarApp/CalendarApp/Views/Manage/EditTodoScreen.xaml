@@ -2,12 +2,16 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:effect="clr-namespace:CalendarApp.Effects"
+             xmlns:ct="clr-namespace:CalendarApp.ViewModels.Manage"
              x:Class="CalendarApp.Views.Manage.EditTodoScreen"
              Title="Sửa việc cần làm">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Lưu"
                      Command="{Binding UpdateTodoCM}" />
     </ContentPage.ToolbarItems>
+    <ContentPage.BindingContext>
+        <ct:EditTodoViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout Margin="10" Spacing="30">
             <!--#region Tiêu đề-->

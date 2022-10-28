@@ -34,5 +34,17 @@ namespace CalendarApp.Views.Schedule
         {
             datePicker.Focus();
         }
+
+        private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CollectionViewTask.SelectedItem == null)
+            {
+                return;
+            }
+            var viewModel = (ScheduleViewModel)this.BindingContext;
+            viewModel.SelectTaskCM.Execute(CollectionViewTask.SelectedItem);
+            CollectionViewTask.SelectedItem = null;
+
+        }
     }
 }

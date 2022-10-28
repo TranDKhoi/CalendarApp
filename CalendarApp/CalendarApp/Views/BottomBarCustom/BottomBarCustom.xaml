@@ -20,7 +20,7 @@
                              IconImageSource="calendar.png" />
     <note:NoteScreen Title="Ghi chú"
                      IconImageSource="note.png" />
-    <manage:ManageScreen Title="Quản lý"
+    <manage:ManageScreen Title="Môn học"
                      IconImageSource="task.png" />
     <profile:ProfileScreen Title="Tài khoản"
                            IconImageSource="profile.png" />
