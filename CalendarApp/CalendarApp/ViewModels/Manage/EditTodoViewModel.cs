@@ -1,8 +1,10 @@
 ﻿using CalendarApp.Models;
+using CalendarApp.Views.Manage;
 using CalendarApp.Views.Schedule;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Text;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
@@ -100,8 +102,11 @@ namespace CalendarApp.ViewModels.Manage
             set { reminders = value; OnPropertyChanged(); }
         }
 
-        public Command ApplyDataCM { get; set; }
+        private DateTime oldStartDate;
+        private int oldStartTime;
+        private int oldEndTime;
 
+        public Command ApplyDataCM { get; set; }
         public Command UpdateTodoCM { get; set; }
         public Command OpenCustomReminderPopupCM { get; set; }
         public Command OpenRecurrencePopupCM { get; set; }
@@ -115,7 +120,7 @@ namespace CalendarApp.ViewModels.Manage
             {
                 ApplyDataToTodo();
             });
-            UpdateTodoCM = new Command(() =>
+            UpdateTodoCM = new Command(async () =>
             {
                 if (!IsValidData())
                 {
@@ -123,21 +128,35 @@ namespace CalendarApp.ViewModels.Manage
                 }
                 if (string.IsNullOrEmpty(EndTimeX) || string.IsNullOrEmpty(EndTimeY))
                 {
-                    App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn giờ kết thúc", "Đóng");
+                    _ = App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn giờ kết thúc", "Đóng");
                     return;
                 }
                 if (!CheckTime(EndTimeY))
                 {
                     return;
                 }
+
+                int newStartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60;
+                int newEndTimeInt = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60;
+
+                if (/*oldStartDate != StartDate ||*/ oldStartTime != newStartTimeInt || oldEndTime != newEndTimeInt)
+                {
+                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomSaveAsDialog());
+                    if (res != null)
+                    {
+                        string a = res as string;
+                    }
+                    else return;
+                }
+
                 // Gắn data trả về
                 Todo todo = new Todo
                 {
                     Title = TaskName,
                     StartDate = StartDate,
                     NotiBeforeTime = GetRemindTime(),
-                    StartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                    EndTimeInt = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60,
+                    StartTimeInt = newStartTimeInt,
+                    EndTimeInt = newEndTimeInt,
                     ColorCode = ColorTag.ToHexRgbString(),
                     NotifyTimeString = TimeRemind,
                 };
@@ -145,7 +164,7 @@ namespace CalendarApp.ViewModels.Manage
                 {
                     todo.Description = Description;
                 }
-                App.Current.MainPage.DisplayAlert("Thành công", "Thêm thành công", "Đóng");
+                _ = App.Current.MainPage.DisplayAlert("Thành công", "Lưu thành công", "Đóng");
 
             });
             OpenCustomReminderPopupCM = new Command(async () =>
@@ -190,6 +209,11 @@ namespace CalendarApp.ViewModels.Manage
 
         private void ApplyDataToTodo()
         {
+            //save old data to compare
+            oldStartDate = CurrentTodo.StartDate;
+            oldStartTime = CurrentTodo.StartTimeInt;
+            oldEndTime = CurrentTodo.EndTimeInt;
+
             TaskName = CurrentTodo.Title;
             ColorTag = Color.FromHex(CurrentTodo.ColorCode);
             StartDate = CurrentTodo.StartDate;
@@ -202,8 +226,8 @@ namespace CalendarApp.ViewModels.Manage
             //start time and end time
             TimeSpan t1 = TimeSpan.FromSeconds(CurrentTodo.StartTimeInt);
             TimeSpan t2 = TimeSpan.FromSeconds(CurrentTodo.EndTimeInt);
-            string answer1 = string.Format("{0:D2}h:{1:D2}m", t1.Hours, t1.Minutes);
-            string answer2 = string.Format("{0:D2}h:{1:D2}m", t2.Hours, t2.Minutes);
+            string answer1 = string.Format("{0:D2}:{1:D2}", t1.Hours, t1.Minutes);
+            string answer2 = string.Format("{0:D2}:{1:D2}", t2.Hours, t2.Minutes);
             StartTimeX = answer1.Split(':')[0];
             StartTimeY = answer1.Split(':')[1];
             EndTimeX = answer2.Split(':')[0];
@@ -234,12 +258,12 @@ namespace CalendarApp.ViewModels.Manage
         {
             if (int.Parse(minute) % 15 != 0)
             {
-                App.Current.MainPage.DisplayAlert("Cảnh báo", "Số phút của giờ bắt đầu phải là 0, 15, 30, 45", "Đóng");
+                App.Current.MainPage.DisplayAlert("Cảnh báo", "Số phút của giờ kết thúc phải là 0, 15, 30, 45", "Đóng");
                 return false;
             }
             else if ((int.Parse(minute) != 0) && int.Parse(minute) % 15 != 0)
             {
-                App.Current.MainPage.DisplayAlert("Cảnh báo", "Số phút của giờ bắt đầu phải là 0, 15, 30, 45", "Đóng");
+                App.Current.MainPage.DisplayAlert("Cảnh báo", "Số phút của giờ kết thúc phải là 0, 15, 30, 45", "Đóng");
                 return false;
             }
             return true;
