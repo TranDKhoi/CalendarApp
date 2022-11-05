@@ -152,17 +152,17 @@ namespace CalendarApp.ViewModels.Manage
                 // Gắn data trả về
                 Todo todo = new Todo
                 {
-                    Title = TaskName,
-                    StartDate = StartDate,
-                    NotiBeforeTime = GetRemindTime(),
-                    StartTimeInt = newStartTimeInt,
-                    EndTimeInt = newEndTimeInt,
-                    ColorCode = ColorTag.ToHexRgbString(),
+                    title = TaskName,
+                    startDate = StartDate,
+                    notiBeforeTime = GetRemindTime(),
+                    startTime = newStartTimeInt,
+                    endTime = newEndTimeInt,
+                    colorCode = ColorTag.ToHexRgbString(),
                     NotifyTimeString = TimeRemind,
                 };
                 if (!string.IsNullOrEmpty(Description))
                 {
-                    todo.Description = Description;
+                    todo.description = Description;
                 }
                 _ = App.Current.MainPage.DisplayAlert("Thành công", "Lưu thành công", "Đóng");
 
@@ -210,13 +210,13 @@ namespace CalendarApp.ViewModels.Manage
         private void ApplyDataToTodo()
         {
             //save old data to compare
-            oldStartDate = CurrentTodo.StartDate;
-            oldStartTime = CurrentTodo.StartTimeInt;
-            oldEndTime = CurrentTodo.EndTimeInt;
+            oldStartDate = CurrentTodo.startDate;
+            oldStartTime = CurrentTodo.startTime;
+            oldEndTime = CurrentTodo.endTime;
 
-            TaskName = CurrentTodo.Title;
-            ColorTag = Color.FromHex(CurrentTodo.ColorCode);
-            StartDate = CurrentTodo.StartDate;
+            TaskName = CurrentTodo.title;
+            ColorTag = Color.FromHex(CurrentTodo.colorCode);
+            StartDate = CurrentTodo.startDate;
 
             //đây là chỗ nhắc
             if (!Reminders.Contains(CurrentTodo.NotifyTimeString))
@@ -224,15 +224,15 @@ namespace CalendarApp.ViewModels.Manage
             TimeRemind = CurrentTodo.NotifyTimeString;
 
             //start time and end time
-            TimeSpan t1 = TimeSpan.FromSeconds(CurrentTodo.StartTimeInt);
-            TimeSpan t2 = TimeSpan.FromSeconds(CurrentTodo.EndTimeInt);
+            TimeSpan t1 = TimeSpan.FromSeconds(CurrentTodo.startTime);
+            TimeSpan t2 = TimeSpan.FromSeconds(CurrentTodo.endTime);
             string answer1 = string.Format("{0:D2}:{1:D2}", t1.Hours, t1.Minutes);
             string answer2 = string.Format("{0:D2}:{1:D2}", t2.Hours, t2.Minutes);
             StartTimeX = answer1.Split(':')[0];
             StartTimeY = answer1.Split(':')[1];
             EndTimeX = answer2.Split(':')[0];
             EndTimeY = answer2.Split(':')[1];
-            Description = CurrentTodo.Description;
+            Description = CurrentTodo.description;
         }
 
         private int GetRemindTime()

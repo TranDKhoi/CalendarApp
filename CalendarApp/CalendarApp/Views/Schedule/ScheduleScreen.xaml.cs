@@ -46,5 +46,12 @@ namespace CalendarApp.Views.Schedule
             CollectionViewTask.SelectedItem = null;
 
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            var vm = (ScheduleViewModel)this.BindingContext;
+            vm.GetAllTaskCM.Execute(null);
+        }
     }
 }

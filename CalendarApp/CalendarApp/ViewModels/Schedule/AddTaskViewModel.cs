@@ -282,18 +282,20 @@ namespace CalendarApp.ViewModels.Schedule
                         // Gắn data trả về
                         Subject subject = new Subject
                         {
-                            Title = TaskName,
-                            StartDate = StartDate,
-                            NotiBeforeTime = GetRemindTime(),
-                            StartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                            NumOfLessonsPerDay = (int)LessonPerDay,
-                            EndDate = EndDate,
-                            ColorCode = ColorTag.ToHexRgbString(),
+                            title = TaskName,
+                            //prop code here
+                            //===
+                            startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                            colorCode = ColorTag.ToHexRgbString(),
+                            startDate = StartDate,
+                            notiBeforeTime = GetRemindTime(),
+                            numOfLessonsPerDay = (int)LessonPerDay,
+                            endDate = EndDate,
                             NotifyTimeString = TimeRemind,
                         };
                         if (!string.IsNullOrEmpty(Description))
                         {
-                            subject.Description = Description;
+                            subject.description = Description;
                         }
                         App.Current.MainPage.DisplayAlert("Thành công", "Thêm môn học thành công", "Đóng");
                         Popup popup = p as Popup;
@@ -319,18 +321,18 @@ namespace CalendarApp.ViewModels.Schedule
                         // Gắn data trả về
                         Subject subject = new Subject
                         {
-                            Title = TaskName,
-                            StartDate = StartDate,
-                            NotiBeforeTime = GetRemindTime(),
-                            StartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                            NumOfLessonsPerDay = (int)LessonPerDay,
-                            NumOfLessons = (int)TotalLesson,
-                            ColorCode = ColorTag.ToHexRgbString(),
+                            title = TaskName,
+                            startDate = StartDate,
+                            notiBeforeTime = GetRemindTime(),
+                            startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                            numOfLessonsPerDay = (int)LessonPerDay,
+                            numOfLessons = (int)TotalLesson,
+                            colorCode = ColorTag.ToHexRgbString(),
                             NotifyTimeString = TimeRemind,
                         };
                         if (!string.IsNullOrEmpty(Description))
                         {
-                            subject.Description = Description;
+                            subject.description = Description;
                         }
                         App.Current.MainPage.DisplayAlert("Thành công", "Thêm môn học thành công", "Đóng");
                         Popup popup = p as Popup;
@@ -373,17 +375,17 @@ namespace CalendarApp.ViewModels.Schedule
                     // Gắn data trả về
                     Todo todo = new Todo
                     {
-                        Title = TaskName,
-                        StartDate = StartDate,
-                        NotiBeforeTime = GetRemindTime(),
-                        StartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                        EndTimeInt = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60,
-                        ColorCode = ColorTag.ToHexRgbString(),
+                        title = TaskName,
+                        startDate = StartDate,
+                        notiBeforeTime = GetRemindTime(),
+                        startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                        endTime = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60,
+                        colorCode = ColorTag.ToHexRgbString(),
                         NotifyTimeString = TimeRemind,
                     };
                     if (!string.IsNullOrEmpty(Description))
                     {
-                        todo.Description = Description;
+                        todo.description = Description;
                     }
                     App.Current.MainPage.DisplayAlert("Thành công", "Thêm thành công", "Đóng");
                     Popup popup = p as Popup;

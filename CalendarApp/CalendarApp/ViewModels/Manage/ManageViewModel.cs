@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using CalendarApp.Models;
+using CalendarApp.Services;
 using CalendarApp.Views.Manage;
 using CalendarApp.Views.Schedule;
 using System;
@@ -139,31 +140,34 @@ namespace CalendarApp.ViewModels.Manage
 
         public ManageViewModel()
         {
-            
-            FirstLoadSubjectCM = new Command(() =>
+
+            FirstLoadSubjectCM = new Command(async () =>
             {
                 SelectedSubject = null;
                 ClearSubjectData();
-                ListSubject = new ObservableCollection<Subject>
-                {
-                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 28000, Title = "Phát triển ứng dụng đa phương tiện trên thiết bị di động", Description = "Phòng B4.10, thày Phạm Nguyễn Trường An", NotifyTimeString = "5 phút", NumOfLessonsPerDay = 5, NumOfLessons = 10 },
-                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 29000, Title = "Kinh tế chính trị Mác – Lênin", Description = "Phòng B6.06, thày Nguyễn Hữu Trinh", NotifyTimeString = "10 phút", NumOfLessonsPerDay = 5, NumOfLessons = 10 },
-                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 22000, Title = "Công nghệ lập trình đa nền tảng cho ứng dụng di động", Description = "Phòng B1.14, thày Võ Ngọc Tân", NotifyTimeString = "30 phút", NumOfLessonsPerDay = 5, NumOfLessons = 10 },
-                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 21000, Title = "Công nghệ lập trình đa nền tảng cho ứng dụng di động (TH)", Description = "Phòng C111, thày Phạm Nhật Duy", NotifyTimeString = "1 tiếng", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) },
-                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 20000, Title = "Phương pháp Phát triển phần mềm hướng đối tượng", Description = "Phòng B1.16, cô Nguyễn Hồng Thủy", NotifyTimeString = "1 ngày", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) },
-                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 29000, Title = "Pháp luật đại cương", Description = "Phòng C205, cô Phạm Thị Thảo Xuyên", NotifyTimeString = "30 ngày", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) },
-                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 25000, Title = "Công nghệ .NET", Description = "Phòng B6.02, cô Huỳnh Hồ Thị Mộng Trinh", NotifyTimeString = "5 phút", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) },
-                    new Subject { ColorCode = "#49B583", StartDate = DateTime.Today, StartTimeInt = 24000, Title = "Quản lý dự án Phát triển Phần mềm", Description = "Phòng B1.18, cô Đỗ Thị Thanh Tuyền", NotifyTimeString = "5 phút", NumOfLessonsPerDay = 5, EndDate = new DateTime(2022, 3, 25) }
-                };
 
-                for (int i = 0; i < ListSubject.Count; i++)
-                {
-                    TimeSpan t = TimeSpan.FromSeconds(ListSubject[i].StartTimeInt);
-                    ListSubject[i].StartTime = string.Format("{0:D1}:{1:D2}", t.Hours, t.Minutes);
+                UserDialogs.Instance.ShowLoading();
+                var res = await CourseService.ins.GetAllCourse();
+                UserDialogs.Instance.HideLoading();
 
-                    TimeSpan t2 = TimeSpan.FromSeconds(ListSubject[i].StartTimeInt + 45 * 60 * ListSubject[i].NumOfLessonsPerDay);
-                    ListSubject[i].EndTime = string.Format("{0:D1}:{1:D2}", t2.Hours, t2.Minutes);
+                if (res.isSuccess)
+                {
+                    ListSubject = new ObservableCollection<Subject>(res.data);
+
+                    for (int i = 0; i < ListSubject.Count; i++)
+                    {
+                        TimeSpan t = TimeSpan.FromSeconds(ListSubject[i].startTime);
+                        ListSubject[i].StartTimeUI = string.Format("{0:D1}:{1:D2}", t.Hours, t.Minutes);
+
+                        TimeSpan t2 = TimeSpan.FromSeconds(ListSubject[i].startTime + 45 * 60 * ListSubject[i].numOfLessonsPerDay);
+                        ListSubject[i].EndTimeUI = string.Format("{0:D1}:{1:D2}", t2.Hours, t2.Minutes);
+                    }
                 }
+                else
+                {
+                   UserDialogs.Instance.Toast(res.message);
+                }
+
             });
             ToEditSubjectCM = new Command(() =>
             {
@@ -190,18 +194,18 @@ namespace CalendarApp.ViewModels.Manage
                     // Gắn data trả về
                     Subject subject = new Subject
                     {
-                        Title = TaskName,
-                        StartDate = StartDate,
-                        EndDate = EndDate,
-                        NotiBeforeTime = GetRemindTime(),
-                        StartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                        NumOfLessonsPerDay = (int)LessonPerDay,
-                        ColorCode = ColorTag.ToHexRgbString(),
+                        title = TaskName,
+                        startDate = StartDate,
+                        endDate = EndDate,
+                        notiBeforeTime = GetRemindTime(),
+                        startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                        numOfLessonsPerDay = (int)LessonPerDay,
+                        colorCode = ColorTag.ToHexRgbString(),
                         NotifyTimeString = TimeRemind,
                     };
                     if (!string.IsNullOrEmpty(Description))
                     {
-                        subject.Description = Description;
+                        subject.description = Description;
                     }
                     await App.Current.MainPage.DisplayAlert("Thành công", "Cập nhật môn học thành công", "Đóng");
                     await App.Current.MainPage.Navigation.PopAsync();
@@ -226,18 +230,18 @@ namespace CalendarApp.ViewModels.Manage
                     // Gắn data trả về
                     Subject subject = new Subject
                     {
-                        Title = TaskName,
-                        StartDate = StartDate,
-                        NotiBeforeTime = GetRemindTime(),
-                        StartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                        NumOfLessonsPerDay = (int)LessonPerDay,
-                        NumOfLessons = (int)TotalLesson,
-                        ColorCode = ColorTag.ToHexRgbString(),
+                        title = TaskName,
+                        startDate = StartDate,
+                        notiBeforeTime = GetRemindTime(),
+                        startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                        numOfLessonsPerDay = (int)LessonPerDay,
+                        numOfLessons = (int)TotalLesson,
+                        colorCode = ColorTag.ToHexRgbString(),
                         NotifyTimeString = TimeRemind,
                     };
                     if (!string.IsNullOrEmpty(Description))
                     {
-                        subject.Description = Description;
+                        subject.description = Description;
                     }
                     await App.Current.MainPage.DisplayAlert("Thành công", "Cập nhật môn học thành công", "Đóng");
                     await App.Current.MainPage.Navigation.PopAsync();
@@ -260,7 +264,7 @@ namespace CalendarApp.ViewModels.Manage
 
                     for (int i = 0; i < ListSubject.Count; i++)
                     {
-                        if (ListSubject[i].Title.ToLower().Contains(SearchSubjectText.ToLower()))
+                        if (ListSubject[i].title.ToLower().Contains(SearchSubjectText.ToLower()))
                         {
                             search.Add(ListSubject[i]);
                         }
@@ -308,38 +312,38 @@ namespace CalendarApp.ViewModels.Manage
 
         private void ApplyDataToSubject()
         {
-            TaskName = SelectedSubject.Title;
-            StartDate = SelectedSubject.StartDate;
+            TaskName = SelectedSubject.title;
+            StartDate = SelectedSubject.startDate;
 
             //đây là chỗ nhắc
             if (!Reminders.Contains(SelectedSubject.NotifyTimeString))
                 Reminders.Add(SelectedSubject.NotifyTimeString);
             TimeRemind = SelectedSubject.NotifyTimeString;
 
-            ColorTag = Color.FromHex(SelectedSubject.ColorCode);
+            ColorTag = Color.FromHex(SelectedSubject.colorCode);
 
             //đây là giờ bắt đầu
-            TimeSpan t = TimeSpan.FromSeconds(SelectedSubject.StartTimeInt);
+            TimeSpan t = TimeSpan.FromSeconds(SelectedSubject.startTime);
             string answer = string.Format("{0:D2}h:{1:D2}m", t.Hours, t.Minutes);
             StartTimeX = answer.Split(':')[0];
             StartTimeY = answer.Split(':')[1];
 
             //số tiết trong ngày
-            LessonPerDay = SelectedSubject.NumOfLessonsPerDay;
+            LessonPerDay = SelectedSubject.numOfLessonsPerDay;
 
             //ngày kết thúc hoặc số tiết
-            if (SelectedSubject.NumOfLessons != 0)
+            if (SelectedSubject.numOfLessons != 0)
             {
                 HaveEndDate = false;
-                TotalLesson = SelectedSubject.NumOfLessons;
+                TotalLesson = SelectedSubject.numOfLessons;
             }
-            else if (SelectedSubject.EndDate != null)
+            else if (SelectedSubject.endDate != null)
             {
                 HaveEndDate = true;
-                EndDate = SelectedSubject.EndDate;
+                EndDate = SelectedSubject.endDate;
             }
 
-            Description = SelectedSubject.Description;
+            Description = SelectedSubject.description;
         }
 
         private void ClearSubjectData()

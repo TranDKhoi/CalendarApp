@@ -7,7 +7,7 @@ namespace CalendarApp.Models
 
     public class Todo : Task
     {
-        public int EndTimeInt { get; set; }
+        public int endTime { get; set; }
         //FOR UI ONLY
         //----------------------------------------
         public int? CourseId { get; set; }

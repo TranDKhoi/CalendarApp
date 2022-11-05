@@ -7,16 +7,16 @@ namespace CalendarApp.Models
 {
     public class Task
     {
-        public string Title { get; set; }
+        public string title { get; set; }
 
-        public string Description { get; set; }
-        public DateTime StartDate { get; set; }
-        public int StartTimeInt { get; set; }
-        public int? NotiBeforeTime { get; set; }
-        public string StartTime { get; set; }
-
-        public string EndTime { get; set; }
-        public string ColorCode { get; set; }
+        public string description { get; set; }
+        public DateTime startDate { get; set; }
+        public int? notiBeforeTime { get; set; }
+        public int startTime { get; set; }
+        public int endTime { get; set; }
+        public string StartTimeUI { get; set; }
+        public string EndTimeUI { get; set; }
+        public string colorCode { get; set; }
         public string NotifyTimeString { get; set; }
     }
 }
