@@ -25,45 +25,73 @@ namespace CalendarApp.Services
 
         public async Task<ApiResponse<User>> Login(string email, string password)
         {
-            try
+            var content = new StringContent(JsonConvert.SerializeObject(new User
             {
-                var content = new StringContent(JsonConvert.SerializeObject(new User
-                {
-                    email = email,
-                    password = password
-                }),
-                Encoding.UTF8, "application/json");
+                email = email,
+                password = password
+            }),
+            Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync("api/auth/login", content);
-                var objResponse = await ApiService.ins.ParseResponse<User>(response);
+            var response = await client.PostAsync("api/auth/login", content);
+            var objResponse = await ApiService.ins.ParseResponse<User>(response);
 
-                return objResponse;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return objResponse;
         }
 
         public async Task<ApiResponse<string>> Register(string email, string password)
         {
-            try
+            var content = new StringContent(JsonConvert.SerializeObject(new User
             {
-                var content = new StringContent(JsonConvert.SerializeObject(new User
-                {
-                    email = email,
-                    password = password
-                }),
-                Encoding.UTF8, "application/json");
+                email = email,
+                password = password
+            }),
+            Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync("api/auth/register", content);
-                var objResponse = await ApiService.ins.ParseResponse<string>(response);
-                return objResponse;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            var response = await client.PostAsync("api/auth/register", content);
+            var objResponse = await ApiService.ins.ParseResponse<string>(response);
+            return objResponse;
+        }
+
+        public async Task<ApiResponse<User>> VerifyAccount(string email, string code)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(new { email = email, code = code }),
+            Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("api/auth/verify-account", content);
+            var objResponse = await ApiService.ins.ParseResponse<User>(response);
+            return objResponse;
+        }
+
+        public async Task<ApiResponse<string>> ForgotPassword(string email)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(email),
+            Encoding.UTF8, "application/json");
+            Console.WriteLine(content.ReadAsStringAsync());
+
+            var response = await client.PostAsync("api/auth/forgot-password", content);
+            var objResponse = await ApiService.ins.ParseResponse<string>(response);
+            return objResponse;
+        }
+
+        public async Task<ApiResponse<string>> VerifyRePass(string email, string code)
+        {
+
+            var content = new StringContent(JsonConvert.SerializeObject(new { email = email, code = code }),
+            Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("api/auth/verify-code-repassword", content);
+            var objResponse = await ApiService.ins.ParseResponse<string>(response);
+            return objResponse;
+        }
+
+        public async Task<ApiResponse<User>> ResetPassword(string tempToken, string password)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(new { token = tempToken, password = password }),
+            Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("api/auth/reset-password", content);
+            var objResponse = await ApiService.ins.ParseResponse<User>(response);
+            return objResponse;
         }
     }
 }

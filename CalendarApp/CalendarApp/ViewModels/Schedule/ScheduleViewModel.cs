@@ -63,7 +63,7 @@ namespace CalendarApp.ViewModels.Schedule
                         if (selectedDay.Day == Days[i].Day)
                         {
                             SelectDayCM.Execute(Days[i]);
-                            
+
                         }
                     }
                 }
@@ -171,7 +171,7 @@ namespace CalendarApp.ViewModels.Schedule
         {
             SelectedDay = DateTime.Now;
             Tasks = new ObservableCollection<ObservableCollection<Task>>();
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 ObservableCollection<Task> temp = new ObservableCollection<Task>();
                 if (i == 0)
@@ -191,6 +191,11 @@ namespace CalendarApp.ViewModels.Schedule
                     temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Pháp luật đại cương", Description = "Phòng C205, cô Phạm Thị Thảo Xuyên" });
                 }
                 if (i == 5)
+                {
+                    temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Công nghệ .NET", Description = "Phòng B6.02, cô Huỳnh Hồ Thị Mộng Trinh" });
+                    temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Quản lý dự án Phát triển Phần mềm", Description = "Phòng B1.18, cô Đỗ Thị Thanh Tuyền" });
+                }
+                if (i == 6)
                 {
                     temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Công nghệ .NET", Description = "Phòng B6.02, cô Huỳnh Hồ Thị Mộng Trinh" });
                     temp.Add(new Subject { StartTimeInt = 27000, NumOfLessonsPerDay = 3, Title = "Quản lý dự án Phát triển Phần mềm", Description = "Phòng B1.18, cô Đỗ Thị Thanh Tuyền" });

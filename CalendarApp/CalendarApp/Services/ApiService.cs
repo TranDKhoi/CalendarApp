@@ -30,7 +30,10 @@ namespace CalendarApp.Services
             client = new HttpClient();
             client.BaseAddress = new Uri("https://sheca-api.azurewebsites.net/");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        }
 
+        private void GetUserToken()
+        {
             var token = SharedPreferenceService.ins.GetUserToken();
             if (token != null)
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Bearer {token}");
@@ -38,7 +41,6 @@ namespace CalendarApp.Services
 
         public async Task<ApiResponse<T>> ParseResponse<T>(HttpResponseMessage response)
         {
-            response.EnsureSuccessStatusCode();
             var responseRead = await response.Content.ReadAsStringAsync();
             var objResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(responseRead);
             objResponse.isSuccess = response.IsSuccessStatusCode;

@@ -36,14 +36,13 @@ namespace CalendarApp.ViewModels.Authen
                 if (isValidData())
                 {
                     UserDialogs.Instance.ShowLoading();
-                    ApiResponse<User> res = await AuthService.ins.Login(Email, Password);
+                    var res = await AuthService.ins.Login(Email, Password);
                     UserDialogs.Instance.HideLoading();
 
                     if (res.isSuccess)
                     {
-                        SharedPreferenceService.ins.SetUserToken(res.token);
-                        App.Current.MainPage = new NavigationPage(new BottomBarCustom());
-                        await App.Current.MainPage.Navigation.PopToRootAsync();
+                        SharedPreferenceService.ins.SetUserToken(res.data.token);
+                        Application.Current.MainPage = new NavigationPage(new BottomBarCustom());
                     }
                     else
                     {

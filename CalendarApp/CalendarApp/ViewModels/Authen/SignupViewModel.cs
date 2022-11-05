@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using CalendarApp.Services;
 using CalendarApp.Views.Authen;
+using CalendarApp.Views.BottomBarCustom;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -34,8 +35,8 @@ namespace CalendarApp.ViewModels.Authen
             set { rePass = value; OnPropertyChanged(); }
         }
 
-        private int verifyCode;
-        public int VerifyCode
+        private string verifyCode;
+        public string VerifyCode
         {
             get { return verifyCode; }
             set { verifyCode = value; OnPropertyChanged(); }
@@ -66,7 +67,6 @@ namespace CalendarApp.ViewModels.Authen
                     return;
                 }
 
-
                 UserDialogs.Instance.ShowLoading();
                 var res = await AuthService.ins.Register(Email, RePass);
                 UserDialogs.Instance.HideLoading();
@@ -75,6 +75,10 @@ namespace CalendarApp.ViewModels.Authen
                 {
                     await Application.Current.MainPage.Navigation.PushAsync(new VerifySignup(this));
                 }
+                else
+                {
+                    UserDialogs.Instance.Toast(res.message);
+                }
 
 
             });
@@ -82,9 +86,25 @@ namespace CalendarApp.ViewModels.Authen
             {
                 Application.Current.MainPage.Navigation.PopAsync();
             });
-            VerifyCodeCM = new Command(() =>
+            VerifyCodeCM = new Command(async () =>
             {
-                //
+                if (!string.IsNullOrEmpty(VerifyCode))
+                {
+                    UserDialogs.Instance.ShowLoading();
+                    var res = await AuthService.ins.VerifyAccount(Email, VerifyCode);
+                    UserDialogs.Instance.HideLoading();
+
+                    if (res.isSuccess)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Tạo tài khoản thành công", "Đóng");
+                        App.Current.MainPage = new NavigationPage(new BottomBarCustom());
+                        await App.Current.MainPage.Navigation.PopToRootAsync();
+                    }
+                    else
+                    {
+                        UserDialogs.Instance.Toast(res.message);
+                    }
+                }
             });
         }
 
