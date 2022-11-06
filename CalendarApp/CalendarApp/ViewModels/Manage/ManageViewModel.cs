@@ -165,7 +165,7 @@ namespace CalendarApp.ViewModels.Manage
                 }
                 else
                 {
-                   UserDialogs.Instance.Toast(res.message);
+                    UserDialogs.Instance.Toast(res.message);
                 }
 
             });
@@ -185,6 +185,8 @@ namespace CalendarApp.ViewModels.Manage
                     await App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập số tiết", "Đóng");
                     return;
                 }
+
+                Subject subject = new Subject();
                 if (HaveEndDate)
                 {
                     if (!CheckTime(StartTimeY))
@@ -192,23 +194,21 @@ namespace CalendarApp.ViewModels.Manage
                         return;
                     }
                     // Gắn data trả về
-                    Subject subject = new Subject
+                    subject = new Subject
                     {
                         title = TaskName,
+                        //prop code here
+                        //===
+                        description = Description ?? "",
+                        dayOfWeeks = SelectedWeekDay,
+                        numOfLessonsPerDay = (int)LessonPerDay,
                         startDate = StartDate,
                         endDate = EndDate,
-                        notiBeforeTime = GetRemindTime(),
                         startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                        numOfLessonsPerDay = (int)LessonPerDay,
+                        notiBeforeTime = GetRemindTime(),
                         colorCode = ColorTag.ToHexRgbString(),
                         NotifyTimeString = TimeRemind,
                     };
-                    if (!string.IsNullOrEmpty(Description))
-                    {
-                        subject.description = Description;
-                    }
-                    await App.Current.MainPage.DisplayAlert("Thành công", "Cập nhật môn học thành công", "Đóng");
-                    await App.Current.MainPage.Navigation.PopAsync();
                 }
                 else
                 {
@@ -228,30 +228,56 @@ namespace CalendarApp.ViewModels.Manage
                         return;
                     }
                     // Gắn data trả về
-                    Subject subject = new Subject
+                    subject = new Subject
                     {
                         title = TaskName,
-                        startDate = StartDate,
-                        notiBeforeTime = GetRemindTime(),
+                        //prop code here
+                        //===
+                        description = Description ?? "",
                         startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                        dayOfWeeks = SelectedWeekDay,
                         numOfLessonsPerDay = (int)LessonPerDay,
+                        startDate = StartDate,
                         numOfLessons = (int)TotalLesson,
+                        notiBeforeTime = GetRemindTime(),
                         colorCode = ColorTag.ToHexRgbString(),
                         NotifyTimeString = TimeRemind,
                     };
-                    if (!string.IsNullOrEmpty(Description))
-                    {
-                        subject.description = Description;
-                    }
+                }
+
+                UserDialogs.Instance.ShowLoading();
+                var res = await CourseService.ins.UpdateCourse(subject);
+                UserDialogs.Instance.HideLoading();
+
+                if (res.isSuccess)
+                {
                     await App.Current.MainPage.DisplayAlert("Thành công", "Cập nhật môn học thành công", "Đóng");
                     await App.Current.MainPage.Navigation.PopAsync();
                 }
+                else
+                {
+                    UserDialogs.Instance.Toast(res.message);
+                }
+
             });
             DeleteSubjectCM = new Command(async () =>
             {
                 var res = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có chắc muốn xoá môn học này không?", "Có", "Không");
                 if (res)
-                    _ = App.Current.MainPage.Navigation.PopAsync();
+                {
+                    UserDialogs.Instance.ShowLoading();
+                    var result = await CourseService.ins.DeleteCourse(SelectedSubject.id);
+
+                    if (result)
+                    {
+                        _ = App.Current.MainPage.Navigation.PopAsync();
+                        UserDialogs.Instance.Toast("Xoá thành công");
+                    }
+                    else
+                    {
+                        UserDialogs.Instance.Toast("Lỗi hệ thống");
+                    }
+                }
             });
             SearchSubjectCM = new Command((p) =>
             {

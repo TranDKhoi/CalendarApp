@@ -292,7 +292,7 @@ namespace CalendarApp.ViewModels.Schedule
                         List<DayTitle> selectedWeekDay = res as List<DayTitle>;
                         string temp = "";
                         List<string> tempList = new List<string>();
-                        for(int i=0; i < selectedWeekDay.Count; i++)
+                        for (int i = 0; i < selectedWeekDay.Count; i++)
                         {
                             temp += selectedWeekDay[i].Detail;
                             tempList.Add(selectedWeekDay[i].DetailEng);
@@ -329,20 +329,16 @@ namespace CalendarApp.ViewModels.Schedule
                             title = TaskName,
                             //prop code here
                             //===
+                            description = Description ?? "",
                             startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                            colorCode = ColorTag.ToHexRgbString(),
-                            startDate = StartDate,
-                            notiBeforeTime = GetRemindTime(),
-                            numOfLessonsPerDay = (int)LessonPerDay,
-                            endDate = EndDate,
-                            NotifyTimeString = TimeRemind,
                             dayOfWeeks = SelectedWeekDay,
+                            numOfLessonsPerDay = (int)LessonPerDay,
+                            startDate = StartDate,
+                            endDate = EndDate,
+                            notiBeforeTime = GetRemindTime(),
+                            colorCode = ColorTag.ToHexRgbString(),
+                            NotifyTimeString = TimeRemind,
                         };
-                        if (!string.IsNullOrEmpty(Description))
-                        {
-                            subject.description = Description;
-                        }
-                        App.Current.MainPage.DisplayAlert("Thành công", "Thêm môn học thành công", "Đóng");
                         Popup popup = p as Popup;
                         popup.Dismiss(subject);
                     }
@@ -367,20 +363,18 @@ namespace CalendarApp.ViewModels.Schedule
                         Subject subject = new Subject
                         {
                             title = TaskName,
-                            startDate = StartDate,
-                            notiBeforeTime = GetRemindTime(),
+                            //prop code here
+                            //===
+                            description = Description ?? "",
                             startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                            dayOfWeeks = SelectedWeekDay,
                             numOfLessonsPerDay = (int)LessonPerDay,
+                            startDate = StartDate,
                             numOfLessons = (int)TotalLesson,
+                            notiBeforeTime = GetRemindTime(),
                             colorCode = ColorTag.ToHexRgbString(),
                             NotifyTimeString = TimeRemind,
-                            dayOfWeeks = SelectedWeekDay,
                         };
-                        if (!string.IsNullOrEmpty(Description))
-                        {
-                            subject.description = Description;
-                        }
-                        App.Current.MainPage.DisplayAlert("Thành công", "Thêm môn học thành công", "Đóng");
                         Popup popup = p as Popup;
                         popup.Dismiss(subject);
                     }
@@ -404,7 +398,7 @@ namespace CalendarApp.ViewModels.Schedule
                     {
                         return;
                     }
-                    if (int.Parse(StartTimeX)> int.Parse(EndTimeX))
+                    if (int.Parse(StartTimeX) > int.Parse(EndTimeX))
                     {
                         App.Current.MainPage.DisplayAlert("Cảnh báo", "Giờ bắt đầu phải lớn hơn giờ kết thúc", "Đóng");
                         return;
@@ -416,7 +410,7 @@ namespace CalendarApp.ViewModels.Schedule
                             App.Current.MainPage.DisplayAlert("Cảnh báo", "Giờ bắt đầu phải lớn hơn giờ kết thúc", "Đóng");
                             return;
                         }
-                        
+
                     }
                     // Gắn data trả về
                     Todo todo = new Todo
@@ -439,6 +433,6 @@ namespace CalendarApp.ViewModels.Schedule
                 }
             });
         }
-       
+
     }
 }

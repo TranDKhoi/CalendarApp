@@ -48,6 +48,7 @@ namespace CalendarApp.Services
 
         public async Task<ApiResponse<Subject>> CreateNewCourse(Subject newCourse)
         {
+            Console.WriteLine(JsonConvert.SerializeObject(newCourse));
             var content = new StringContent(JsonConvert.SerializeObject(newCourse), Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync("api/courses", content);
@@ -66,12 +67,11 @@ namespace CalendarApp.Services
             return objResponse;
         }
 
-        public async Task<ApiResponse<string>> DeleteCourse(string courseId)
+        public async Task<bool> DeleteCourse(int courseId)
         {
             var response = await client.DeleteAsync($"api/courses/{courseId}");
-            var objResponse = await ApiService.ins.ParseResponse<string>(response);
 
-            return objResponse;
+            return response.IsSuccessStatusCode;
         }
     }
 }

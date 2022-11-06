@@ -203,6 +203,9 @@ namespace CalendarApp.ViewModels.Manage
             {
                 var res = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có chắc muốn xoá công việc này không?", "Có", "Không");
                 if (res)
+                {
+
+                }
                     _ = App.Current.MainPage.Navigation.PopAsync();
             });
         }

@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using CalendarApp.Models;
+using CalendarApp.Services;
 using CalendarApp.Views.Manage;
 using CalendarApp.Views.Schedule;
 using System;
@@ -226,9 +227,33 @@ namespace CalendarApp.ViewModels.Schedule
                 }
             });
 
-            OpenAddTaskPopupCM = new Command(() =>
+            OpenAddTaskPopupCM = new Command(async () =>
             {
-                App.Current.MainPage.Navigation.ShowPopup(new AddTaskPopup());
+                var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new AddTaskPopup());
+                if (res != null)
+                {
+                    if (res.GetType() == typeof(Subject))
+                    {
+                        UserDialogs.Instance.ShowLoading();
+                        var result = await CourseService.ins.CreateNewCourse(res as Subject);
+                        UserDialogs.Instance.HideLoading();
+
+                        if (result.isSuccess)
+                        {
+                            _ = App.Current.MainPage.DisplayAlert("Thành công", "Thêm môn học thành công", "Đóng");
+                            GetAllTaskCM.Execute(null);
+                        }
+                        else
+                        {
+                            UserDialogs.Instance.Toast(result.message);
+                        }
+                    }
+                    else
+                    {
+
+                    }
+
+                }
             });
         }
     }
