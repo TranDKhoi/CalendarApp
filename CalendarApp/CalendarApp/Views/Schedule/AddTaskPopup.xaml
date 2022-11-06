@@ -322,11 +322,11 @@
                     <!--#endregion-->
                 </Grid>
 
-                <!--#region Lặp lại-->
+                <!--#region Chọn thứ-->
                 <StackLayout Grid.Row="4"
                              Grid.Column="0"
                              Orientation="Horizontal">
-                    <Label Text="Lặp lại"
+                    <Label Text="Thứ"
                            VerticalOptions="Center"
                            TextColor="Black"
                            HorizontalOptions="Start"
@@ -338,7 +338,7 @@
                            Padding="10"
                            VerticalOptions="Center">
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding RemindLabel, Mode=TwoWay}"
+                            <Label Text="{Binding WeekDayLabel, Mode=TwoWay}"
                                    VerticalOptions="Center"
                                    TextColor="Black" />
                             <Label FontFamily="Material"
@@ -350,7 +350,7 @@
                             </Label>
                         </StackLayout>
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding OpenRecurrencePopupCM}"
+                            <TapGestureRecognizer Command="{Binding OpenSelectDayOfWeekPopupCM}"
                                                   CommandParameter="{Binding StartDate}" />
                         </Frame.GestureRecognizers>
                     </Frame>

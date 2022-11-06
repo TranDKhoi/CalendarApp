@@ -9,6 +9,8 @@ namespace CalendarApp.Models
     public class DayTitle : BaseViewModel
     {
         public string Title { get; set; }
+        public string Detail { get; set; }
+        
         public int Day { get; set; }
 
         private bool isSelected;
@@ -17,5 +19,8 @@ namespace CalendarApp.Models
             get { return isSelected; }
             set { isSelected = value; OnPropertyChanged(); }
         }
+
+        // For call api only
+        public string DetailEng { get; set; }
     }
 }

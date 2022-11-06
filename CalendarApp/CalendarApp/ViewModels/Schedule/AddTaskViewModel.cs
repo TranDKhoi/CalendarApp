@@ -14,13 +14,6 @@ namespace CalendarApp.ViewModels.Schedule
 {
     public class AddTaskViewModel : BaseViewModel
     {
-        public ICommand OpenCustomReminderPopupCM { get; set; }
-        public ICommand OpenColorPickerCM { get; set; }
-        public ICommand OpenRecurrencePopupCM { get; set; }
-        public ICommand AddSubjectCM { get; set; }
-        public ICommand AddTodoCM { get; set; }
-        public ICommand DoneCM { get; set; }
-
         #region Môn học
 
         private int? lessonPerDay;
@@ -43,6 +36,22 @@ namespace CalendarApp.ViewModels.Schedule
             get { return haveEndDate; }
             set { haveEndDate = value; OnPropertyChanged(); }
         }
+
+        private string weekDayLabel;
+        public string WeekDayLabel
+        {
+            get { return weekDayLabel; }
+            set { weekDayLabel = value; OnPropertyChanged(); }
+        }
+
+        // data tra ve cho thg dat
+        private List<string> selectedWeekDay;
+        public List<string> SelectedWeekDay
+        {
+            get { return selectedWeekDay; }
+            set { selectedWeekDay = value; }
+        }
+
 
         #endregion
 
@@ -150,6 +159,7 @@ namespace CalendarApp.ViewModels.Schedule
             TotalLesson = null;
             ColorTag = Color.White;
             RemindLabel = "Không lặp lại";
+            WeekDayLabel = DateTime.Now.ToString("dddd");
             Reminders = new ObservableCollection<string>
             {
                 "5 phút",
@@ -160,6 +170,8 @@ namespace CalendarApp.ViewModels.Schedule
                 "1 ngày",
                 "30 ngày"
             };
+            SelectedWeekDay = new List<string>();
+            SelectedWeekDay.Add(DateTime.Now.DayOfWeek.ToString());
         }
 
         private int GetRemindTime()
@@ -221,6 +233,16 @@ namespace CalendarApp.ViewModels.Schedule
             return true;
         }
 
+        #region Commands
+        public ICommand OpenCustomReminderPopupCM { get; set; }
+        public ICommand OpenColorPickerCM { get; set; }
+        public ICommand OpenRecurrencePopupCM { get; set; }
+        public ICommand OpenSelectDayOfWeekPopupCM { get; set; }
+        public ICommand AddSubjectCM { get; set; }
+        public ICommand AddTodoCM { get; set; }
+        public ICommand DoneCM { get; set; }
+        #endregion
+
         public AddTaskViewModel()
         {
             InitData();
@@ -260,6 +282,28 @@ namespace CalendarApp.ViewModels.Schedule
 
             });
 
+            OpenSelectDayOfWeekPopupCM = new Command(async (p) =>
+            {
+                if (p != null)
+                {
+                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new SelectDayOfWeekPopup());
+                    if (res != null)
+                    {
+                        List<DayTitle> selectedWeekDay = res as List<DayTitle>;
+                        string temp = "";
+                        List<string> tempList = new List<string>();
+                        for(int i=0; i < selectedWeekDay.Count; i++)
+                        {
+                            temp += selectedWeekDay[i].Detail;
+                            tempList.Add(selectedWeekDay[i].DetailEng);
+                        }
+                        WeekDayLabel = temp;
+                        SelectedWeekDay = tempList;
+                    }
+                }
+
+            });
+
             AddSubjectCM = new Command((p) =>
             {
                 if (p != null)
@@ -292,6 +336,7 @@ namespace CalendarApp.ViewModels.Schedule
                             numOfLessonsPerDay = (int)LessonPerDay,
                             endDate = EndDate,
                             NotifyTimeString = TimeRemind,
+                            dayOfWeeks = SelectedWeekDay,
                         };
                         if (!string.IsNullOrEmpty(Description))
                         {
@@ -329,6 +374,7 @@ namespace CalendarApp.ViewModels.Schedule
                             numOfLessons = (int)TotalLesson,
                             colorCode = ColorTag.ToHexRgbString(),
                             NotifyTimeString = TimeRemind,
+                            dayOfWeeks = SelectedWeekDay,
                         };
                         if (!string.IsNullOrEmpty(Description))
                         {
