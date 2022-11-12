@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows.Input;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
 using static Xamarin.Essentials.Permissions;
@@ -34,6 +35,14 @@ namespace CalendarApp.ViewModels.Manage
         {
             get { return searchSubjectText; }
             set { searchSubjectText = value; OnPropertyChanged(); }
+        }
+
+        // data tra ve cho thg dat
+        private List<string> selectedWeekDay;
+        public List<string> SelectedWeekDay
+        {
+            get { return selectedWeekDay; }
+            set { selectedWeekDay = value; }
         }
 
         //=====================================================
@@ -121,11 +130,11 @@ namespace CalendarApp.ViewModels.Manage
             set { startTimeY = value; OnPropertyChanged(); }
         }
 
-        private string remindLabel;
-        public string RemindLabel
+        private string weekDayLabel;
+        public string WeekDayLabel
         {
-            get { return remindLabel; }
-            set { remindLabel = value; OnPropertyChanged(); }
+            get { return weekDayLabel; }
+            set { weekDayLabel = value; OnPropertyChanged(); }
         }
 
 
@@ -135,7 +144,7 @@ namespace CalendarApp.ViewModels.Manage
         public Command DeleteSubjectCM { get; set; }
         public Command OpenCustomReminderPopupCM { get; set; }
         public Command OpenColorPickerCM { get; set; }
-        public Command OpenRecurrencePopupCM { get; set; }
+        public Command OpenSelectDayOfWeekPopupCM { get; set; }
         public Command SearchSubjectCM { get; set; }
 
         public ManageViewModel()
@@ -320,16 +329,27 @@ namespace CalendarApp.ViewModels.Manage
                     ColorTag = (Color)res;
                 }
             });
-            OpenRecurrencePopupCM = new Command(async (p) =>
+            OpenSelectDayOfWeekPopupCM = new Command(async (p) =>
             {
                 if (p != null)
                 {
-                    DateTime dateTime = (DateTime)p;
-                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new RecurrencePopup(dateTime));
+                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new SelectDayOfWeekPopup());
                     if (res != null)
                     {
-                        Recurrence recurrence = res as Recurrence;
-                        RemindLabel = recurrence.LabelDisplay;
+                        List<DayTitle> selectedWeekDay = res as List<DayTitle>;
+                        string temp = "";
+                        List<string> tempList = new List<string>();
+                        for (int i = 0; i < selectedWeekDay.Count; i++)
+                        {
+                            temp += selectedWeekDay[i].Detail;
+                            if (i < selectedWeekDay.Count - 1)
+                            {
+                                temp += ",";
+                            }
+                            tempList.Add(selectedWeekDay[i].DetailEng);
+                        }
+                        WeekDayLabel = temp;
+                        SelectedWeekDay = tempList;
                     }
                 }
 
@@ -424,7 +444,11 @@ namespace CalendarApp.ViewModels.Manage
 
         private void InitData()
         {
-            RemindLabel = "Không lặp lại";
+            WeekDayLabel = DateTime.Now.ToString("dddd");
+            SelectedWeekDay = new List<string>
+            {
+                DateTime.Now.DayOfWeek.ToString()
+            };
             Reminders = new ObservableCollection<string>
             {
                 "5 phút",

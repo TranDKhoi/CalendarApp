@@ -170,8 +170,10 @@ namespace CalendarApp.ViewModels.Schedule
                 "1 ngày",
                 "30 ngày"
             };
-            SelectedWeekDay = new List<string>();
-            SelectedWeekDay.Add(DateTime.Now.DayOfWeek.ToString());
+            SelectedWeekDay = new List<string>
+            {
+                DateTime.Now.DayOfWeek.ToString()
+            };
         }
 
         private int GetRemindTime()
@@ -295,6 +297,10 @@ namespace CalendarApp.ViewModels.Schedule
                         for (int i = 0; i < selectedWeekDay.Count; i++)
                         {
                             temp += selectedWeekDay[i].Detail;
+                            if (i < selectedWeekDay.Count - 1)
+                            {
+                                temp += ",";
+                            }
                             tempList.Add(selectedWeekDay[i].DetailEng);
                         }
                         WeekDayLabel = temp;
