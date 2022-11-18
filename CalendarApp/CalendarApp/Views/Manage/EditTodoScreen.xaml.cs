@@ -14,7 +14,7 @@ namespace CalendarApp.Views.Manage
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditTodoScreen : ContentPage
     {
-        public EditTodoScreen(Todo selectedTodo)
+        public EditTodoScreen(Event selectedTodo)
         {
             InitializeComponent();
             var viewmodel = (EditTodoViewModel)this.BindingContext;

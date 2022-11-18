@@ -10,5 +10,6 @@ namespace CalendarApp.Models
         public DateTime createdAt { get; set; }
         public List<NoteTodo> noteTodo { get; set; }
         public string content { get; set; }
+        public string recurringUnit { get; set; }
     }
 }

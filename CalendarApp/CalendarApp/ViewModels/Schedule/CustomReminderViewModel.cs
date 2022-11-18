@@ -38,7 +38,7 @@ namespace CalendarApp.ViewModels.Schedule
             CustomReminders = new ObservableCollection<string>
             {
                 "phút",
-                "giờ",
+                "tiếng",
                 "ngày",
                 "tuần"
             };

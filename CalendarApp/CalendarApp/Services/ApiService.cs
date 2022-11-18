@@ -42,9 +42,18 @@ namespace CalendarApp.Services
         public async Task<ApiResponse<T>> ParseResponse<T>(HttpResponseMessage response)
         {
             var responseRead = await response.Content.ReadAsStringAsync();
-            var objResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(responseRead);
-            objResponse.isSuccess = response.IsSuccessStatusCode;
-            return objResponse;
+            try
+            {
+                var objResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(responseRead);
+                objResponse.isSuccess = response.IsSuccessStatusCode;
+                return objResponse;
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
+            return null;
         }
     }
 }

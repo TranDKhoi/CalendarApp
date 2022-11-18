@@ -36,9 +36,13 @@ namespace CalendarApp.Services
         }
 
 
-        //public async Task<ApiResponse<List<Models.Task>>> GetAllTaskByDay()
-        //{
-        //}
+        public async Task<ApiResponse<List<Event>>> GetAllTaskByDay(DateTime selectedDate)
+        {
+            var response = await client.GetAsync($"api/events?FromDate={selectedDate.ToString("yyyy-MM-dd")}&ToDate={selectedDate.ToString("yyyy-MM-dd")}");
+            var objResponse = await ApiService.ins.ParseResponse<List<Event>>(response);
+
+            return objResponse;
+        }
 
     }
 }

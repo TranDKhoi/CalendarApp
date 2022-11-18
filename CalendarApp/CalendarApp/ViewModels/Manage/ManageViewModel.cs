@@ -6,11 +6,8 @@ using CalendarApp.Views.Schedule;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
-using System.Windows.Input;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
-using static Xamarin.Essentials.Permissions;
 
 namespace CalendarApp.ViewModels.Manage
 {
@@ -205,6 +202,7 @@ namespace CalendarApp.ViewModels.Manage
                     // Gắn data trả về
                     subject = new Subject
                     {
+                        id = SelectedSubject.id,
                         title = TaskName,
                         //prop code here
                         //===
@@ -216,7 +214,7 @@ namespace CalendarApp.ViewModels.Manage
                         startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
                         notiBeforeTime = GetRemindTime(),
                         colorCode = ColorTag.ToHexRgbString(),
-                        NotifyTimeString = TimeRemind,
+                        notiUnit = GetRemindTimeUnit(),
                     };
                 }
                 else
@@ -239,6 +237,7 @@ namespace CalendarApp.ViewModels.Manage
                     // Gắn data trả về
                     subject = new Subject
                     {
+                        id = SelectedSubject.id,
                         title = TaskName,
                         //prop code here
                         //===
@@ -250,7 +249,7 @@ namespace CalendarApp.ViewModels.Manage
                         numOfLessons = (int)TotalLesson,
                         notiBeforeTime = GetRemindTime(),
                         colorCode = ColorTag.ToHexRgbString(),
-                        NotifyTimeString = TimeRemind,
+                        notiUnit = GetRemindTimeUnit(),
                     };
                 }
 
@@ -362,9 +361,25 @@ namespace CalendarApp.ViewModels.Manage
             StartDate = SelectedSubject.startDate;
 
             //đây là chỗ nhắc
-            if (!Reminders.Contains(SelectedSubject.NotifyTimeString))
-                Reminders.Add(SelectedSubject.NotifyTimeString);
-            TimeRemind = SelectedSubject.NotifyTimeString;
+            //if (!Reminders.Contains(SelectedSubject.NotifyTimeString))
+            //    Reminders.Add(SelectedSubject.NotifyTimeString);
+            string timeUnit = "";
+            switch (SelectedSubject.notiUnit)
+            {
+                case "MINUTE":
+                    timeUnit = "phút";
+                    break;
+                case "HOUR":
+                    timeUnit = "tiếng";
+                    break;
+                case "DAY":
+                    timeUnit = "ngày";
+                    break;
+                case "WEEK":
+                    timeUnit = "tuần";
+                    break;
+            }
+            TimeRemind = SelectedSubject.notiBeforeTime + " " + timeUnit;
 
             ColorTag = Color.FromHex(SelectedSubject.colorCode);
 
@@ -389,6 +404,37 @@ namespace CalendarApp.ViewModels.Manage
                 EndDate = SelectedSubject.endDate;
             }
 
+            //thứ ở đây
+            string result = "";
+            if (SelectedSubject.dayOfWeeks.Contains("Monday"))
+            {
+                result += "Thứ hai,";
+            }
+            if (SelectedSubject.dayOfWeeks.Contains("Tuesday"))
+            {
+                result += "Thứ ba,";
+            }
+            if (SelectedSubject.dayOfWeeks.Contains("Wednesday"))
+            {
+                result += "Thứ tư,";
+            }
+            if (SelectedSubject.dayOfWeeks.Contains("Thursday"))
+            {
+                result += "Thứ năm,";
+            }
+            if (SelectedSubject.dayOfWeeks.Contains("Friday"))
+            {
+                result += "Thứ sáu,";
+            }
+            if (SelectedSubject.dayOfWeeks.Contains("Saturday"))
+            {
+                result += "Thứ bảy,";
+            }
+            if (SelectedSubject.dayOfWeeks.Contains("Sunday"))
+            {
+                result += "Chủ nhật,";
+            }
+            WeekDayLabel = result.Remove(result.Length - 1);
             Description = SelectedSubject.description;
         }
 
@@ -479,7 +525,24 @@ namespace CalendarApp.ViewModels.Manage
             }
             return time;
         }
-
+        private string GetRemindTimeUnit()
+        {
+            string[] remind = TimeRemind.Split(' ');
+            string time = "MINUTE";
+            if (remind[1] == "tiếng")
+            {
+                time = "HOUR";
+            }
+            if (remind[1] == "ngày")
+            {
+                time = "DAY";
+            }
+            if (remind[1] == "tuần")
+            {
+                time = "WEEK";
+            }
+            return time;
+        }
         private bool CheckTime(string minute)
         {
             if (int.Parse(minute) % 15 != 0)

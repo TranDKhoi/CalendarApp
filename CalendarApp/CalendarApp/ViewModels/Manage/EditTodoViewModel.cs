@@ -13,8 +13,8 @@ namespace CalendarApp.ViewModels.Manage
 {
     public class EditTodoViewModel : BaseViewModel
     {
-        private Todo currentTodo;
-        public Todo CurrentTodo
+        private Event currentTodo;
+        public Event CurrentTodo
         {
             get { return currentTodo; }
             set
@@ -150,15 +150,15 @@ namespace CalendarApp.ViewModels.Manage
                 }
 
                 // Gắn data trả về
-                Todo todo = new Todo
+                Event todo = new Event
                 {
                     title = TaskName,
-                    startDate = StartDate,
+                    //startDate = StartDate,
                     notiBeforeTime = GetRemindTime(),
-                    startTime = newStartTimeInt,
-                    endTime = newEndTimeInt,
+                    //startTime = newStartTimeInt,
+                    //endTime = newEndTimeInt,
                     colorCode = ColorTag.ToHexRgbString(),
-                    NotifyTimeString = TimeRemind,
+                    notiUnit = GetRemindTimeUnit(),
                 };
                 if (!string.IsNullOrEmpty(Description))
                 {
@@ -206,7 +206,7 @@ namespace CalendarApp.ViewModels.Manage
                 {
 
                 }
-                    _ = App.Current.MainPage.Navigation.PopAsync();
+                _ = App.Current.MainPage.Navigation.PopAsync();
             });
         }
 
@@ -219,12 +219,28 @@ namespace CalendarApp.ViewModels.Manage
 
             TaskName = CurrentTodo.title;
             ColorTag = Color.FromHex(CurrentTodo.colorCode);
-            StartDate = CurrentTodo.startDate;
+            //StartDate = CurrentTodo.startDate;
 
-            //đây là chỗ nhắc
-            if (!Reminders.Contains(CurrentTodo.NotifyTimeString))
-                Reminders.Add(CurrentTodo.NotifyTimeString);
-            TimeRemind = CurrentTodo.NotifyTimeString;
+            ////đây là chỗ nhắc
+            //if (!Reminders.Contains(CurrentTodo.NotifyTimeString))
+            //    Reminders.Add(CurrentTodo.NotifyTimeString);
+            string timeUnit = "";
+            switch (CurrentTodo.notiUnit)
+            {
+                case "MINUTE":
+                    timeUnit = "phút";
+                    break;
+                case "HOUR":
+                    timeUnit = "tiếng";
+                    break;
+                case "DAY":
+                    timeUnit = "ngày";
+                    break;
+                case "WEEK":
+                    timeUnit = "tuần";
+                    break;
+            }
+            TimeRemind = CurrentTodo.notiBeforeTime + " " + timeUnit;
 
             //start time and end time
             TimeSpan t1 = TimeSpan.FromSeconds(CurrentTodo.startTime);
@@ -253,6 +269,24 @@ namespace CalendarApp.ViewModels.Manage
             if (remind[1] == "tuần")
             {
                 time *= 60 * 24 * 7;
+            }
+            return time;
+        }
+        private string GetRemindTimeUnit()
+        {
+            string[] remind = TimeRemind.Split(' ');
+            string time = "MINUTE";
+            if (remind[1] == "tiếng")
+            {
+                time = "HOUR";
+            }
+            if (remind[1] == "ngày")
+            {
+                time = "DAY";
+            }
+            if (remind[1] == "tuần")
+            {
+                time = "WEEK";
             }
             return time;
         }

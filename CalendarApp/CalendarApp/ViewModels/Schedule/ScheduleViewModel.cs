@@ -25,8 +25,8 @@ namespace CalendarApp.ViewModels.Schedule
         public ICommand OpenAddTaskPopupCM { get; set; }
         public ICommand GetAllTaskCM { get; set; }
 
-        private ObservableCollection<Task> todayTask;
-        public ObservableCollection<Task> TodayTask
+        private ObservableCollection<Event> todayTask;
+        public ObservableCollection<Event> TodayTask
         {
             get { return todayTask; }
             set { todayTask = value; OnPropertyChanged(); }
@@ -144,14 +144,14 @@ namespace CalendarApp.ViewModels.Schedule
                 {
                     TimeSpan t2;
                     TimeSpan t1 = TimeSpan.FromSeconds(TodayTask[i].startTime);
-                    if (TodayTask[i] is Todo)
+                    if (TodayTask[i].courseId == null)
                     {
-                        var temp = (Todo)TodayTask[i];
+                        var temp = (Event)TodayTask[i];
                         t2 = TimeSpan.FromSeconds(temp.endTime);
                     }
                     else
                     {
-                        var temp = (Subject)TodayTask[i];
+                        var temp = TodayTask[i];
                         t2 = TimeSpan.FromSeconds(temp.startTime + temp.numOfLessonsPerDay * 45 * 60);
                     }
                     string answer1 = string.Format("{0:D2}:{1:D2}", t1.Hours, t1.Minutes);
@@ -162,7 +162,7 @@ namespace CalendarApp.ViewModels.Schedule
             }
         }
 
-        private void InitData()
+        private async System.Threading.Tasks.Task InitDataAsync()
         {
             SelectedDay = DateTime.Now;
 
@@ -172,7 +172,12 @@ namespace CalendarApp.ViewModels.Schedule
             {
                 if (Days[i].IsSelected)
                 {
-                    //TodayTask = Tasks[i];
+
+                    var res = await EventService.ins.GetAllTaskByDay(DateTime.Now);
+                    if (res.isSuccess)
+                    {
+                        TodayTask = new ObservableCollection<Event>(res.data);
+                    }
                     CalculateStartEndTime();
                     break;
                 }
@@ -185,7 +190,7 @@ namespace CalendarApp.ViewModels.Schedule
         {
             GetAllTaskCM = new Command(() =>
             {
-                InitData();
+                InitDataAsync();
             });
 
             SelectDayCM = new Command((p) =>
@@ -216,12 +221,12 @@ namespace CalendarApp.ViewModels.Schedule
             SelectTaskCM = new Command((p) =>
             {
                 if (p == null) return;
-                var selectedTask = p as Task;
-                if (selectedTask is Todo)
+                Event e = p as Event;
+                if (e.courseId == null)
                 {
-                    App.Current.MainPage.Navigation.PushAsync(new EditTodoScreen(selectedTask as Todo));
+                    App.Current.MainPage.Navigation.PushAsync(new EditTodoScreen(e));
                 }
-                else if (selectedTask is Subject)
+                else
                 {
                     App.Current.MainPage.DisplayAlert("Thông báo", "Cần qua mục môn học để chỉnh sửa môn học này", "Đóng");
                 }

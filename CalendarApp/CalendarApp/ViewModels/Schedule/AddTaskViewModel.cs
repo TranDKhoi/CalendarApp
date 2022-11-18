@@ -180,7 +180,7 @@ namespace CalendarApp.ViewModels.Schedule
         {
             string[] remind = TimeRemind.Split(' ');
             int time = int.Parse(remind[0]);
-            if (remind[1] == "giờ")
+            if (remind[1] == "tiếng")
             {
                 time *= 60;
             }
@@ -193,6 +193,29 @@ namespace CalendarApp.ViewModels.Schedule
                 time *= 60 * 24 * 7;
             }
             return time;
+        }
+
+        private string GetRemindTimeUnit()
+        {
+            string[] remind = TimeRemind.Split(' ');
+            string unit = "";
+            if (remind[1] == "phút")
+            {
+                unit = "MINUTE";
+            }
+            if (remind[1] == "tiếng")
+            {
+                unit = "HOUR";
+            }
+            if (remind[1] == "ngày")
+            {
+                unit = "DAY";
+            }
+            if (remind[1] == "tuần")
+            {
+                unit = "WEEK";
+            }
+            return unit;
         }
 
         private bool IsValidData()
@@ -343,7 +366,7 @@ namespace CalendarApp.ViewModels.Schedule
                             endDate = EndDate,
                             notiBeforeTime = GetRemindTime(),
                             colorCode = ColorTag.ToHexRgbString(),
-                            NotifyTimeString = TimeRemind,
+                            notiUnit = GetRemindTimeUnit(),
                         };
                         Popup popup = p as Popup;
                         popup.Dismiss(subject);
@@ -379,7 +402,7 @@ namespace CalendarApp.ViewModels.Schedule
                             numOfLessons = (int)TotalLesson,
                             notiBeforeTime = GetRemindTime(),
                             colorCode = ColorTag.ToHexRgbString(),
-                            NotifyTimeString = TimeRemind,
+                            notiUnit = GetRemindTimeUnit(),
                         };
                         Popup popup = p as Popup;
                         popup.Dismiss(subject);
@@ -419,7 +442,7 @@ namespace CalendarApp.ViewModels.Schedule
 
                     }
                     // Gắn data trả về
-                    Todo todo = new Todo
+                    Event todo = new Event
                     {
                         title = TaskName,
                         startDate = StartDate,
@@ -427,7 +450,7 @@ namespace CalendarApp.ViewModels.Schedule
                         startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
                         endTime = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60,
                         colorCode = ColorTag.ToHexRgbString(),
-                        NotifyTimeString = TimeRemind,
+                        notiUnit = GetRemindTimeUnit(),
                     };
                     if (!string.IsNullOrEmpty(Description))
                     {
