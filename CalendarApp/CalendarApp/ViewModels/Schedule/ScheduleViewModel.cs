@@ -142,22 +142,8 @@ namespace CalendarApp.ViewModels.Schedule
             {
                 for (int i = 0; i < TodayTask.Count; i++)
                 {
-                    TimeSpan t2;
-                    TimeSpan t1 = TimeSpan.FromSeconds(TodayTask[i].startTime);
-                    if (TodayTask[i].courseId == null)
-                    {
-                        var temp = (Event)TodayTask[i];
-                        t2 = TimeSpan.FromSeconds(temp.endTime);
-                    }
-                    else
-                    {
-                        var temp = TodayTask[i];
-                        t2 = TimeSpan.FromSeconds(temp.startTime + temp.numOfLessonsPerDay * 45 * 60);
-                    }
-                    string answer1 = string.Format("{0:D2}:{1:D2}", t1.Hours, t1.Minutes);
-                    string answer2 = string.Format("{0:D2}:{1:D2}", t2.Hours, t2.Minutes);
-                    TodayTask[i].StartTimeUI = answer1;
-                    TodayTask[i].EndTimeUI = answer2;
+                    TodayTask[i].StartTimeUI = TodayTask[i].startTime.ToString("HH:mm");
+                    TodayTask[i].EndTimeUI = TodayTask[i].endTime.ToString("HH:mm");
                 }
             }
         }

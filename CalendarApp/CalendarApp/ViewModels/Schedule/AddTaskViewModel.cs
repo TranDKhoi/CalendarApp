@@ -447,8 +447,8 @@ namespace CalendarApp.ViewModels.Schedule
                         title = TaskName,
                         startDate = StartDate,
                         notiBeforeTime = GetRemindTime(),
-                        startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                        endTime = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60,
+                        startTime = new DateTime(year: DateTime.Now.Year, day: DateTime.Now.Day, month: DateTime.Now.Month, hour: int.Parse(StartTimeX), minute: int.Parse(StartTimeY), second: DateTime.Now.Second),
+                        endTime = new DateTime(year: DateTime.Now.Year, day: DateTime.Now.Day, month: DateTime.Now.Month, hour: int.Parse(EndTimeX), minute: int.Parse(EndTimeY), second: DateTime.Now.Second),
                         colorCode = ColorTag.ToHexRgbString(),
                         notiUnit = GetRemindTimeUnit(),
                     };
