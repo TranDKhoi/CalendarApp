@@ -6,11 +6,13 @@
     <Application.Resources>
         <!--color-->
         <Color x:Key="blackColor">#202020</Color>
-        <Color x:Key="greenColor">#49B5B3</Color>
-        <Color x:Key="pinkColor">#FF4171</Color>
+        <Color x:Key="greenColor">#49B583</Color>
+        <Color x:Key="redColor">#FF4171</Color>
         <Color x:Key="yellowColor">#FFBD69</Color>
         <Color x:Key="purpleColor">#7F86FF</Color>
-        
+        <Color x:Key="primaryColor">#2196F3</Color>
+        <Color x:Key="blueColor">#5b92e0</Color>
+        <Color x:Key="pinkColor">#e95dc0</Color>
         <Color x:Key="HeaderTextColor">#585858</Color>
         <Color x:Key="BodyTextColor">#c3c3c3</Color>
         <Color x:Key="ButtonBackgroundColor">#5992ff</Color>
@@ -89,9 +91,5 @@
             
 
         </Style>
-
-
-
-
     </Application.Resources>
 </Application>

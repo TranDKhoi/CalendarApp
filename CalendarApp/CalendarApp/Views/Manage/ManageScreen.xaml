@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CalendarApp.Views.Manage.ManageScreen"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:context="clr-namespace:CalendarApp.ViewModels.Manage"
+             xmlns:local="clr-namespace:CalendarApp.Resources"
+             xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
+             BackgroundColor="White">
+    <ContentPage.BindingContext>
+        <context:ManageViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <cvt:DatetimeLocaleConverter x:Key="DateTimeCVT" />
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Margin="10">
+                <!---SEARCH-->
+                <Frame CornerRadius="50"
+                       BackgroundColor="White"
+                       HasShadow="True"
+                       Padding="0"
+                       HorizontalOptions="FillAndExpand">
+                    <StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="FillAndExpand"
+                                 VerticalOptions="Center">
+                        <Label FontFamily="Material"
+                               FontSize="20"
+                               Text="&#xe8b6;"
+                               Margin="20, 0, 0, 0"
+                               VerticalOptions="Center" />
+                        <local:RoundEntry  HorizontalOptions="FillAndExpand"
+                                           Placeholder="Tìm kiếm"
+                                           Text="{Binding SearchSubjectText,Mode=OneWayToSource}">
+                            <Entry.Behaviors>
+                                <xct:EventToCommandBehavior EventName="TextChanged"
+                                                            Command="{Binding SearchSubjectCM}"
+                                                            CommandParameter="{x:Reference listSubject}" />
+                            </Entry.Behaviors>
+                        </local:RoundEntry>
+                    </StackLayout>
+                </Frame>
+                <CollectionView x:Name="listSubject"
+                                Margin="0,20,0,0"
+                                ItemsSource="{Binding ListSubject}"
+                                SelectionMode="Single"
+                                SelectionChanged="listSubject_SelectionChanged">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Margin="5">
+                                <Frame BackgroundColor="#e9fffd"
+                                       CornerRadius="8"
+                                       Padding="20,20,0,20">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="9*" />
+                                            <ColumnDefinition  Width="1*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="&#xe5d4;"
+                                               Grid.Column="1"
+                                               FontFamily="Material"
+                                               FontSize="30"
+                                               VerticalOptions="Start"
+                                               HorizontalOptions="End" />
+                                        <StackLayout>
+                                            <Label Text="{Binding title}"
+                                                   TextColor="Black"
+                                                   FontAttributes="Bold" />
+                                            <Label Text="{Binding description}" />
+                                            <StackLayout Orientation="Horizontal">
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Image Source="calendar_color.png"
+                                                           WidthRequest="25" />
+                                                    <Label Text="{Binding startDate,Converter={StaticResource Key=DateTimeCVT}}"
+                                                           TextColor="Black"
+                                                           VerticalOptions="Center"
+                                                           FontSize="20" />
+                                                </StackLayout>
+                                                <StackLayout Orientation="Horizontal"
+                                                             Margin="10,0,0,0">
+                                                    <Image Source="clock.png"
+                                                           WidthRequest="25" />
+                                                    <Label TextColor="black"
+                                                           VerticalOptions="Center"
+                                                           FontSize="20">
+                                                        <Label.FormattedText>
+                                                            <FormattedString>
+                                                                <Span Text="{Binding StartTimeUI}" />
+                                                                <Span Text=" - " />
+                                                                <Span Text="{Binding EndTimeUI}" />
+                                                            </FormattedString>
+                                                        </Label.FormattedText>
+                                                    </Label>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </Grid>
+                                </Frame>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

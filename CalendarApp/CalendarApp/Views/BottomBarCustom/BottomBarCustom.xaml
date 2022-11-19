@@ -4,7 +4,7 @@
             xmlns:home="clr-namespace:CalendarApp.Views.Home"
             xmlns:schedule="clr-namespace:CalendarApp.Views.Schedule"
             xmlns:note="clr-namespace:CalendarApp.Views.Note"
-            xmlns:task="clr-namespace:CalendarApp.Views.Task"
+            xmlns:manage="clr-namespace:CalendarApp.Views.Manage"
             xmlns:profile="clr-namespace:CalendarApp.Views.Profile"
             xmlns:context="clr-namespace:CalendarApp.ViewModels"
             x:Class="CalendarApp.Views.BottomBarCustom.BottomBarCustom"
@@ -20,7 +20,7 @@
                              IconImageSource="calendar.png" />
     <note:NoteScreen Title="Ghi chú"
                      IconImageSource="note.png" />
-    <task:TaskScreen Title="Quản lý"
+    <manage:ManageScreen Title="Môn học"
                      IconImageSource="task.png" />
     <profile:ProfileScreen Title="Tài khoản"
                            IconImageSource="profile.png" />

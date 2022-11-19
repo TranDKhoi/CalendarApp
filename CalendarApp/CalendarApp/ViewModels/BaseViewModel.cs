@@ -19,4 +19,8 @@ namespace CalendarApp.ViewModels
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+    public class Text
+    {
+
+    }
 }

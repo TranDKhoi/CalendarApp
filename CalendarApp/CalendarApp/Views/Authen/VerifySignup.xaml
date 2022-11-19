@@ -8,7 +8,7 @@
         <StackLayout Margin="20"
                      VerticalOptions="Center"
                      Spacing="20">
-            <Label Text="Mã bảo mật gồm 5 ký tự đã được gửi đến hộp thư của bạn"
+            <Label Text="Mã bảo mật gồm 4 ký tự đã được gửi đến hộp thư của bạn"
                    FontSize="20" />
             <Frame CornerRadius="20"
                    Padding="5,0,0,5"
@@ -17,8 +17,8 @@
                     <local:RoundEntry  HorizontalOptions="FillAndExpand"
                                        FontSize="50"
                                        Keyboard="Numeric"
-                                       CharacterSpacing="15"
-                                       MaxLength="5"
+                                       CharacterSpacing="20"
+                                       MaxLength="4"
                                        Text="{Binding VerifyCode,Mode=OneWayToSource}" />
                 </StackLayout>
             </Frame>
