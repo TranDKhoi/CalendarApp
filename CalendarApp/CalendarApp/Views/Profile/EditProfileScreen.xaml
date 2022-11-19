@@ -13,70 +13,93 @@
         <ScrollView>
             <Grid RowSpacing="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="AUTO"/>
-                    <RowDefinition Height="AUTO"/>
-                    <RowDefinition Height="AUTO"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="AUTO"/>
+                    <RowDefinition Height="AUTO" />
+                    <RowDefinition Height="AUTO" />
+                    <RowDefinition Height="AUTO" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="AUTO" />
                 </Grid.RowDefinitions>
-
                 <!--header backgroud-->
-                <BoxView BackgroundColor="Yellow" Grid.Row="0"/>
-                <Image Source="{Binding ProfileModel.UrlBackground}" Aspect="AspectFill"/>
+                <BoxView BackgroundColor="Yellow"
+                         Grid.Row="0" />
+                <Image Source="{Binding ProfileModel.UrlBackground}"
+                       Aspect="AspectFill" />
                 <!--profile name-->
-                <StackLayout Grid.Row="1" Padding="10,50    ,0,0" >
-                    <Label Text="Tên" Style="{StaticResource ProfileNameLabel}" VerticalOptions="Start"/>
-                    <Entry  Placeholder="Tên" PlaceholderColor="#460e56" Text="{Binding ProfileModel.NameProfile}" Style="{StaticResource ProfileTagLabel}"/>
-                    <Label Text="{Binding ProfileModel.NameProfile}" TextColor="#460e56"/>
+                <StackLayout Grid.Row="1"
+                             Padding="10,50    ,0,0">
+                    <Label Text="Tên"
+                           VerticalOptions="Start" />
+                    <Entry  Placeholder="Tên"
+                            PlaceholderColor="#460e56"
+                            Text="{Binding ProfileModel.NameProfile}" />
+                    <Label Text="{Binding ProfileModel.NameProfile}"
+                           TextColor="#460e56" />
                 </StackLayout>
-                <StackLayout Grid.Row="2" Padding="0,50,0,0" Margin="0,20,0,0">
-                    <Label Text="Status" Style="{StaticResource ProfileNameLabel}"/>
-                    <Entry  Placeholder="Trạng thái" PlaceholderColor="#460e56" Text="{Binding ProfileModel.StatusProfile}" Style="{StaticResource ProfileTagLabel}"/>
+                <StackLayout Grid.Row="2"
+                             Padding="0,50,0,0"
+                             Margin="0,20,0,0">
+                    <Label Text="Status" />
+                    <Entry  Placeholder="Trạng thái"
+                            PlaceholderColor="#460e56"
+                            Text="{Binding ProfileModel.StatusProfile}" />
                 </StackLayout>
                 <!--edit profile-->
-                <Grid Grid.Row="3" HeightRequest="50">
-                    <StackLayout >
-                        <Button Text="Lưu" BorderRadius="40"  BackgroundColor="OliveDrab" Margin="100,10"  HeightRequest="50" Command="{Binding MyEditProfile}" />
-
+                <Grid Grid.Row="3"
+                      HeightRequest="50">
+                    <StackLayout>
+                        <Button Text="Lưu"
+                                BorderRadius="40"
+                                BackgroundColor="OliveDrab"
+                                Margin="100,10"
+                                HeightRequest="50"
+                                Command="{Binding MyEditProfile}" />
                     </StackLayout>
                 </Grid>
                 <!--social stats-->
-                
                 <!--profile descript-->
-
-                <Grid Grid.Row="4" Margin="0,30" ColumnSpacing="1">
+                <Grid Grid.Row="4"
+                      Margin="0,30"
+                      ColumnSpacing="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                 </Grid>
                 <!--  button-->
-                <BoxView BackgroundColor="LightCyan" Grid.Row="5"/>
-
+                <BoxView BackgroundColor="LightCyan"
+                         Grid.Row="5" />
                 <!--profile image-->
-                <StackLayout Padding="40" 
-                         HorizontalOptions="Center" 
-                         VerticalOptions="End" 
-                         TranslationY="80" >
+                <StackLayout Padding="40"
+                             HorizontalOptions="Center"
+                             VerticalOptions="End"
+                             TranslationY="80">
                     <Frame CornerRadius="100"
-                       HeightRequest="100"
-                       WidthRequest="100"
-                       HorizontalOptions="Center"
-                       VerticalOptions="FillAndExpand"
-                       Padding="0"
-                       IsClippedToBounds="True">
+                           HeightRequest="100"
+                           WidthRequest="100"
+                           HorizontalOptions="Center"
+                           VerticalOptions="FillAndExpand"
+                           Padding="0"
+                           IsClippedToBounds="True">
                         <Image x:Name="imgFile"
                                Source="{Binding ProfileModel.UrlAvatar}"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        />
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
                     </Frame>
-
                 </StackLayout>
-                <Button Grid.Row="5" BackgroundColor="SaddleBrown" Text="Pick Image" Margin="100,10"  HeightRequest="50" Clicked="Button_Clicked"></Button>
-                <Image Grid.Row="6"  WidthRequest="200" HeightRequest="200"/>
-                <Label Grid.Row="7" x:Name="fileName" FontSize="Large" HorizontalOptions="Center" FontAttributes="Bold"/>
-
+                <Button Grid.Row="5"
+                        BackgroundColor="SaddleBrown"
+                        Text="Pick Image"
+                        Margin="100,10"
+                        HeightRequest="50"
+                        Clicked="Button_Clicked"></Button>
+                <Image Grid.Row="6"
+                       WidthRequest="200"
+                       HeightRequest="200" />
+                <Label Grid.Row="7"
+                       x:Name="fileName"
+                       FontSize="Large"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold" />
             </Grid>
         </ScrollView>
     </ContentPage.Content>

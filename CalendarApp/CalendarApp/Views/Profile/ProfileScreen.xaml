@@ -4,92 +4,95 @@
              x:Class="CalendarApp.Views.Profile.ProfileScreen"
              BackgroundColor="{StaticResource BackgroundColor}"
              xmlns:vm="clr-namespace:CalendarApp.ViewModels.Profile"
-             xmlns:local="clr-namespace:CalendarApp.Resources"
-              NavigationPage.HasNavigationBar="True"
-             >
-
+             NavigationPage.HasNavigationBar="True">
     <ContentPage.BindingContext>
         <vm:ProfileViewModel />
     </ContentPage.BindingContext>
-
     <ContentPage.Content>
         <ScrollView>
-            <Grid RowSpacing="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="AUTO"/>
-                <RowDefinition Height="AUTO"/>
-                <RowDefinition Height="AUTO"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="AUTO"/>
-            </Grid.RowDefinitions>
-
-            <!--header backgroud-->
-            <BoxView BackgroundColor="Yellow" Grid.Row="0"/>
-                <Image Source="{Binding ProfileModel.UrlBackground}" Aspect="AspectFill"/>
-            <!--profile name-->
-            <StackLayout Grid.Row="1" Padding="0,50,0,0" Margin="0,20,0,0">
-                    <Label Text="{Binding ProfileModel.NameProfile}" Style="{StaticResource ProfileNameLabel}"/>
-                    <Label Text="{Binding ProfileModel.StatusProfile}" Style="{StaticResource ProfileTagLabel}"/>
-            </StackLayout>
-
-            <!--edit profile-->
-            <Grid Grid.Row="2" HeightRequest="50">
-                <StackLayout >
-                    <Button Text="Sửa hồ sơ" BorderRadius="40"  BackgroundColor="OliveDrab" Margin="100,10"  HeightRequest="50" Command="{Binding EditProfileScreenNavCommand}" />
-                  
-                </StackLayout>
-            </Grid>
-            <!--social stats-->
-            <Grid Grid.Row="3" Margin="0,30" ColumnSpacing="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <StackLayout Grid.Column="0">
-                    <Label Text="2" Style="{StaticResource StatsNumberLabel}" />
-                    <Label Text="Môn học" Style="{StaticResource StatsCaptionLabel}" />
-                </StackLayout>
-
-                <StackLayout Grid.Column="1">
-
-                    <Label Text="3" Style="{StaticResource StatsNumberLabel}" />
-                    <Label Text="Công việc" Style="{StaticResource StatsCaptionLabel}" />
-                </StackLayout>
-
-            </Grid >
-            <!--profile descript-->
-
-            <Grid Grid.Row="4" Margin="0,30" ColumnSpacing="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-            </Grid>
-            <!--  button-->
-            <BoxView BackgroundColor="LightCyan" Grid.Row="5"/>
-
-            <!--profile image-->
-            <StackLayout Padding="40" 
-                         HorizontalOptions="Center" 
-                         VerticalOptions="End" 
-                         TranslationY="80" >
-                <Frame CornerRadius="100"
-                       HeightRequest="100"
-                       WidthRequest="100"
-                       HorizontalOptions="Center"
-                       VerticalOptions="FillAndExpand"
-                       Padding="0"
-                       IsClippedToBounds="True">
+            <Grid>
+                <!---BACKGROUND-->
+                <Image Source="{Binding ProfileModel.UrlBackground}"
+                       HeightRequest="200"
+                       Aspect="Fill"
+                       VerticalOptions="Start" />
+                <StackLayout Margin="0,150,0,0">
+                    <!---AVT-->
+                    <Frame CornerRadius="100"
+                           HeightRequest="100"
+                           WidthRequest="100"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Padding="0"
+                           IsClippedToBounds="True">
                         <Image  Source="{Binding ProfileModel.UrlAvatar}"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        />
-                </Frame>
-                
-            </StackLayout>
-                
-        </Grid>
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+                    </Frame>
+                    <Label Text="{Binding ProfileModel.NameProfile}"
+                           HorizontalOptions="Center"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           FontSize="20" />
+                    <Label Text="{Binding ProfileModel.StatusProfile}"
+                           HorizontalOptions="Center"
+                           TextColor="Gray"
+                           FontSize="20" />
+                    <!---EDIT HERE-->
+                    <Button Text="Sửa hồ sơ"
+                            BorderRadius="40"
+                            BackgroundColor="{StaticResource primaryColor}"
+                            TextColor="White"
+                            Margin="100,10"
+                            HeightRequest="50"
+                            Command="{Binding EditProfileScreenNavCommand}" />
+                    <Grid Margin="0,30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Grid.Column="0">
+                            <Label Text="2"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   FontSize="20" />
+                            <Label Text="Môn học"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   FontSize="20" />
+                        </StackLayout>
+                        <StackLayout Grid.Column="1">
+                            <Label Text="3"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   FontSize="20" />
+                            <Label Text="Công việc"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   FontSize="20" />
+                        </StackLayout>
+                    </Grid >
+                    <Frame Margin="20">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LogoutCM}" />
+                        </Frame.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="&#xe9ba;"
+                                   VerticalOptions="Center"
+                                   FontFamily="Material"
+                                   FontSize="25"
+                                   TextColor="Black" />
+                            <Label Text="Đăng xuất"
+                                   TextColor="Black"
+                                   FontSize="20" />
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </Grid>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

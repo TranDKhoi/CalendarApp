@@ -7,12 +7,16 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using CalendarApp.Services;
+using CalendarApp.Views.Authen;
+
 namespace CalendarApp.ViewModels.Profile
 {
     public class ProfileViewModel : BaseViewModel
     {
-        public ProfileModel ProfileModel { get;  } = new ProfileModel();
+        public ProfileModel ProfileModel { get; } = new ProfileModel();
         public Command EditProfileScreenNavCommand { get; set; }
+        public Command LogoutCM { get; set; }
         public ProfileViewModel()
         {
 
@@ -20,12 +24,20 @@ namespace CalendarApp.ViewModels.Profile
             ProfileModel.StatusProfile = "Mai mai en nhau";
             ProfileModel.UrlBackground = "avatar.jpg";
             ProfileModel.UrlAvatar = "anh.jpg";
-            this.EditProfileScreenNavCommand = new Command(async () => {
-                await Application.Current.MainPage.Navigation.PushAsync(new EditProfileScreen());
+            EditProfileScreenNavCommand = new Command(() =>
+            {
+                Application.Current.MainPage.Navigation.PushAsync(new EditProfileScreen());
             });
-           
+            LogoutCM = new Command(() =>
+            {
+                SharedPreferenceService.ins.ClearUserLogin();
+                SharedPreferenceService.ins.ClearUserToken();
+                Application.Current.MainPage = new NavigationPage(new LoginScreen());
+                App.Current.MainPage.Navigation.PopToRootAsync();
+            });
+
         }
 
-        
+
     }
 }

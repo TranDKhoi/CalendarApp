@@ -10,7 +10,8 @@ namespace CalendarApp.Models
     {
         public string Title { get; set; }
         public string Detail { get; set; }
-        
+        public DateTime FullDate { get; set; }
+
         public int Day { get; set; }
 
         private bool isSelected;

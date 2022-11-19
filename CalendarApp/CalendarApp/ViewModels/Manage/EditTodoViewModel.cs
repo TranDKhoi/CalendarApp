@@ -103,8 +103,8 @@ namespace CalendarApp.ViewModels.Manage
         }
 
         private DateTime oldStartDate;
-        private int oldStartTime;
-        private int oldEndTime;
+        private DateTime oldStartTime;
+        private DateTime oldEndTime;
 
         public Command ApplyDataCM { get; set; }
         public Command UpdateTodoCM { get; set; }
@@ -139,15 +139,15 @@ namespace CalendarApp.ViewModels.Manage
                 int newStartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60;
                 int newEndTimeInt = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60;
 
-                if (/*oldStartDate != StartDate ||*/ oldStartTime != newStartTimeInt || oldEndTime != newEndTimeInt)
-                {
-                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomSaveAsDialog());
-                    if (res != null)
-                    {
-                        string a = res as string;
-                    }
-                    else return;
-                }
+                //if (/*oldStartDate != StartDate ||*/ oldStartTime.mi != newStartTimeInt || oldEndTime != newEndTimeInt)
+                //{
+                //    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomSaveAsDialog());
+                //    if (res != null)
+                //    {
+                //        string a = res as string;
+                //    }
+                //    else return;
+                //}
 
                 // Gắn data trả về
                 Event todo = new Event
@@ -213,7 +213,7 @@ namespace CalendarApp.ViewModels.Manage
         private void ApplyDataToTodo()
         {
             //save old data to compare
-            oldStartDate = CurrentTodo.startDate;
+            //oldStartDate = CurrentTodo.startDate;
             oldStartTime = CurrentTodo.startTime;
             oldEndTime = CurrentTodo.endTime;
 
@@ -243,15 +243,15 @@ namespace CalendarApp.ViewModels.Manage
             TimeRemind = CurrentTodo.notiBeforeTime + " " + timeUnit;
 
             //start time and end time
-            TimeSpan t1 = TimeSpan.FromSeconds(CurrentTodo.startTime);
-            TimeSpan t2 = TimeSpan.FromSeconds(CurrentTodo.endTime);
-            string answer1 = string.Format("{0:D2}:{1:D2}", t1.Hours, t1.Minutes);
-            string answer2 = string.Format("{0:D2}:{1:D2}", t2.Hours, t2.Minutes);
-            StartTimeX = answer1.Split(':')[0];
-            StartTimeY = answer1.Split(':')[1];
-            EndTimeX = answer2.Split(':')[0];
-            EndTimeY = answer2.Split(':')[1];
-            Description = CurrentTodo.description;
+            //TimeSpan t1 = TimeSpan.FromSeconds(CurrentTodo.startTime);
+            //TimeSpan t2 = TimeSpan.FromSeconds(CurrentTodo.endTime);
+            //string answer1 = string.Format("{0:D2}:{1:D2}", t1.Hours, t1.Minutes);
+            //string answer2 = string.Format("{0:D2}:{1:D2}", t2.Hours, t2.Minutes);
+            //StartTimeX = answer1.Split(':')[0];
+            //StartTimeY = answer1.Split(':')[1];
+            //EndTimeX = answer2.Split(':')[0];
+            //EndTimeY = answer2.Split(':')[1];
+            //Description = CurrentTodo.description;
         }
 
         private int GetRemindTime()

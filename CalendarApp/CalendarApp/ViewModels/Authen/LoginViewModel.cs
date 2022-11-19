@@ -12,7 +12,7 @@ namespace CalendarApp.ViewModels.Authen
 {
     public class LoginViewModel : BaseViewModel
     {
-        
+
         private string email;
         public string Email
         {
@@ -43,6 +43,7 @@ namespace CalendarApp.ViewModels.Authen
                     if (res.isSuccess)
                     {
                         SharedPreferenceService.ins.SetUserToken(res.data.token);
+                        SharedPreferenceService.ins.SetUserLogin(Email, Password);
                         Application.Current.MainPage = new NavigationPage(new BottomBarCustom());
                     }
                     else
