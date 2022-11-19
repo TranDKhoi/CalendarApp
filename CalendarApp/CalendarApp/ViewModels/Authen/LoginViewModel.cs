@@ -12,6 +12,7 @@ namespace CalendarApp.ViewModels.Authen
 {
     public class LoginViewModel : BaseViewModel
     {
+        
         private string email;
         public string Email
         {
