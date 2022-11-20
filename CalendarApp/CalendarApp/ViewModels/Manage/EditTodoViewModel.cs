@@ -153,7 +153,7 @@ namespace CalendarApp.ViewModels.Manage
                 Event todo = new Event
                 {
                     title = TaskName,
-                    //startDate = StartDate,
+                    startDate = StartDate,
                     notiBeforeTime = GetRemindTime(),
                     //startTime = newStartTimeInt,
                     //endTime = newEndTimeInt,
@@ -212,46 +212,46 @@ namespace CalendarApp.ViewModels.Manage
 
         private void ApplyDataToTodo()
         {
-            //save old data to compare
-            oldStartDate = CurrentTodo.startDate;
-            oldStartTime = CurrentTodo.startTime;
-            oldEndTime = CurrentTodo.endTime;
+            ////save old data to compare
+            //oldStartDate = CurrentTodo.startDate;
+            //oldStartTime = CurrentTodo.startTime;
+            //oldEndTime = CurrentTodo.endTime;
 
-            TaskName = CurrentTodo.title;
-            ColorTag = Color.FromHex(CurrentTodo.colorCode);
-            //StartDate = CurrentTodo.startDate;
+            //TaskName = CurrentTodo.title;
+            //ColorTag = Color.FromHex(CurrentTodo.colorCode);
+            ////StartDate = CurrentTodo.startDate;
 
-            ////đây là chỗ nhắc
-            //if (!Reminders.Contains(CurrentTodo.NotifyTimeString))
-            //    Reminders.Add(CurrentTodo.NotifyTimeString);
-            string timeUnit = "";
-            switch (CurrentTodo.notiUnit)
-            {
-                case "MINUTE":
-                    timeUnit = "phút";
-                    break;
-                case "HOUR":
-                    timeUnit = "tiếng";
-                    break;
-                case "DAY":
-                    timeUnit = "ngày";
-                    break;
-                case "WEEK":
-                    timeUnit = "tuần";
-                    break;
-            }
-            TimeRemind = CurrentTodo.notiBeforeTime + " " + timeUnit;
+            //////đây là chỗ nhắc
+            ////if (!Reminders.Contains(CurrentTodo.NotifyTimeString))
+            ////    Reminders.Add(CurrentTodo.NotifyTimeString);
+            //string timeUnit = "";
+            //switch (CurrentTodo.notiUnit)
+            //{
+            //    case "MINUTE":
+            //        timeUnit = "phút";
+            //        break;
+            //    case "HOUR":
+            //        timeUnit = "tiếng";
+            //        break;
+            //    case "DAY":
+            //        timeUnit = "ngày";
+            //        break;
+            //    case "WEEK":
+            //        timeUnit = "tuần";
+            //        break;
+            //}
+            //TimeRemind = CurrentTodo.notiBeforeTime + " " + timeUnit;
 
-            //start time and end time
-            TimeSpan t1 = TimeSpan.FromSeconds(CurrentTodo.startTime);
-            TimeSpan t2 = TimeSpan.FromSeconds(CurrentTodo.endTime);
-            string answer1 = string.Format("{0:D2}:{1:D2}", t1.Hours, t1.Minutes);
-            string answer2 = string.Format("{0:D2}:{1:D2}", t2.Hours, t2.Minutes);
-            StartTimeX = answer1.Split(':')[0];
-            StartTimeY = answer1.Split(':')[1];
-            EndTimeX = answer2.Split(':')[0];
-            EndTimeY = answer2.Split(':')[1];
-            Description = CurrentTodo.description;
+            ////start time and end time
+            //TimeSpan t1 = TimeSpan.FromSeconds(CurrentTodo.startTime);
+            //TimeSpan t2 = TimeSpan.FromSeconds(CurrentTodo.endTime);
+            //string answer1 = string.Format("{0:D2}:{1:D2}", t1.Hours, t1.Minutes);
+            //string answer2 = string.Format("{0:D2}:{1:D2}", t2.Hours, t2.Minutes);
+            //StartTimeX = answer1.Split(':')[0];
+            //StartTimeY = answer1.Split(':')[1];
+            //EndTimeX = answer2.Split(':')[0];
+            //EndTimeY = answer2.Split(':')[1];
+            //Description = CurrentTodo.description;
         }
 
         private int GetRemindTime()
