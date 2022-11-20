@@ -445,18 +445,16 @@ namespace CalendarApp.ViewModels.Schedule
                     Event todo = new Event
                     {
                         title = TaskName,
-                        startDate = StartDate,
-                        notiBeforeTime = GetRemindTime(),
+                        description = Description?? "",
                         startTime = new DateTime(year: DateTime.Now.Year, day: DateTime.Now.Day, month: DateTime.Now.Month, hour: int.Parse(StartTimeX), minute: int.Parse(StartTimeY), second: DateTime.Now.Second),
                         endTime = new DateTime(year: DateTime.Now.Year, day: DateTime.Now.Day, month: DateTime.Now.Month, hour: int.Parse(EndTimeX), minute: int.Parse(EndTimeY), second: DateTime.Now.Second),
                         colorCode = ColorTag.ToHexRgbString(),
+                        notiBeforeTime = GetRemindTime(),
                         notiUnit = GetRemindTimeUnit(),
+
+                        //KBD chỗ lặp lại sao đây
+                        //startDate = StartDate
                     };
-                    if (!string.IsNullOrEmpty(Description))
-                    {
-                        todo.description = Description;
-                    }
-                    App.Current.MainPage.DisplayAlert("Thành công", "Thêm thành công", "Đóng");
                     Popup popup = p as Popup;
                     popup.Dismiss(todo);
                 }

@@ -14,6 +14,7 @@ namespace CalendarApp.ViewModels.Authen
 {
     public class SignupViewModel : BaseViewModel
     {
+
         private string email;
         public string Email
         {
@@ -96,6 +97,8 @@ namespace CalendarApp.ViewModels.Authen
 
                     if (res.isSuccess)
                     {
+                        SharedPreferenceService.ins.SetUserToken(res.data.token);
+                        SharedPreferenceService.ins.SetUserLogin(res.data.email, RePass);
                         await App.Current.MainPage.DisplayAlert("Thông báo", "Tạo tài khoản thành công", "Đóng");
                         App.Current.MainPage = new NavigationPage(new BottomBarCustom());
                         await App.Current.MainPage.Navigation.PopToRootAsync();

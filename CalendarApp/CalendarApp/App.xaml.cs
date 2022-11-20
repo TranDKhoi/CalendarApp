@@ -1,4 +1,5 @@
-﻿using CalendarApp.Views.Authen;
+﻿using CalendarApp.Services;
+using CalendarApp.Views.Authen;
 using CalendarApp.Views.BottomBarCustom;
 using System.Globalization;
 using Xamarin.Forms;
@@ -10,8 +11,11 @@ namespace CalendarApp
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new LoginScreen());
-            //MainPage = new NavigationPage(new BottomBarCustom());
+            (string email, string password) = SharedPreferenceService.ins.GetUserLogin();
+            if (email != null && password != null)
+                MainPage = new NavigationPage(new BottomBarCustom());
+            else
+                MainPage = new NavigationPage(new LoginScreen());
         }
 
         protected override void OnStart()

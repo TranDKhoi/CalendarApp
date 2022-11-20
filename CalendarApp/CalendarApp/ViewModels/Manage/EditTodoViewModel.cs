@@ -103,8 +103,8 @@ namespace CalendarApp.ViewModels.Manage
         }
 
         private DateTime oldStartDate;
-        private int oldStartTime;
-        private int oldEndTime;
+        private DateTime oldStartTime;
+        private DateTime oldEndTime;
 
         public Command ApplyDataCM { get; set; }
         public Command UpdateTodoCM { get; set; }
@@ -139,15 +139,15 @@ namespace CalendarApp.ViewModels.Manage
                 int newStartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60;
                 int newEndTimeInt = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60;
 
-                if (/*oldStartDate != StartDate ||*/ oldStartTime != newStartTimeInt || oldEndTime != newEndTimeInt)
-                {
-                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomSaveAsDialog());
-                    if (res != null)
-                    {
-                        string a = res as string;
-                    }
-                    else return;
-                }
+                //if (/*oldStartDate != StartDate ||*/ oldStartTime.mi != newStartTimeInt || oldEndTime != newEndTimeInt)
+                //{
+                //    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomSaveAsDialog());
+                //    if (res != null)
+                //    {
+                //        string a = res as string;
+                //    }
+                //    else return;
+                //}
 
                 // Gắn data trả về
                 Event todo = new Event
@@ -212,10 +212,10 @@ namespace CalendarApp.ViewModels.Manage
 
         private void ApplyDataToTodo()
         {
-            ////save old data to compare
+            //save old data to compare
             //oldStartDate = CurrentTodo.startDate;
-            //oldStartTime = CurrentTodo.startTime;
-            //oldEndTime = CurrentTodo.endTime;
+            oldStartTime = CurrentTodo.startTime;
+            oldEndTime = CurrentTodo.endTime;
 
             //TaskName = CurrentTodo.title;
             //ColorTag = Color.FromHex(CurrentTodo.colorCode);

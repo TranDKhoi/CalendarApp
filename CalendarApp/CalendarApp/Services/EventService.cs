@@ -1,4 +1,5 @@
 ﻿using CalendarApp.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -40,6 +41,37 @@ namespace CalendarApp.Services
         {
             var response = await client.GetAsync($"api/events?FromDate={selectedDate.ToString("yyyy-MM-dd")}&ToDate={selectedDate.ToString("yyyy-MM-dd")}");
             var objResponse = await ApiService.ins.ParseResponse<List<Event>>(response);
+
+            return objResponse;
+        }
+
+        public async Task<ApiResponse<Event>> CreateNewTask(Event newTask)
+        {
+            Console.WriteLine(JsonConvert.SerializeObject(newTask));
+            var content = new StringContent(JsonConvert.SerializeObject(newTask), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("api/events", content);
+            var objResponse = await ApiService.ins.ParseResponse<Event>(response);
+
+            return objResponse;
+        }
+
+        public async Task<ApiResponse<Event>> UpdateTask(Event updateTask)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(updateTask), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"api/events/update", content);
+            var objResponse = await ApiService.ins.ParseResponse<Event>(response);
+
+            return objResponse;
+        }
+
+        public async Task<ApiResponse<Event>> DeleetTask(Event deleteTask)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(deleteTask), Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync($"api/events/delete", content);
+            var objResponse = await ApiService.ins.ParseResponse<Event>(response);
 
             return objResponse;
         }

@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
@@ -92,35 +93,42 @@ namespace CalendarApp.ViewModels.Schedule
                     case 2:
                         temp.Title = "Hai";
                         temp.IsSelected = false;
+                        temp.FullDate = selectedDay;
                         temp.Day = selectedDay.Day;
                         break;
                     case 3:
                         temp.Title = "Ba";
                         temp.IsSelected = false;
+                        temp.FullDate = selectedDay;
                         temp.Day = selectedDay.Day;
                         break;
                     case 4:
                         temp.Title = "Tư";
                         temp.IsSelected = false;
+                        temp.FullDate = selectedDay;
                         temp.Day = selectedDay.Day;
                         break;
                     case 5:
                         temp.Title = "Năm";
+                        temp.FullDate = selectedDay;
                         temp.IsSelected = false;
                         temp.Day = selectedDay.Day;
                         break;
                     case 6:
                         temp.Title = "Sáu";
+                        temp.FullDate = selectedDay;
                         temp.IsSelected = false;
                         temp.Day = selectedDay.Day;
                         break;
                     case 7:
                         temp.Title = "Bảy";
+                        temp.FullDate = selectedDay;
                         temp.IsSelected = false;
                         temp.Day = selectedDay.Day;
                         break;
                     case 8:
                         temp.Title = "CN";
+                        temp.FullDate = selectedDay;
                         temp.IsSelected = false;
                         temp.Day = selectedDay.Day;
                         break;
@@ -148,7 +156,7 @@ namespace CalendarApp.ViewModels.Schedule
             }
         }
 
-        private async System.Threading.Tasks.Task InitDataAsync()
+        private async Task InitDataAsync()
         {
             SelectedDay = DateTime.Now;
 
@@ -174,12 +182,12 @@ namespace CalendarApp.ViewModels.Schedule
 
         public ScheduleViewModel()
         {
-            GetAllTaskCM = new Command(() =>
+            GetAllTaskCM = new Command(async () =>
             {
-                InitDataAsync();
+                await InitDataAsync();
             });
 
-            SelectDayCM = new Command((p) =>
+            SelectDayCM = new Command(async (p) =>
             {
                 if (p is DayTitle)
                     for (int i = 0; i < Days.Count; i++)
@@ -189,7 +197,12 @@ namespace CalendarApp.ViewModels.Schedule
                             Days[i].IsSelected = true;
                             if (i < 6)
                             {
-                                //TodayTask = Tasks[i];
+                                var res = await EventService.ins.GetAllTaskByDay(Days[i].FullDate);
+                                if (res.isSuccess)
+                                {
+                                    TodayTask = new ObservableCollection<Event>(res.data);
+                                }
+                                CalculateStartEndTime();
                             }
                             else
                             {
@@ -241,7 +254,19 @@ namespace CalendarApp.ViewModels.Schedule
                     }
                     else
                     {
+                        UserDialogs.Instance.ShowLoading();
+                        var result = await EventService.ins.CreateNewTask(res as Event);
+                        UserDialogs.Instance.HideLoading();
 
+                        if (result.isSuccess)
+                        {
+                            _ = App.Current.MainPage.DisplayAlert("Thành công", "Thêm thành công", "Đóng");
+                            GetAllTaskCM.Execute(null);
+                        }
+                        else
+                        {
+                            UserDialogs.Instance.Toast(result.message);
+                        }
                     }
 
                 }

@@ -11,6 +11,7 @@ namespace CalendarApp.ViewModels.Authen
 {
     public class ForgotPassViewModel : BaseViewModel
     {
+     
         private string email;
         public string Email
         {

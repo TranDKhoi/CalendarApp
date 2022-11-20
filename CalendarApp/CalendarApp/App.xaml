@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CalendarApp.App">
     <Application.Resources>
+        <!--color-->
         <Color x:Key="blackColor">#202020</Color>
         <Color x:Key="greenColor">#49B583</Color>
         <Color x:Key="redColor">#FF4171</Color>
@@ -11,6 +12,9 @@
         <Color x:Key="primaryColor">#2196F3</Color>
         <Color x:Key="blueColor">#5b92e0</Color>
         <Color x:Key="pinkColor">#e95dc0</Color>
-
+        <Color x:Key="HeaderTextColor">#585858</Color>
+        <Color x:Key="BodyTextColor">#c3c3c3</Color>
+        <Color x:Key="ButtonBackgroundColor">#5992ff</Color>
+        <Color x:Key="BackgroundColor">white</Color>
     </Application.Resources>
 </Application>

@@ -34,5 +34,22 @@ namespace CalendarApp.Services
         {
             Preferences.Remove("user_token");
         }
+
+        public void SetUserLogin(string email, string password)
+        {
+            Preferences.Set("user_email", email);
+            Preferences.Set("user_password", password);
+        }
+
+        public (string, string) GetUserLogin()
+        {
+            return (Preferences.Get("user_email", null), Preferences.Get("user_password", null));
+        }
+
+        public void ClearUserLogin()
+        {
+            Preferences.Remove("user_email");
+            Preferences.Remove("user_password");
+        }
     }
 }

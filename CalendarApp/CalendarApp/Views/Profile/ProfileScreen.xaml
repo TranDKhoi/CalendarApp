@@ -2,12 +2,97 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CalendarApp.Views.Profile.ProfileScreen"
-             BackgroundColor="White">
+             BackgroundColor="{StaticResource BackgroundColor}"
+             xmlns:vm="clr-namespace:CalendarApp.ViewModels.Profile"
+             NavigationPage.HasNavigationBar="True">
+    <ContentPage.BindingContext>
+        <vm:ProfileViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Profile Screen"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <Grid>
+                <!---BACKGROUND-->
+                <Image Source="{Binding ProfileModel.UrlBackground}"
+                       HeightRequest="200"
+                       Aspect="Fill"
+                       VerticalOptions="Start" />
+                <StackLayout Margin="0,150,0,0">
+                    <!---AVT-->
+                    <Frame CornerRadius="100"
+                           HeightRequest="100"
+                           WidthRequest="100"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Padding="0"
+                           IsClippedToBounds="True">
+                        <Image  Source="{Binding ProfileModel.UrlAvatar}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+                    </Frame>
+                    <Label Text="{Binding ProfileModel.NameProfile}"
+                           HorizontalOptions="Center"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           FontSize="20" />
+                    <Label Text="{Binding ProfileModel.StatusProfile}"
+                           HorizontalOptions="Center"
+                           TextColor="Gray"
+                           FontSize="20" />
+                    <!---EDIT HERE-->
+                    <Button Text="Sửa hồ sơ"
+                            BorderRadius="40"
+                            BackgroundColor="{StaticResource primaryColor}"
+                            TextColor="White"
+                            Margin="100,10"
+                            HeightRequest="50"
+                            Command="{Binding EditProfileScreenNavCommand}" />
+                    <Grid Margin="0,30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Grid.Column="0">
+                            <Label Text="2"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   FontSize="20" />
+                            <Label Text="Môn học"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   FontSize="20" />
+                        </StackLayout>
+                        <StackLayout Grid.Column="1">
+                            <Label Text="3"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   FontSize="20" />
+                            <Label Text="Công việc"
+                                   HorizontalOptions="Center"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"
+                                   FontSize="20" />
+                        </StackLayout>
+                    </Grid >
+                    <Frame Margin="20">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LogoutCM}" />
+                        </Frame.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="&#xe9ba;"
+                                   VerticalOptions="Center"
+                                   FontFamily="Material"
+                                   FontSize="25"
+                                   TextColor="Black" />
+                            <Label Text="Đăng xuất"
+                                   TextColor="Black"
+                                   FontSize="20" />
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
