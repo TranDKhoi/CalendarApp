@@ -7,6 +7,7 @@ namespace CalendarApp.Models
 
     public class Event
     {
+        public string id { get; set; }
         public string title { get; set; }
         public string description { get; set; }
         public string colorCode { get; set; }
@@ -19,11 +20,13 @@ namespace CalendarApp.Models
         public int? courseId { get; set; }
         public int? notiBeforeTime { get; set; }
         public DateTime startTime { get; set; }
+        public DateTime beforeStartTime { get; set; }
         public DateTime endTime { get; set; }
         public List<string> recurringDetails { get; set; }
         public DateTime? recurringStart { get; set; }
         public int? recurringInterval { get; set; }
         public DateTime? recurringEnd { get; set; }
+        public string targetType { get; set; }
 
     }
 }

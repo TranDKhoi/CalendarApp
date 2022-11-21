@@ -4,7 +4,7 @@
            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
            xmlns:ct="clr-namespace:CalendarApp.ViewModels.Manage"
            x:Class="CalendarApp.Views.Manage.CustomSaveAsDialog"
-           Size="250,150"
+           Size="350,200"
            x:Name="this">
     <xct:Popup.BindingContext>
         <ct:CustomSaveAsDialogViewModel />
@@ -15,6 +15,8 @@
                          IsChecked="True"
                          CheckedChanged="RadioButton_CheckedChanged" />
             <RadioButton Content="Sự kiện này và theo sau"
+                         CheckedChanged="RadioButton_CheckedChanged" />
+            <RadioButton Content="Tất cả"
                          CheckedChanged="RadioButton_CheckedChanged" />
             <StackLayout Orientation="Horizontal"
                          Margin="0,30,0,0">

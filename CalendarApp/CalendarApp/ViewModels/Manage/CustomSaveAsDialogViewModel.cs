@@ -25,6 +25,18 @@ namespace CalendarApp.ViewModels.Manage
                 Xamarin.CommunityToolkit.UI.Views.Popup popup = p as Popup;
                 if (!string.IsNullOrEmpty(SelectedSaveAs))
                 {
+                    if (SelectedSaveAs == "Chỉ sự kiện này")
+                    {
+                        SelectedSaveAs = "THIS";
+                    }
+                    else if (SelectedSaveAs == "Sự kiện này và theo sau")
+                    {
+                        SelectedSaveAs = "THIS_AND_FOLLOWING";
+                    }
+                    else
+                    {
+                        SelectedSaveAs = "ALL";
+                    }
                     popup.Dismiss(SelectedSaveAs);
                 }
             });

@@ -1,12 +1,16 @@
-﻿using CalendarApp.Models;
+﻿using Acr.UserDialogs;
+using CalendarApp.Models;
+using CalendarApp.Services;
 using CalendarApp.Views.Manage;
 using CalendarApp.Views.Schedule;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 using System.Text;
 using Xamarin.CommunityToolkit.Extensions;
+using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
 
 namespace CalendarApp.ViewModels.Manage
@@ -102,6 +106,14 @@ namespace CalendarApp.ViewModels.Manage
             set { reminders = value; OnPropertyChanged(); }
         }
 
+        private Recurrence selectedRecurrence;
+        public Recurrence SelectedRecurrence
+        {
+            get { return selectedRecurrence; }
+            set { selectedRecurrence = value; OnPropertyChanged(); }
+        }
+
+
         private DateTime oldStartDate;
         private DateTime oldStartTime;
         private DateTime oldEndTime;
@@ -136,35 +148,62 @@ namespace CalendarApp.ViewModels.Manage
                     return;
                 }
 
-                int newStartTimeInt = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60;
-                int newEndTimeInt = int.Parse(EndTimeX) * 3600 + int.Parse(EndTimeY) * 60;
+                string SelectedTargetType = "";
+                if (oldStartDate.ToString("dd/MM/yyyy") != StartDate.ToString("dd/MM/yyyy") ||
+                oldStartTime.Hour != int.Parse(StartTimeX) ||
+                oldStartTime.Minute != int.Parse(StartTimeY) ||
+                oldEndTime.Hour != int.Parse((EndTimeX)) ||
+                oldEndTime.Minute != int.Parse((EndTimeY)))
+                {
+                    var resDia = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomSaveAsDialog());
+                    if (resDia != null)
+                    {
+                        SelectedTargetType = resDia as string;
+                    }
+                    else return;
+                }
 
-                //if (/*oldStartDate != StartDate ||*/ oldStartTime.mi != newStartTimeInt || oldEndTime != newEndTimeInt)
-                //{
-                //    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomSaveAsDialog());
-                //    if (res != null)
-                //    {
-                //        string a = res as string;
-                //    }
-                //    else return;
-                //}
-
-                // Gắn data trả về
+                //Gắn data trả về
                 Event todo = new Event
                 {
+                    id = CurrentTodo.id,
                     title = TaskName,
-                    startDate = StartDate,
-                    notiBeforeTime = GetRemindTime(),
-                    //startTime = newStartTimeInt,
-                    //endTime = newEndTimeInt,
+                    description = Description ?? "",
+                    startTime = new DateTime(year: DateTime.Now.Year, day: DateTime.Now.Day, month: DateTime.Now.Month, hour: int.Parse(StartTimeX), minute: int.Parse(StartTimeY), second: DateTime.Now.Second),
+                    endTime = new DateTime(year: DateTime.Now.Year, day: DateTime.Now.Day, month: DateTime.Now.Month, hour: int.Parse(EndTimeX), minute: int.Parse(EndTimeY), second: DateTime.Now.Second),
                     colorCode = ColorTag.ToHexRgbString(),
+                    baseEventId = CurrentTodo.baseEventId,
+                    cloneEventId = CurrentTodo.cloneEventId,
+                    notiBeforeTime = GetRemindTime(),
                     notiUnit = GetRemindTimeUnit(),
+                    recurringInterval = SelectedRecurrence.QuantityRecurrence,
+                    recurringUnit = SelectedRecurrence.GetTypeStartRecurrence().ToString(),
+                    beforeStartTime = oldStartDate,
+                    targetType = SelectedTargetType ?? null,
                 };
-                if (!string.IsNullOrEmpty(Description))
+                if (SelectedRecurrence.GetTypeStartRecurrence() == TypeStartRecurrence.WEEK)
                 {
-                    todo.description = Description;
+                    todo.recurringDetails = SelectedRecurrence.WeekDay;
                 }
-                _ = App.Current.MainPage.DisplayAlert("Thành công", "Lưu thành công", "Đóng");
+                if (SelectedRecurrence.GetTypeEndRecurrence() == TypeEndRecurrence.Date)
+                {
+                    todo.recurringEnd = SelectedRecurrence.EndDate;
+                }
+
+                Console.WriteLine(JsonConvert.SerializeObject(todo));
+                return;
+
+                UserDialogs.Instance.ShowLoading();
+                var res = await EventService.ins.UpdateTask(todo);
+                UserDialogs.Instance.HideLoading();
+                if (res.isSuccess)
+                {
+                    _ = App.Current.MainPage.DisplayAlert("Thành công", "Lưu thành công", "Đóng");
+                }
+                else
+                {
+                    UserDialogs.Instance.Toast(res.message);
+                }
 
             });
             OpenCustomReminderPopupCM = new Command(async () =>
@@ -185,8 +224,8 @@ namespace CalendarApp.ViewModels.Manage
                     var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new RecurrencePopup(dateTime));
                     if (res != null)
                     {
-                        Recurrence recurrence = res as Recurrence;
-                        RemindLabel = recurrence.LabelDisplay;
+                        SelectedRecurrence = res as Recurrence;
+                        RemindLabel = SelectedRecurrence.LabelDisplay;
                     }
                 }
 
@@ -213,45 +252,41 @@ namespace CalendarApp.ViewModels.Manage
         private void ApplyDataToTodo()
         {
             //save old data to compare
-            //oldStartDate = CurrentTodo.startDate;
+            oldStartDate = CurrentTodo.startTime;
             oldStartTime = CurrentTodo.startTime;
             oldEndTime = CurrentTodo.endTime;
 
-            //TaskName = CurrentTodo.title;
-            //ColorTag = Color.FromHex(CurrentTodo.colorCode);
-            ////StartDate = CurrentTodo.startDate;
+            TaskName = CurrentTodo.title;
+            StartDate = CurrentTodo.startTime;
+            ColorTag = Color.FromHex(CurrentTodo.colorCode);
 
-            //////đây là chỗ nhắc
-            ////if (!Reminders.Contains(CurrentTodo.NotifyTimeString))
-            ////    Reminders.Add(CurrentTodo.NotifyTimeString);
-            //string timeUnit = "";
-            //switch (CurrentTodo.notiUnit)
-            //{
-            //    case "MINUTE":
-            //        timeUnit = "phút";
-            //        break;
-            //    case "HOUR":
-            //        timeUnit = "tiếng";
-            //        break;
-            //    case "DAY":
-            //        timeUnit = "ngày";
-            //        break;
-            //    case "WEEK":
-            //        timeUnit = "tuần";
-            //        break;
-            //}
-            //TimeRemind = CurrentTodo.notiBeforeTime + " " + timeUnit;
+            ////đây là chỗ nhắc
+            //if (!Reminders.Contains(CurrentTodo.NotifyTimeString))
+            //    Reminders.Add(CurrentTodo.NotifyTimeString);
+            string timeUnit = "";
+            switch (CurrentTodo.notiUnit)
+            {
+                case "MINUTE":
+                    timeUnit = "phút";
+                    break;
+                case "HOUR":
+                    timeUnit = "tiếng";
+                    break;
+                case "DAY":
+                    timeUnit = "ngày";
+                    break;
+                case "WEEK":
+                    timeUnit = "tuần";
+                    break;
+            }
+            TimeRemind = CurrentTodo.notiBeforeTime + " " + timeUnit;
 
-            ////start time and end time
-            //TimeSpan t1 = TimeSpan.FromSeconds(CurrentTodo.startTime);
-            //TimeSpan t2 = TimeSpan.FromSeconds(CurrentTodo.endTime);
-            //string answer1 = string.Format("{0:D2}:{1:D2}", t1.Hours, t1.Minutes);
-            //string answer2 = string.Format("{0:D2}:{1:D2}", t2.Hours, t2.Minutes);
-            //StartTimeX = answer1.Split(':')[0];
-            //StartTimeY = answer1.Split(':')[1];
-            //EndTimeX = answer2.Split(':')[0];
-            //EndTimeY = answer2.Split(':')[1];
-            //Description = CurrentTodo.description;
+            //start time and end time
+            StartTimeX = CurrentTodo.startTime.ToString("HH");
+            StartTimeY = CurrentTodo.startTime.ToString("mm");
+            EndTimeX = CurrentTodo.endTime.ToString("HH");
+            EndTimeY = CurrentTodo.endTime.ToString("mm");
+            Description = CurrentTodo.description;
         }
 
         private int GetRemindTime()

@@ -164,13 +164,13 @@ namespace CalendarApp.ViewModels.Schedule
 
             Days = new ObservableCollection<DayTitle>
             {
-                new DayTitle { Title = "T2", IsSelected = false },
-                new DayTitle { Title = "T3", IsSelected = false },
-                new DayTitle { Title = "T4", IsSelected = false },
-                new DayTitle { Title = "T5", IsSelected = false },
-                new DayTitle { Title = "T6", IsSelected = false },
-                new DayTitle { Title = "T7", IsSelected = false },
-                new DayTitle { Title = "Cn", IsSelected = false }
+                new DayTitle { Title = "T2", IsSelected = false ,DetailEng = "Monday",},
+                new DayTitle { Title = "T3", IsSelected = false,DetailEng ="Tuesday", },
+                new DayTitle { Title = "T4", IsSelected = false,DetailEng = "Wednesday" },
+                new DayTitle { Title = "T5", IsSelected = false, DetailEng = "Thursday" },
+                new DayTitle { Title = "T6", IsSelected = false ,DetailEng = "Friday"},
+                new DayTitle { Title = "T7", IsSelected = false,DetailEng = "Saturday" },
+                new DayTitle { Title = "Cn", IsSelected = false,DetailEng = "Sunday" }
             };
 
             TypeRecurrence = new ObservableCollection<string>
@@ -200,6 +200,7 @@ namespace CalendarApp.ViewModels.Schedule
                 {
                     Recurrence recurrence = new Recurrence();
                     recurrence.ChoosenWeeksDay = new List<string>();
+                    recurrence.WeekDay = new List<string>();
                     if (RecurreneQuantity <= 0)
                     {
                         App.Current.MainPage.DisplayAlert("Thông báo", "Vui lòng nhập số lần lặp lớn hơn 0", "Đóng");
@@ -232,7 +233,7 @@ namespace CalendarApp.ViewModels.Schedule
                     recurrence.QuantityRecurrence = RecurreneQuantity;
                     if (SelectedTypeRecurrence == "ngày")
                     {
-                        recurrence.SetTypeStartRecurrence(TypeStartRecurrence.Date);
+                        recurrence.SetTypeStartRecurrence(TypeStartRecurrence.DAY);
                         if (NeverEnd)
                         {
                             recurrence.LabelDisplay = $"{RecurreneQuantity} ngày một lần";
@@ -248,13 +249,14 @@ namespace CalendarApp.ViewModels.Schedule
                     }
                     if (SelectedTypeRecurrence == "tuần")
                     {
-                        recurrence.SetTypeStartRecurrence(TypeStartRecurrence.Week);
+                        recurrence.SetTypeStartRecurrence(TypeStartRecurrence.WEEK);
                         string weeksDay = "";
                         for (int i = 0; i < Days.Count; i++)
                         {
                             if (Days[i].IsSelected)
                             {
                                 recurrence.ChoosenWeeksDay.Add(Days[i].Title);
+                                recurrence.WeekDay.Add(Days[i].DetailEng);
                                 weeksDay += Days[i].Title + ", ";
                             }
                         }
@@ -275,7 +277,7 @@ namespace CalendarApp.ViewModels.Schedule
                     }
                     if (SelectedTypeRecurrence == "tháng")
                     {
-                        recurrence.SetTypeStartRecurrence(TypeStartRecurrence.Month);
+                        recurrence.SetTypeStartRecurrence(TypeStartRecurrence.MONTH);
                         if (NeverEnd)
                         {
                             recurrence.LabelDisplay = $"{RecurreneQuantity} tháng một lần vào ngày {Today.Day}";

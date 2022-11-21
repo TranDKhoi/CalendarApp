@@ -150,6 +150,13 @@ namespace CalendarApp.ViewModels.Schedule
             set { description = value; OnPropertyChanged(); }
         }
 
+        private Recurrence selectedRecurrence;
+        public Recurrence SelectedRecurrence
+        {
+            get { return selectedRecurrence; }
+            set { selectedRecurrence = value; OnPropertyChanged(); }
+        }
+
         private void InitData()
         {
             StartDate = DateTime.Now;
@@ -300,8 +307,8 @@ namespace CalendarApp.ViewModels.Schedule
                     var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new RecurrencePopup(dateTime));
                     if (res != null)
                     {
-                        Recurrence recurrence = res as Recurrence;
-                        RemindLabel = recurrence.LabelDisplay;
+                        SelectedRecurrence = res as Recurrence;
+                        RemindLabel = SelectedRecurrence.LabelDisplay;
                     }
                 }
 
@@ -445,16 +452,23 @@ namespace CalendarApp.ViewModels.Schedule
                     Event todo = new Event
                     {
                         title = TaskName,
-                        description = Description?? "",
+                        description = Description ?? "",
                         startTime = new DateTime(year: DateTime.Now.Year, day: DateTime.Now.Day, month: DateTime.Now.Month, hour: int.Parse(StartTimeX), minute: int.Parse(StartTimeY), second: DateTime.Now.Second),
                         endTime = new DateTime(year: DateTime.Now.Year, day: DateTime.Now.Day, month: DateTime.Now.Month, hour: int.Parse(EndTimeX), minute: int.Parse(EndTimeY), second: DateTime.Now.Second),
                         colorCode = ColorTag.ToHexRgbString(),
                         notiBeforeTime = GetRemindTime(),
                         notiUnit = GetRemindTimeUnit(),
-
-                        //KBD chỗ lặp lại sao đây
-                        //startDate = StartDate
+                        recurringInterval = SelectedRecurrence.QuantityRecurrence,
+                        recurringUnit = SelectedRecurrence.GetTypeStartRecurrence().ToString(),
                     };
+                    if (SelectedRecurrence.GetTypeStartRecurrence() == TypeStartRecurrence.WEEK)
+                    {
+                        todo.recurringDetails = SelectedRecurrence.WeekDay;
+                    }
+                    if (SelectedRecurrence.GetTypeEndRecurrence() == TypeEndRecurrence.Date)
+                    {
+                        todo.recurringEnd = SelectedRecurrence.EndDate;
+                    }
                     Popup popup = p as Popup;
                     popup.Dismiss(todo);
                 }

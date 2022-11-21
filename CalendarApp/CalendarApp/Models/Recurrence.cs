@@ -6,9 +6,9 @@ namespace CalendarApp.Models
 {
     public enum TypeStartRecurrence
     {
-        Date,
-        Week,
-        Month,
+        DAY,
+        WEEK,
+        MONTH,
         None,
     };
 
@@ -46,5 +46,6 @@ namespace CalendarApp.Models
         public DateTime EndDate { get; set; }
         public int EndCount { get; set; }
         public string LabelDisplay { get; set; }
+        public List<String>  WeekDay { get; set; }
     }
 }
