@@ -458,17 +458,21 @@ namespace CalendarApp.ViewModels.Schedule
                         colorCode = ColorTag.ToHexRgbString(),
                         notiBeforeTime = GetRemindTime(),
                         notiUnit = GetRemindTimeUnit(),
-                        recurringInterval = SelectedRecurrence.QuantityRecurrence,
-                        recurringUnit = SelectedRecurrence.GetTypeStartRecurrence().ToString(),
                     };
-                    if (SelectedRecurrence.GetTypeStartRecurrence() == TypeStartRecurrence.WEEK)
+                    if (SelectedRecurrence != null)
                     {
-                        todo.recurringDetails = SelectedRecurrence.WeekDay;
+                        todo.recurringInterval = SelectedRecurrence.QuantityRecurrence;
+                        todo.recurringUnit = SelectedRecurrence.GetTypeStartRecurrence().ToString();
+                        if (SelectedRecurrence.GetTypeStartRecurrence() == TypeStartRecurrence.WEEK)
+                        {
+                            todo.recurringDetails = SelectedRecurrence.WeekDay;
+                        }
+                        if (SelectedRecurrence.GetTypeEndRecurrence() == TypeEndRecurrence.Date)
+                        {
+                            todo.recurringEnd = SelectedRecurrence.EndDate;
+                        }
                     }
-                    if (SelectedRecurrence.GetTypeEndRecurrence() == TypeEndRecurrence.Date)
-                    {
-                        todo.recurringEnd = SelectedRecurrence.EndDate;
-                    }
+
                     Popup popup = p as Popup;
                     popup.Dismiss(todo);
                 }

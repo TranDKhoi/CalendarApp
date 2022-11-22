@@ -20,25 +20,25 @@ namespace CalendarApp.ViewModels.Manage
 
         public CustomSaveAsDialogViewModel()
         {
+            SelectedSaveAs = "Chỉ sự kiện này";
             DoneCM = new Command((p) =>
             {
                 Xamarin.CommunityToolkit.UI.Views.Popup popup = p as Popup;
-                if (!string.IsNullOrEmpty(SelectedSaveAs))
+
+                if (SelectedSaveAs == "Chỉ sự kiện này")
                 {
-                    if (SelectedSaveAs == "Chỉ sự kiện này")
-                    {
-                        SelectedSaveAs = "THIS";
-                    }
-                    else if (SelectedSaveAs == "Sự kiện này và theo sau")
-                    {
-                        SelectedSaveAs = "THIS_AND_FOLLOWING";
-                    }
-                    else
-                    {
-                        SelectedSaveAs = "ALL";
-                    }
-                    popup.Dismiss(SelectedSaveAs);
+                    SelectedSaveAs = "THIS";
                 }
+                else if (SelectedSaveAs == "Sự kiện này và theo sau")
+                {
+                    SelectedSaveAs = "THIS_AND_FOLLOWING";
+                }
+                else
+                {
+                    SelectedSaveAs = "ALL";
+                }
+                popup.Dismiss(SelectedSaveAs);
+
             });
         }
     }

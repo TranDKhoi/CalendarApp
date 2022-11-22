@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using CalendarApp.Models;
 using CalendarApp.Services;
+using CalendarApp.Utils;
 using CalendarApp.Views.Manage;
 using CalendarApp.Views.Schedule;
 using Newtonsoft.Json;
@@ -113,10 +114,7 @@ namespace CalendarApp.ViewModels.Manage
             set { selectedRecurrence = value; OnPropertyChanged(); }
         }
 
-
-        private DateTime oldStartDate;
-        private DateTime oldStartTime;
-        private DateTime oldEndTime;
+        private int? oldInterval;
 
         public Command ApplyDataCM { get; set; }
         public Command UpdateTodoCM { get; set; }
@@ -149,18 +147,11 @@ namespace CalendarApp.ViewModels.Manage
                 }
 
                 string SelectedTargetType = "";
-                if (oldStartDate.ToString("dd/MM/yyyy") != StartDate.ToString("dd/MM/yyyy") ||
-                oldStartTime.Hour != int.Parse(StartTimeX) ||
-                oldStartTime.Minute != int.Parse(StartTimeY) ||
-                oldEndTime.Hour != int.Parse((EndTimeX)) ||
-                oldEndTime.Minute != int.Parse((EndTimeY)))
+
+                var resDia = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomSaveAsDialog());
+                if (resDia != null)
                 {
-                    var resDia = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomSaveAsDialog());
-                    if (resDia != null)
-                    {
-                        SelectedTargetType = resDia as string;
-                    }
-                    else return;
+                    SelectedTargetType = resDia as string;
                 }
 
                 //Gắn data trả về
@@ -176,34 +167,52 @@ namespace CalendarApp.ViewModels.Manage
                     cloneEventId = CurrentTodo.cloneEventId,
                     notiBeforeTime = GetRemindTime(),
                     notiUnit = GetRemindTimeUnit(),
-                    recurringInterval = SelectedRecurrence.QuantityRecurrence,
-                    recurringUnit = SelectedRecurrence.GetTypeStartRecurrence().ToString(),
-                    beforeStartTime = oldStartDate,
-                    targetType = SelectedTargetType ?? null,
+                    beforeStartTime = CurrentTodo.startTime,
+                    targetType = string.IsNullOrEmpty(SelectedTargetType) ? "THIS" : SelectedTargetType,
                 };
-                if (SelectedRecurrence.GetTypeStartRecurrence() == TypeStartRecurrence.WEEK)
-                {
-                    todo.recurringDetails = SelectedRecurrence.WeekDay;
-                }
-                if (SelectedRecurrence.GetTypeEndRecurrence() == TypeEndRecurrence.Date)
-                {
-                    todo.recurringEnd = SelectedRecurrence.EndDate;
-                }
 
-                Console.WriteLine(JsonConvert.SerializeObject(todo));
-                return;
-
-                UserDialogs.Instance.ShowLoading();
-                var res = await EventService.ins.UpdateTask(todo);
-                UserDialogs.Instance.HideLoading();
-                if (res.isSuccess)
+                if (SelectedRecurrence != null)
                 {
-                    _ = App.Current.MainPage.DisplayAlert("Thành công", "Lưu thành công", "Đóng");
+                    todo.recurringInterval = SelectedRecurrence.QuantityRecurrence;
+                    todo.recurringUnit = SelectedRecurrence.GetTypeStartRecurrence().ToString();
+                    if (SelectedRecurrence.GetTypeStartRecurrence() == TypeStartRecurrence.WEEK)
+                    {
+                        todo.recurringDetails = SelectedRecurrence.WeekDay;
+                    }
+                    if (SelectedRecurrence.GetTypeEndRecurrence() == TypeEndRecurrence.Date)
+                    {
+                        todo.recurringEnd = SelectedRecurrence.EndDate;
+                    }
                 }
                 else
                 {
-                    UserDialogs.Instance.Toast(res.message);
+                    todo.recurringInterval = CurrentTodo.recurringInterval;
+                    todo.recurringUnit = CurrentTodo.recurringUnit;
+                    todo.recurringDetails = CurrentTodo.recurringDetails;
+                    todo.recurringEnd = CurrentTodo.recurringEnd;
                 }
+
+                try
+                {
+                    UserDialogs.Instance.ShowLoading();
+                    var res = await EventService.ins.UpdateTask(todo);
+                    UserDialogs.Instance.HideLoading();
+                    if (res.isSuccess)
+                    {
+                        _ = App.Current.MainPage.DisplayAlert("Thành công", "Lưu thành công", "Đóng");
+                    }
+                    else
+                    {
+                        UserDialogs.Instance.Toast(res.message);
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    Console.WriteLine(e.Message);
+                }
+
+
 
             });
             OpenCustomReminderPopupCM = new Command(async () =>
@@ -243,6 +252,31 @@ namespace CalendarApp.ViewModels.Manage
                 var res = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có chắc muốn xoá công việc này không?", "Có", "Không");
                 if (res)
                 {
+                    string SelectedTargetType = "";
+
+                    var resDia = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomSaveAsDialog());
+                    if (resDia != null)
+                    {
+                        SelectedTargetType = resDia as string;
+                    }
+
+                    Event deleteTodo = new Event
+                    {
+                        id = CurrentTodo.id,
+                        baseEventId = CurrentTodo.baseEventId,
+                        cloneEventId = CurrentTodo.cloneEventId,
+                        startTime = CurrentTodo.startTime,
+                        targetType = string.IsNullOrEmpty(SelectedTargetType) ? "THIS" : SelectedTargetType
+                    };
+
+                    UserDialogs.Instance.ShowLoading();
+                    var result = await EventService.ins.DeleetTask(deleteTodo);
+                    UserDialogs.Instance.HideLoading();
+
+                    if (result.isSuccess)
+                    {
+                        UserDialogs.Instance.Toast("Xoá công việc thành công");
+                    }
 
                 }
                 _ = App.Current.MainPage.Navigation.PopAsync();
@@ -251,18 +285,11 @@ namespace CalendarApp.ViewModels.Manage
 
         private void ApplyDataToTodo()
         {
-            //save old data to compare
-            oldStartDate = CurrentTodo.startTime;
-            oldStartTime = CurrentTodo.startTime;
-            oldEndTime = CurrentTodo.endTime;
-
             TaskName = CurrentTodo.title;
             StartDate = CurrentTodo.startTime;
             ColorTag = Color.FromHex(CurrentTodo.colorCode);
 
             ////đây là chỗ nhắc
-            //if (!Reminders.Contains(CurrentTodo.NotifyTimeString))
-            //    Reminders.Add(CurrentTodo.NotifyTimeString);
             string timeUnit = "";
             switch (CurrentTodo.notiUnit)
             {
