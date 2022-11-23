@@ -145,14 +145,28 @@ namespace CalendarApp.ViewModels.Schedule
             }
         }
 
-        private void CalculateStartEndTime()
+        private async Task CalculateStartEndTimeAsync()
         {
             if (TodayTask != null)
             {
                 for (int i = 0; i < TodayTask.Count; i++)
                 {
                     TodayTask[i].StartTimeUI = TodayTask[i].startTime.ToString("HH:mm");
-                    TodayTask[i].EndTimeUI = TodayTask[i].endTime.ToString("HH:mm");
+                    if (TodayTask[i].courseId == null)
+                    {
+                        TodayTask[i].EndTimeUI = TodayTask[i].endTime.ToString("HH:mm");
+                    }
+                    else
+                    {
+                        var res = await CourseService.ins.GetAllCourse();
+                        for (int j = 0; j < res.data.Count; j++)
+                        {
+                            if (res.data[j].id == TodayTask[i].courseId)
+                            {
+                                TodayTask[i].EndTimeUI = TodayTask[i].startTime.AddMinutes(45 * res.data[j].numOfLessonsPerDay).ToString("HH:mm");
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -173,7 +187,7 @@ namespace CalendarApp.ViewModels.Schedule
                     {
                         TodayTask = new ObservableCollection<Event>(res.data);
                     }
-                    CalculateStartEndTime();
+                    await CalculateStartEndTimeAsync();
                     break;
                 }
             }
@@ -203,7 +217,7 @@ namespace CalendarApp.ViewModels.Schedule
                                 {
                                     TodayTask = new ObservableCollection<Event>(res.data);
                                 }
-                                CalculateStartEndTime();
+                                await CalculateStartEndTimeAsync();
                             }
                             else
                             {
@@ -215,7 +229,7 @@ namespace CalendarApp.ViewModels.Schedule
                             Days[i].IsSelected = false;
                         }
                     }
-                CalculateStartEndTime();
+                await CalculateStartEndTimeAsync();
             });
 
             SelectTaskCM = new Command((p) =>
@@ -276,11 +290,40 @@ namespace CalendarApp.ViewModels.Schedule
             SelectRestDayCM = new Command(async (p) =>
             {
                 if (p == null) return;
-                Event e = p as Event;
+                Event subject = p as Event;
                 bool result = await App.Current.MainPage.DisplayAlert("Nghỉ học", "Đánh dấu buổi này nghỉ", "Có", "Không");
                 if (result)
                 {
                     //Gọi api báo nghỉ
+                    DayOffSubject dayOffSubject = new DayOffSubject
+                    {
+                        date = subject.startTime,
+                        action = "Create",
+                    };
+                    await CourseService.ins.ChangeSubjectStatus(dayOffSubject, (int)subject.courseId);
+                    try
+                    {
+                        _ = App.Current.MainPage.DisplayAlert("Thành công", "Đánh dấu buổi nghỉ thành công", "Đóng");
+                        for (int i = 0; i < Days.Count; i++)
+                        {
+                            if (Days[i].IsSelected)
+                            {
+
+                                var res = await EventService.ins.GetAllTaskByDay(Days[i].FullDate);
+                                if (res.isSuccess)
+                                {
+                                    TodayTask = new ObservableCollection<Event>(res.data);
+                                }
+                                await CalculateStartEndTimeAsync();
+                                break;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        _ = App.Current.MainPage.DisplayAlert("Thất bại", $"Lỗi: {e}", "Đóng");
+                    }
+
                 }
                 return;
             });

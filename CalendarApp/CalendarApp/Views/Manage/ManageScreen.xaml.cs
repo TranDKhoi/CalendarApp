@@ -40,11 +40,17 @@ namespace CalendarApp.Views.Manage
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            if (((Label)sender).BindingContext is Event selectedItem)
+            if (((Label)sender).BindingContext is DayOffSubject selectedItem)
             {
                 var viewModel = (ManageViewModel)this.BindingContext;
                 viewModel.DeleteDayOffCM.Execute(selectedItem);
             }
+        }
+
+        private void listDayOff_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (listDayOff.SelectedItem == null) return;
+            listDayOff.SelectedItem = null;
         }
     }
 }

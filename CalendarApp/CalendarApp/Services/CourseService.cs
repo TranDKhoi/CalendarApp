@@ -72,5 +72,11 @@ namespace CalendarApp.Services
 
             return response.IsSuccessStatusCode;
         }
+
+        public async Task ChangeSubjectStatus(DayOffSubject dayOffSubject, int courseId)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(dayOffSubject), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"api/courses/{courseId}/day-off", content);
+        }
     }
 }

@@ -190,10 +190,10 @@ namespace CalendarApp.ViewModels.Manage
                                     description = ListSubject[i].description,
                                     StartTimeUI = ListSubject[i].StartTimeUI,
                                     EndTimeUI = ListSubject[i].EndTimeUI,
-                                    offDate = ListSubject[i].dayOffs[j],
+                                    date = ListSubject[i].dayOffs[j],
                                     colorCode = ListSubject[i].colorCode,
                                 };
-
+                                ListDayOff.Add(dayOffSubject);
                             }
                         }
                     }
@@ -391,6 +391,42 @@ namespace CalendarApp.ViewModels.Manage
                 if (result)
                 {
                     //Gọi api xóa ngày nghỉ
+                    dayOffSubject.action = "Delete";
+                    await CourseService.ins.ChangeSubjectStatus(dayOffSubject, dayOffSubject.id);
+                    try
+                    {
+                        _ = App.Current.MainPage.DisplayAlert("Thành công", "Đánh dấu buổi nghỉ thành công", "Đóng");
+                        var res = await CourseService.ins.GetAllCourse();
+                        if (res.isSuccess)
+                        {
+                            ListSubject = new ObservableCollection<Subject>(res.data);
+                            ListDayOff = new ObservableCollection<DayOffSubject>();
+                            for (int i = 0; i < ListSubject.Count; i++)
+                            {
+                                if (ListSubject[i].dayOffs != null || ListSubject[i].dayOffs.Count != 0)
+                                {
+                                    for (int j = 0; j < ListSubject[i].dayOffs.Count; j++)
+                                    {
+                                        DayOffSubject temp = new DayOffSubject
+                                        {
+                                            id = ListSubject[i].id,
+                                            title = ListSubject[i].title,
+                                            description = ListSubject[i].description,
+                                            StartTimeUI = ListSubject[i].StartTimeUI,
+                                            EndTimeUI = ListSubject[i].EndTimeUI,
+                                            date = ListSubject[i].dayOffs[j],
+                                            colorCode = ListSubject[i].colorCode,
+                                        };
+                                        ListDayOff.Add(temp);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        _ = App.Current.MainPage.DisplayAlert("Thất bại", $"Lỗi: {e}", "Đóng");
+                    }
                 }
                 return;
             });

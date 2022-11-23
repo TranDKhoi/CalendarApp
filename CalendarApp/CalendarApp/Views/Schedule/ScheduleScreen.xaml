@@ -87,11 +87,11 @@
                                      Padding="0, 0, 0, 20">
                             <StackLayout WidthRequest="60"
                                          MinimumWidthRequest="60">
-                                <Label Text="{Binding StartTimeUI}"
+                                <Label Text="{Binding StartTimeUI, Mode=TwoWay}"
                                        TextColor="Black"
                                        FontSize="20"
                                        FontAttributes="Bold" />
-                                <Label Text="{Binding EndTimeUI}"
+                                <Label Text="{Binding EndTimeUI, Mode=TwoWay}"
                                        FontSize="16" />
                             </StackLayout>
                             <StackLayout Margin="0, 0, 10, 0">
@@ -141,15 +141,16 @@
                                                FontAttributes="Bold"
                                                HorizontalOptions="StartAndExpand"/>
 
-                                        <Label Margin="10, 0, 0, 0"
+                                        <Label Margin="0, 0, 0, 0"
                                                Padding="0"
                                                FontFamily="Material"
-                                               Text="&#xef44;"
-                                               FontSize="25"
+                                               Text="&#xe59a;"
+                                               FontSize="30"
                                                WidthRequest="50"
                                                VerticalOptions="Center"
                                                HorizontalOptions="End"
-                                               TextColor="{StaticResource redColor}"
+                                               HorizontalTextAlignment="End"
+                                               TextColor="Black"
                                                IsVisible="{Binding courseId, Converter={StaticResource isEventOrCourseCVT}}"
                                                BindingContext="{Binding .}">
                                             <Label.GestureRecognizers>
