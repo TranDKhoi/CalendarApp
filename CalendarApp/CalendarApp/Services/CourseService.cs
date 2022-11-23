@@ -42,7 +42,6 @@ namespace CalendarApp.Services
         {
             var response = await client.GetAsync("api/courses");
             var objResponse = await ApiService.ins.ParseResponse<List<Subject>>(response);
-
             return objResponse;
         }
 

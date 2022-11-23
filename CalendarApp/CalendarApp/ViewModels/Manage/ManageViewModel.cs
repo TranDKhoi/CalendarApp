@@ -20,6 +20,13 @@ namespace CalendarApp.ViewModels.Manage
             set { listSubject = value; OnPropertyChanged(); }
         }
 
+        private ObservableCollection<DayOffSubject> listDayOff;
+        public ObservableCollection<DayOffSubject> ListDayOff
+        {
+            get { return listDayOff; }
+            set { listDayOff = value; OnPropertyChanged(); }
+        }
+
         private Subject selectedSubject;
         public Subject SelectedSubject
         {
@@ -143,6 +150,7 @@ namespace CalendarApp.ViewModels.Manage
         public Command OpenColorPickerCM { get; set; }
         public Command OpenSelectDayOfWeekPopupCM { get; set; }
         public Command SearchSubjectCM { get; set; }
+        public Command DeleteDayOffCM { get; set; }
 
         public ManageViewModel()
         {
@@ -159,6 +167,8 @@ namespace CalendarApp.ViewModels.Manage
                 if (res.isSuccess)
                 {
                     ListSubject = new ObservableCollection<Subject>(res.data);
+                    ListDayOff = new ObservableCollection<DayOffSubject>();
+
 
                     for (int i = 0; i < ListSubject.Count; i++)
                     {
@@ -167,6 +177,25 @@ namespace CalendarApp.ViewModels.Manage
 
                         TimeSpan t2 = TimeSpan.FromSeconds(ListSubject[i].startTime + 45 * 60 * ListSubject[i].numOfLessonsPerDay);
                         ListSubject[i].EndTimeUI = string.Format("{0:D1}:{1:D2}", t2.Hours, t2.Minutes);
+
+                        //create list day off
+                        if (ListSubject[i].dayOffs != null || ListSubject[i].dayOffs.Count != 0)
+                        {
+                            for (int j = 0; j < ListSubject[i].dayOffs.Count; j++)
+                            {
+                                DayOffSubject dayOffSubject = new DayOffSubject
+                                {
+                                    id = ListSubject[i].id,
+                                    title = ListSubject[i].title,
+                                    description = ListSubject[i].description,
+                                    StartTimeUI = ListSubject[i].StartTimeUI,
+                                    EndTimeUI = ListSubject[i].EndTimeUI,
+                                    offDate = ListSubject[i].dayOffs[j],
+                                    colorCode = ListSubject[i].colorCode,
+                                };
+
+                            }
+                        }
                     }
                 }
                 else
@@ -352,6 +381,18 @@ namespace CalendarApp.ViewModels.Manage
                     }
                 }
 
+            });
+
+            DeleteDayOffCM = new Command(async (p) =>
+            {
+                if (p == null) return;
+                DayOffSubject dayOffSubject = p as DayOffSubject;
+                bool result = await App.Current.MainPage.DisplayAlert("Thay đổi", "Xác nhận buổi này không nghỉ?", "Có", "Không");
+                if (result)
+                {
+                    //Gọi api xóa ngày nghỉ
+                }
+                return;
             });
         }
 

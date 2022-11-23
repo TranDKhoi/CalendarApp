@@ -21,10 +21,11 @@ namespace CalendarApp.ViewModels.Schedule
 {
     public class ScheduleViewModel : BaseViewModel
     {
-        public ICommand SelectDayCM { get; set; }
-        public ICommand SelectTaskCM { get; set; }
-        public ICommand OpenAddTaskPopupCM { get; set; }
-        public ICommand GetAllTaskCM { get; set; }
+        public Command SelectDayCM { get; set; }
+        public Command SelectTaskCM { get; set; }
+        public Command OpenAddTaskPopupCM { get; set; }
+        public Command GetAllTaskCM { get; set; }
+        public Command SelectRestDayCM { get; set; }
 
         private ObservableCollection<Event> todayTask;
         public ObservableCollection<Event> TodayTask
@@ -270,6 +271,18 @@ namespace CalendarApp.ViewModels.Schedule
                     }
 
                 }
+            });
+
+            SelectRestDayCM = new Command(async (p) =>
+            {
+                if (p == null) return;
+                Event e = p as Event;
+                bool result = await App.Current.MainPage.DisplayAlert("Nghỉ học", "Đánh dấu buổi này nghỉ", "Có", "Không");
+                if (result)
+                {
+                    //Gọi api báo nghỉ
+                }
+                return;
             });
         }
     }

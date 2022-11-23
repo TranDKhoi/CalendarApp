@@ -1,4 +1,6 @@
-﻿using CalendarApp.ViewModels.Manage;
+﻿using CalendarApp.Models;
+using CalendarApp.ViewModels.Manage;
+using CalendarApp.ViewModels.Schedule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ using Xamarin.Forms.Xaml;
 namespace CalendarApp.Views.Manage
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ManageScreen : ContentPage
+    public partial class ManageScreen : TabbedPage
     {
         public ManageScreen()
         {
@@ -36,6 +38,13 @@ namespace CalendarApp.Views.Manage
 
         }
 
-
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            if (((Label)sender).BindingContext is Event selectedItem)
+            {
+                var viewModel = (ManageViewModel)this.BindingContext;
+                viewModel.DeleteDayOffCM.Execute(selectedItem);
+            }
+        }
     }
 }

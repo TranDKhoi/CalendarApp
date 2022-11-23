@@ -23,7 +23,7 @@ namespace CalendarApp.Models
         public string code { get; set; }
         public int numOfLessonsPerDay { get; set; }
         public List<string> dayOfWeeks { get; set; }
-        public List<string> dayOffs { get; set; }
+        public List<DateTime> dayOffs { get; set; }
     }
 }
 

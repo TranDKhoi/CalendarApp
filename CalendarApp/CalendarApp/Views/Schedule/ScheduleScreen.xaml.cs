@@ -1,4 +1,5 @@
-﻿using CalendarApp.ViewModels.Converter;
+﻿using CalendarApp.Models;
+using CalendarApp.ViewModels.Converter;
 using CalendarApp.ViewModels.Schedule;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,16 @@ namespace CalendarApp.Views.Schedule
             base.OnAppearing();
             var vm = (ScheduleViewModel)this.BindingContext;
             vm.GetAllTaskCM.Execute(null);
+        }
+
+        private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
+        {
+            if (((Label)sender).BindingContext is Event selectedItem)
+            {
+                var viewModel = (ScheduleViewModel)this.BindingContext;
+                viewModel.SelectRestDayCM.Execute(selectedItem);
+            }
+
         }
     }
 }

@@ -11,6 +11,7 @@
     <ContentPage.Resources>
         <cvt:DayColorTabItemConverter x:Key="dayColorTabItemCVT" />
         <cvt:TitleColorTabItemConverter x:Key="titleColorTabItemCVT" />
+        <cvt:IsEventOrCourseConverter x:Key="isEventOrCourseCVT" />
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Padding="20, 0, 20, 0">
@@ -128,15 +129,35 @@
                                          BackgroundColor="{StaticResource purpleColor}"
                                          HorizontalOptions="Center" />
                             </StackLayout>
-                            <Frame BackgroundColor="#e9fffd"
+                            <Frame BackgroundColor="{Binding colorCode}"
                                    CornerRadius="20"
                                    Padding="20"
                                    HorizontalOptions="FillAndExpand">
                                 <StackLayout>
-                                    <Label Text="{Binding title}"
-                                           TextColor="Black"
-                                           FontSize="16"
-                                           FontAttributes="Bold" />
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding title}"
+                                               TextColor="Black"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="StartAndExpand"/>
+
+                                        <Label Margin="10, 0, 0, 0"
+                                               Padding="0"
+                                               FontFamily="Material"
+                                               Text="&#xef44;"
+                                               FontSize="25"
+                                               WidthRequest="50"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End"
+                                               TextColor="{StaticResource redColor}"
+                                               IsVisible="{Binding courseId, Converter={StaticResource isEventOrCourseCVT}}"
+                                               BindingContext="{Binding .}">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </StackLayout>
+                                    
                                     <Label Text="{Binding description}" />
                                 </StackLayout>
                             </Frame>

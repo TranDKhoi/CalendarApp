@@ -12,13 +12,15 @@ namespace CalendarApp.ViewModels.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             culture = new CultureInfo("vi-VN");
-            return culture.DateTimeFormat.GetDayName(DateTime.Today.DayOfWeek);
+            var dateTime = (DateTime)value;
+            return culture.DateTimeFormat.GetDayName(dateTime.DayOfWeek);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             culture = new CultureInfo("vi-VN");
-            return culture.DateTimeFormat.GetDayName(DateTime.Today.DayOfWeek);
+            var dateTime = (DateTime)value;
+            return culture.DateTimeFormat.GetDayName(dateTime.DayOfWeek);
         }
     }
 }

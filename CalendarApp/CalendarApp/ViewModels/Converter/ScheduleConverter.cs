@@ -1,4 +1,5 @@
-﻿using CalendarApp.ViewModels.Schedule;
+﻿using CalendarApp.Models;
+using CalendarApp.ViewModels.Schedule;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,6 +38,21 @@ namespace CalendarApp.ViewModels.Converter
 
             bool isSelected = (bool)value;
             return (isSelected) ? Color.FromHex("49B583") : Color.Gray;
+        }
+    }
+
+    public class IsEventOrCourseConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int? courseId = (int?)value;
+            return (courseId != null);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int? courseId = (int?)value;
+            return (courseId != null);
         }
     }
 }
