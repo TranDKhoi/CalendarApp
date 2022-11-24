@@ -6,6 +6,7 @@ using CalendarApp.Views.Schedule;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
 
@@ -39,6 +40,13 @@ namespace CalendarApp.ViewModels.Manage
         {
             get { return searchSubjectText; }
             set { searchSubjectText = value; OnPropertyChanged(); }
+        }
+
+        private string searchDayOffText;
+        public string SearchDayOffText
+        {
+            get { return searchDayOffText; }
+            set { searchDayOffText = value; OnPropertyChanged(); }
         }
 
         // data tra ve cho thg dat
@@ -150,6 +158,7 @@ namespace CalendarApp.ViewModels.Manage
         public Command OpenColorPickerCM { get; set; }
         public Command OpenSelectDayOfWeekPopupCM { get; set; }
         public Command SearchSubjectCM { get; set; }
+        public Command SearchDayOffCM { get; set; }
         public Command DeleteDayOffCM { get; set; }
 
         public ManageViewModel()
@@ -197,6 +206,9 @@ namespace CalendarApp.ViewModels.Manage
                             }
                         }
                     }
+                    ListDayOff = new ObservableCollection<DayOffSubject>(ListDayOff.OrderBy(item => item.date).ToList());
+
+
                 }
                 else
                 {
@@ -396,32 +408,7 @@ namespace CalendarApp.ViewModels.Manage
                     try
                     {
                         _ = App.Current.MainPage.DisplayAlert("Thành công", "Đánh dấu buổi nghỉ thành công", "Đóng");
-                        var res = await CourseService.ins.GetAllCourse();
-                        if (res.isSuccess)
-                        {
-                            ListSubject = new ObservableCollection<Subject>(res.data);
-                            ListDayOff = new ObservableCollection<DayOffSubject>();
-                            for (int i = 0; i < ListSubject.Count; i++)
-                            {
-                                if (ListSubject[i].dayOffs != null || ListSubject[i].dayOffs.Count != 0)
-                                {
-                                    for (int j = 0; j < ListSubject[i].dayOffs.Count; j++)
-                                    {
-                                        DayOffSubject temp = new DayOffSubject
-                                        {
-                                            id = ListSubject[i].id,
-                                            title = ListSubject[i].title,
-                                            description = ListSubject[i].description,
-                                            StartTimeUI = ListSubject[i].StartTimeUI,
-                                            EndTimeUI = ListSubject[i].EndTimeUI,
-                                            date = ListSubject[i].dayOffs[j],
-                                            colorCode = ListSubject[i].colorCode,
-                                        };
-                                        ListDayOff.Add(temp);
-                                    }
-                                }
-                            }
-                        }
+                        ListDayOff.Remove(dayOffSubject);
                     }
                     catch (Exception e)
                     {
@@ -429,6 +416,31 @@ namespace CalendarApp.ViewModels.Manage
                     }
                 }
                 return;
+            });
+
+            SearchDayOffCM = new Command((p) =>
+            {
+                CollectionView cl = p as CollectionView;
+
+                ObservableCollection<DayOffSubject> search = new ObservableCollection<DayOffSubject>();
+
+                if (!string.IsNullOrEmpty(SearchDayOffText))
+                {
+
+                    for (int i = 0; i < ListDayOff.Count; i++)
+                    {
+                        if (ListDayOff[i].title.ToLower().Contains(SearchDayOffText.ToLower()))
+                        {
+                            search.Add(ListDayOff[i]);
+                        }
+                    }
+                    search = new ObservableCollection<DayOffSubject>(search.OrderBy(item => item.date).ToList());
+                    cl.ItemsSource = search;
+                }
+                else
+                {
+                    cl.ItemsSource = ListDayOff;
+                }
             });
         }
 

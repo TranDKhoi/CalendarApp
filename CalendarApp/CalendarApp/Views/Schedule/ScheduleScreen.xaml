@@ -92,7 +92,7 @@
                                        FontSize="20"
                                        FontAttributes="Bold" />
                                 <Label Text="{Binding EndTimeUI, Mode=TwoWay}"
-                                       FontSize="16" />
+                                       FontSize="16"/>
                             </StackLayout>
                             <StackLayout Margin="0, 0, 10, 0">
                                 <Frame HeightRequest="20"
