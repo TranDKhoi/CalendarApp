@@ -6,7 +6,11 @@
             xmlns:context="clr-namespace:CalendarApp.ViewModels.Manage"
             xmlns:local="clr-namespace:CalendarApp.Resources"
             xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
-            BackgroundColor="White">
+            BackgroundColor="White"
+            BarBackgroundColor="#202020"
+            SelectedTabColor="{StaticResource greenColor}"
+            xct:IconTintColorEffect.TintColor="Aqua"
+            UnselectedTabColor="White">
     <TabbedPage.BindingContext>
         <context:ManageViewModel />
     </TabbedPage.BindingContext>
@@ -156,6 +160,7 @@
                                                FontSize="30"
                                                VerticalOptions="Center"
                                                HorizontalOptions="End"
+                                               HorizontalTextAlignment="End"
                                                TextColor="Black"
                                                Padding="0, 0, 0, 0"
                                                BindingContext="{Binding .}">

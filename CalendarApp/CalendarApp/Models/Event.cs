@@ -16,7 +16,12 @@ namespace CalendarApp.Models
         public string cloneEventId { get; set; }
         public string notiUnit { get; set; }
         public string recurringUnit { get; set; }
-        public string StartTimeUI { get; set; }
+        private String startTimeUI;
+        public String StartTimeUI
+        {
+            get { return startTimeUI; }
+            set { startTimeUI = value; OnPropertyChanged(); }
+        }
         private String endTimeUI;
         public String EndTimeUI
         {
