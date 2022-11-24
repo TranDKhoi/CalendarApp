@@ -47,7 +47,6 @@ namespace CalendarApp.Services
 
         public async Task<ApiResponse<Event>> CreateNewTask(Event newTask)
         {
-            Console.WriteLine(JsonConvert.SerializeObject(newTask));
             var content = new StringContent(JsonConvert.SerializeObject(newTask), Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync("api/events", content);

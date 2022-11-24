@@ -216,8 +216,12 @@ namespace CalendarApp.ViewModels.Schedule
                                 if (res.isSuccess)
                                 {
                                     TodayTask = new ObservableCollection<Event>(res.data);
+                                    await CalculateStartEndTimeAsync();
                                 }
-                                await CalculateStartEndTimeAsync();
+                                else
+                                {
+                                    TodayTask = null;
+                                }
                             }
                             else
                             {

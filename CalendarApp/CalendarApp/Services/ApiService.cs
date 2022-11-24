@@ -44,9 +44,20 @@ namespace CalendarApp.Services
             var responseRead = await response.Content.ReadAsStringAsync();
             try
             {
-                var objResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(responseRead);
-                objResponse.isSuccess = response.IsSuccessStatusCode;
-                return objResponse;
+                if (!string.IsNullOrEmpty(responseRead))
+                {
+                    var objResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(responseRead);
+                    objResponse.isSuccess = response.IsSuccessStatusCode;
+                    return objResponse;
+                }
+                else
+                {
+                    var objResponse = new ApiResponse<T>
+                    {
+                        isSuccess = response.IsSuccessStatusCode
+                    };
+                    return objResponse;
+                }
             }
             catch (Exception e)
             {

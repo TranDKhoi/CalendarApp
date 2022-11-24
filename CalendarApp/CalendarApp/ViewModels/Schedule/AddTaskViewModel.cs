@@ -453,8 +453,8 @@ namespace CalendarApp.ViewModels.Schedule
                     {
                         title = TaskName,
                         description = Description ?? "",
-                        startTime = new DateTime(year: DateTime.Now.Year, day: DateTime.Now.Day, month: DateTime.Now.Month, hour: int.Parse(StartTimeX), minute: int.Parse(StartTimeY), second: DateTime.Now.Second),
-                        endTime = new DateTime(year: DateTime.Now.Year, day: DateTime.Now.Day, month: DateTime.Now.Month, hour: int.Parse(EndTimeX), minute: int.Parse(EndTimeY), second: DateTime.Now.Second),
+                        startTime = new DateTime(year: StartDate.Year, day: StartDate.Day, month: StartDate.Month, hour: int.Parse(StartTimeX), minute: int.Parse(StartTimeY), second: DateTime.Now.Second),
+                        endTime = new DateTime(year: StartDate.Year, day: StartDate.Day, month: StartDate.Month, hour: int.Parse(EndTimeX), minute: int.Parse(EndTimeY), second: DateTime.Now.Second),
                         colorCode = ColorTag.ToHexRgbString(),
                         notiBeforeTime = GetRemindTime(),
                         notiUnit = GetRemindTimeUnit(),
