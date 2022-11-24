@@ -277,6 +277,10 @@ namespace CalendarApp.ViewModels.Manage
                     {
                         UserDialogs.Instance.Toast("Xoá công việc thành công");
                     }
+                    else
+                    {
+                        UserDialogs.Instance.Toast(result.message);
+                    }
 
                 }
                 _ = App.Current.MainPage.Navigation.PopAsync();
