@@ -18,6 +18,7 @@ namespace CalendarApp.Views.Schedule
         public ScheduleScreen()
         {
             InitializeComponent();
+            
         }
 
         private void listDay_SelectionChanged(object sender, SelectionChangedEventArgs e)

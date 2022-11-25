@@ -45,13 +45,13 @@ namespace CalendarApp.ViewModels.Schedule
             SelectedWeekDay = new List<DayTitle>();
             Days = new ObservableCollection<DayTitle>
             {
-                new DayTitle { Title = "T2", IsSelected = false , Detail="Thứ hai ", DetailEng="Monday",},
-                new DayTitle { Title = "T3", IsSelected = false ,Detail="Thứ ba ", DetailEng="Tuesday",},
-                new DayTitle { Title = "T4", IsSelected = false ,Detail="Thứ tư ",DetailEng="Wednesday",},
-                new DayTitle { Title = "T5", IsSelected = false ,Detail="Thứ năm ",DetailEng="Thursday",},
-                new DayTitle { Title = "T6", IsSelected = false ,Detail="Thứ sáu ",DetailEng="Friday",},
-                new DayTitle { Title = "T7", IsSelected = false ,Detail="Thứ bảy ",DetailEng="Saturday",},
-                new DayTitle { Title = "Cn", IsSelected = false ,Detail="Chủ nhật ",DetailEng="Sunday",},
+                new DayTitle { Title = "T2", IsSelected = false , Detail="Thứ hai", DetailEng="Monday",},
+                new DayTitle { Title = "T3", IsSelected = false ,Detail="Thứ ba", DetailEng="Tuesday",},
+                new DayTitle { Title = "T4", IsSelected = false ,Detail="Thứ tư",DetailEng="Wednesday",},
+                new DayTitle { Title = "T5", IsSelected = false ,Detail="Thứ năm",DetailEng="Thursday",},
+                new DayTitle { Title = "T6", IsSelected = false ,Detail="Thứ sáu",DetailEng="Friday",},
+                new DayTitle { Title = "T7", IsSelected = false ,Detail="Thứ bảy",DetailEng="Saturday",},
+                new DayTitle { Title = "Cn", IsSelected = false ,Detail="Chủ nhật",DetailEng="Sunday",},
             };
 
         }

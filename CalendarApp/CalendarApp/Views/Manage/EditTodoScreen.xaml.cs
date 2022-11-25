@@ -17,9 +17,13 @@ namespace CalendarApp.Views.Manage
         public EditTodoScreen(Event selectedTodo)
         {
             InitializeComponent();
+            ((NavigationPage)Application.Current.MainPage).BarBackgroundColor = Color.FromHex("#202020");
+
             var viewmodel = (EditTodoViewModel)this.BindingContext;
             viewmodel.CurrentTodo = selectedTodo;
             viewmodel.ApplyDataCM.Execute(null);
+
+          
         }
 
         private void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)

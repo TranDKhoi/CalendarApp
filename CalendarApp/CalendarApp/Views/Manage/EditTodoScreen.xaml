@@ -4,10 +4,14 @@
              xmlns:effect="clr-namespace:CalendarApp.Effects"
              xmlns:ct="clr-namespace:CalendarApp.ViewModels.Manage"
              x:Class="CalendarApp.Views.Manage.EditTodoScreen"
-             Title="Sửa việc cần làm">
+             Title="Sửa việc cần làm"
+             >
     <ContentPage.ToolbarItems>
+
         <ToolbarItem Text="Lưu"
-                     Command="{Binding UpdateTodoCM}" />
+                     
+                     Command="{Binding UpdateTodoCM}">
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.BindingContext>
         <ct:EditTodoViewModel />
@@ -174,7 +178,9 @@
                                Text="&#xe5cf;"
                                FontSize="25"
                                VerticalOptions="Center"
+                               MinimumWidthRequest="20"
                                HorizontalOptions="End"
+                               HorizontalTextAlignment="End"
                                TextColor="Black" />
                     </StackLayout>
                     <Frame.GestureRecognizers>
@@ -183,7 +189,8 @@
                     </Frame.GestureRecognizers>
                 </Frame>
                 <StackLayout Orientation="Horizontal"
-                             HorizontalOptions="EndAndExpand">
+                             HorizontalOptions="EndAndExpand"
+                             Margin="5, 0, 0, 0">
                     <Label Text="Màu"
                            VerticalOptions="Center"
                            TextColor="Black"
@@ -193,6 +200,7 @@
                            VerticalOptions="Center"
                            TextColor="{StaticResource blueColor}"
                            HorizontalOptions="Start"
+                           MinimumWidthRequest="20"
                            FontFamily="Material"
                            FontSize="20">
                         <Label.GestureRecognizers>

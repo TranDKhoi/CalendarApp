@@ -384,7 +384,7 @@ namespace CalendarApp.ViewModels.Manage
                             temp += selectedWeekDay[i].Detail;
                             if (i < selectedWeekDay.Count - 1)
                             {
-                                temp += ",";
+                                temp += ", ";
                             }
                             tempList.Add(selectedWeekDay[i].DetailEng);
                         }

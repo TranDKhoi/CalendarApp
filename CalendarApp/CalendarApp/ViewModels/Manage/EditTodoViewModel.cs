@@ -8,10 +8,12 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.CommunityToolkit.UI.Views;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace CalendarApp.ViewModels.Manage
@@ -318,6 +320,58 @@ namespace CalendarApp.ViewModels.Manage
             EndTimeX = CurrentTodo.endTime.ToString("HH");
             EndTimeY = CurrentTodo.endTime.ToString("mm");
             Description = CurrentTodo.description;
+
+            // recurrence label
+            if (CurrentTodo.recurringUnit == "DAY")
+            {
+                if (CurrentTodo.recurringEnd == null)
+                {
+                    RemindLabel = $"{CurrentTodo.recurringInterval} ngày một lần";
+                }
+                if (CurrentTodo.recurringEnd != null)
+                {
+                    RemindLabel = $"{CurrentTodo.recurringInterval} ngày một lần, cho tới {CurrentTodo.recurringEnd?.ToString("dd/MM/yyyy")}";
+                }
+            }
+            if (CurrentTodo.recurringUnit == "WEEK")
+            {
+                string weeksDay = "";
+                Dictionary<string, string> week = new Dictionary<string, string>();
+                week["Monday"] = "Thứ hai";
+                week["Tuesday"] = "Thứ ba";
+                week["Wednesday"] = "Thứ tư";
+                week["Thursday"] = "Thứ năm";
+                week["Friday"] = "Thứ sáu";
+                week["Saturday "] = "Thứ bảy";
+                week["Sunday "] = "Chủ nhật";
+                for (int i = 0; i < CurrentTodo.recurringDetails.Count; i++)
+                {
+                    weeksDay += week[CurrentTodo.recurringDetails[i]];
+                    if (i < CurrentTodo.recurringDetails.Count - 1)
+                    {
+                        weeksDay += ", ";
+                    }
+                }
+                if (CurrentTodo.recurringEnd == null)
+                {
+                    RemindLabel = $"{CurrentTodo.recurringInterval} tuần một lần vào {weeksDay}";
+                }
+                if (CurrentTodo.recurringEnd != null)
+                {
+                    RemindLabel = $"{CurrentTodo.recurringInterval} tuần một lần vào {weeksDay}, cho tới {CurrentTodo.recurringEnd?.ToString("dd/MM/yyyy")}";
+                }
+            }
+            if (CurrentTodo.recurringUnit == "MONTH")
+            {
+                if (CurrentTodo.recurringEnd == null)
+                {
+                    RemindLabel = $"{CurrentTodo.recurringInterval} tháng một lần vào ngày {CurrentTodo.startTime.Day}";
+                }
+                if (CurrentTodo.recurringEnd != null)
+                {
+                    RemindLabel = $"{CurrentTodo.recurringInterval} tháng một lần vào ngày {CurrentTodo.startTime.Day}, cho tới {CurrentTodo.recurringEnd?.ToString("dd/MM/yyyy")}";
+                }
+            }
         }
 
         private int GetRemindTime()
