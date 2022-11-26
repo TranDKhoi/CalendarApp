@@ -11,6 +11,7 @@ using Xam.TabView;
 using Xam.TabView.Control;
 using CalendarApp.Views.Authen;
 using Xamarin.Essentials;
+using CalendarApp.Services;
 
 namespace CalendarApp.ViewModels.Profile
 {
@@ -104,8 +105,10 @@ namespace CalendarApp.ViewModels.Profile
         public Command Logout_CM { get; set; }
         public void ClickLogout()
         {
-            this.Logout_CM = new Command(async () => {
-                await Application.Current.MainPage.Navigation.PushAsync(new LoginScreen());
+            this.Logout_CM = new Command( () => {
+                SharedPreferenceService.ins.ClearUserToken();
+                SharedPreferenceService.ins.ClearUserLogin();
+                Application.Current.MainPage = new NavigationPage(new LoginScreen());
             });
         }
 

@@ -37,7 +37,7 @@
                 <!--edit profile-->
                 <Grid Grid.Row="3" HeightRequest="50">
                     <StackLayout >
-                        <Button Text="Lưu" BorderRadius="40"  BackgroundColor="OliveDrab" Margin="100,10"  HeightRequest="50" Command="{Binding MyEditProfile}" />
+                        <Button Text="Lưu" BorderRadius="40"  BackgroundColor="OliveDrab" Margin="100,10"  HeightRequest="50" Command="{Binding CM_MyEditProfile}" />
 
                     </StackLayout>
                 </Grid>
