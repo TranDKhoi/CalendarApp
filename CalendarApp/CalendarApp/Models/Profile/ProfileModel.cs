@@ -11,7 +11,7 @@ namespace CalendarApp.Models.Profile
 {
     public class ProfileModel : BaseViewModel
     {
-        
+
 
         string nameProfile;
         public string NameProfile
@@ -69,8 +69,8 @@ namespace CalendarApp.Models.Profile
             email = _email;
             nameFull = _nameFull;
         }
-
-
+        
+        
 
     }
 }

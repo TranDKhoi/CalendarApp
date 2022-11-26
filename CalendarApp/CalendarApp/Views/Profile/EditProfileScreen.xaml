@@ -22,9 +22,37 @@
                 </Grid.RowDefinitions>
 
                 <!--header backgroud-->
+                <BoxView BackgroundColor="Yellow" Grid.Row="0"/>
+                <Image Source="{Binding ProfileModel.UrlBackground}" Aspect="AspectFill"/>
+                <!--profile name-->
+                <StackLayout Grid.Row="1" Padding="10,50    ,0,0" >
+                    <Label Text="Tên" Style="{StaticResource ProfileNameLabel}" VerticalOptions="Start"/>
+                    <Entry  Placeholder="Tên" PlaceholderColor="#460e56" Text="{Binding ProfileModel.NameProfile}" Style="{StaticResource ProfileTagLabel}"/>
+                    <Label Text="{Binding ProfileModel.NameProfile}" TextColor="#460e56"/>
+                </StackLayout>
+                <StackLayout Grid.Row="2" Padding="0,50,0,0" Margin="0,20,0,0">
+                    <Label Text="Status" Style="{StaticResource ProfileNameLabel}"/>
+                    <Entry  Placeholder="Trạng thái" PlaceholderColor="#460e56" Text="{Binding ProfileModel.StatusProfile}" Style="{StaticResource ProfileTagLabel}"/>
+                </StackLayout>
+                <!--edit profile-->
+                <Grid Grid.Row="3" HeightRequest="50">
+                    <StackLayout >
+                        <Button Text="Lưu" BorderRadius="40"  BackgroundColor="OliveDrab" Margin="100,10"  HeightRequest="50" Command="{Binding MyEditProfile}" />
 
-
+                    </StackLayout>
+                </Grid>
+                <!--social stats-->
                 
+                <!--profile descript-->
+
+                <Grid Grid.Row="4" Margin="0,30" ColumnSpacing="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+                <!--  button-->
+                <BoxView BackgroundColor="LightCyan" Grid.Row="5"/>
 
                 <Grid  Grid.Row="0" RowDefinitions="*" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
                     <StackLayout    x:Name="sl_1" Grid.Row="0" Padding="40" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
@@ -35,7 +63,7 @@
                     <StackLayout x:Name="sl" Grid.Row="0" Padding="40" HorizontalOptions="Center" 
                          VerticalOptions="End" 
                          TranslationY="80">
-                        <Frame CornerRadius="100"
+                    <Frame CornerRadius="100"
                        HeightRequest="100"
                        WidthRequest="100"
                        HorizontalOptions="Center"
@@ -69,7 +97,7 @@
                                 </control:ChoosePhotoControl>
                                 <Button x:Name="btnCancel" CornerRadius="10" Clicked="btnCancel_Clicked" Text="Cancel" Grid.Row="3" Margin="0,20,0,0" Grid.Column="0" Grid.ColumnSpan="2"></Button>
                             </Grid>
-                        </Frame>
+                    </Frame>
                     </Grid>
 
                 </Grid>
@@ -118,12 +146,12 @@
                         <Entry  Placeholder="Trạng thái" PlaceholderColor="#460e56" Text="{Binding StatusProfile}" Style="{StaticResource ProfileTagLabel}"/>
                     </StackLayout>
                 </Grid>
-                
+
                 <!--edit profile-->
                 <Grid Grid.Row="3" HeightRequest="50">
                     <StackLayout >
                         <Button Text="Lưu" BorderRadius="40"  BackgroundColor="OliveDrab" Margin="100,10"  HeightRequest="50" Command="{Binding CM_MyEditProfile}" />
-                    </StackLayout>
+                </StackLayout>
                 </Grid>
 
 

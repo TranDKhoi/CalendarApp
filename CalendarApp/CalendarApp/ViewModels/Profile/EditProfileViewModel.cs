@@ -11,7 +11,8 @@ namespace CalendarApp.ViewModels.Profile
 {
     public class EditProfileViewModel : BaseViewModel
     {
-       
+        public ProfileModel ProfileModel { get; set; } = new ProfileModel();
+        
 
         public ICommand CM_MyEditProfile { get; set; }
         public ICommand EditAvatar_CM { get; set; }
@@ -73,7 +74,7 @@ namespace CalendarApp.ViewModels.Profile
             SaveProfile();
 
         }
-
+            
         public void ClearFields()
         {
             _ProfileViewModel.NameProfile = string.Empty;
@@ -82,7 +83,7 @@ namespace CalendarApp.ViewModels.Profile
             _ProfileViewModel.UrlAvatar = string.Empty;
             _ProfileViewModel.Email = string.Empty;
         }
-       
+        
         public void SaveProfile()
         {
 
@@ -102,9 +103,9 @@ namespace CalendarApp.ViewModels.Profile
             //    _ProfileViewModel.UrlAvatar = _urlAvatar;
             //    _ProfileViewModel.Email = _email;
             //    _ProfileViewModel.NameFull = _nameFull;
-
+            
             //}
-
+            
             this.CM_MyEditProfile = new Command(async () =>
             {
                 await Application.Current.MainPage.Navigation.PushAsync(new ProfileScreen());
@@ -114,7 +115,7 @@ namespace CalendarApp.ViewModels.Profile
             //    //submit new data
             //ProfileViewModel.ClearFields();
         }
-
+        
 
     }
 }

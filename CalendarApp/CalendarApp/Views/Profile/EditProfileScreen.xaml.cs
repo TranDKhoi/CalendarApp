@@ -14,14 +14,16 @@ namespace CalendarApp.Views.Profile
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditProfileScreen : ContentPage
     {
-       
+        //public ProfileViewModel ProfileViewModel = new ProfileViewModel();
+        //public ProfileModel ProfileModel = new ProfileModel();
+
 
         public EditProfileScreen( )
         {
 
             try
             {
-                InitializeComponent();
+            InitializeComponent();
             }
             catch (Exception ex)
             {
@@ -54,7 +56,7 @@ namespace CalendarApp.Views.Profile
             cout = 2;
 
         }
-
+           
 
         private void btnCancel_Clicked(object sender, EventArgs e)
         {
@@ -94,7 +96,7 @@ namespace CalendarApp.Views.Profile
                 CloseDialog();
             }
             catch (Exception ex)
-            {
+        {
                 await DisplayAlert("Demo", ex.Message, "OK");
             }
         }
@@ -109,7 +111,7 @@ namespace CalendarApp.Views.Profile
                 });
 
                 if (result != null)
-                {
+            {
                     var stream = await result.OpenReadAsync();
                     //img.Source = ImageSource.FromStream(() => stream);
 
