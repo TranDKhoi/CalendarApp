@@ -4,11 +4,11 @@
             xmlns:home="clr-namespace:CalendarApp.Views.Home"
             xmlns:schedule="clr-namespace:CalendarApp.Views.Schedule"
             xmlns:note="clr-namespace:CalendarApp.Views.Note"
-            xmlns:task="clr-namespace:CalendarApp.Views.Task"
-            xmlns:profile="clr-namespace:CalendarApp.Views.Profile"
+            xmlns:manage="clr-namespace:CalendarApp.Views.Manage"
             xmlns:context="clr-namespace:CalendarApp.ViewModels"
             x:Class="CalendarApp.Views.BottomBarCustom.BottomBarCustom"
             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+            xmlns:profile="clr-namespace:CalendarApp.Views.Profile"
             android:TabbedPage.ToolbarPlacement="Bottom"
             BackgroundColor="#202020"
             UnselectedTabColor="White"
@@ -20,7 +20,7 @@
                              IconImageSource="calendar.png" />
     <note:NoteScreen Title="Ghi chú"
                      IconImageSource="note.png" />
-    <task:TaskScreen Title="Quản lý"
+    <manage:ManageScreen Title="Môn học"
                      IconImageSource="task.png" />
     <profile:ProfileScreen Title="Tài khoản"
                            IconImageSource="profile.png" />

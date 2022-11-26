@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CalendarApp.Resources"
+             x:Class="CalendarApp.Views.Authen.ResetPassScreen"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <StackLayout Margin="20"
+                     VerticalOptions="Center"
+                     Spacing="20">
+            <Label Text="Khôi phục mật khẩu của bạn"
+                   FontSize="20" />
+            <Frame CornerRadius="20"
+                   Padding="5,0,5,0"
+                   HasShadow="False">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="&#xe897;"
+                           VerticalOptions="Center"
+                           FontFamily="Material"
+                           FontSize="25" />
+                    <local:RoundEntry  HorizontalOptions="FillAndExpand"
+                                       Placeholder="Mật khẩu"
+                                       Text="{Binding Password}"
+                                       IsPassword="True" />
+                </StackLayout>
+            </Frame>
+            <Frame CornerRadius="20"
+                   Padding="5,0,5,0"
+                   HasShadow="False">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="&#xe897;"
+                           VerticalOptions="Center"
+                           FontFamily="Material"
+                           FontSize="25" />
+                    <local:RoundEntry  HorizontalOptions="FillAndExpand"
+                                       Placeholder="Nhập lại mật khẩu"
+                                       Text="{Binding RePassword}"
+                                       IsPassword="True" />
+                </StackLayout>
+            </Frame>
+            <Button Text="Xác minh"
+                    BackgroundColor="{StaticResource primaryColor}"
+                    CornerRadius="20"
+                    TextColor="White"
+                    Command="{Binding ResetPassCM}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace CalendarApp.ViewModels.Task
+namespace CalendarApp.Resources
 {
-    public class TaskViewModel : BaseViewModel
+    public class BlankEditor:Editor
     {
-        
     }
 }

@@ -3,11 +3,4 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CalendarApp.Views.Home.HomeScreen"
              BackgroundColor="White">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Home Screen"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
 </ContentPage>

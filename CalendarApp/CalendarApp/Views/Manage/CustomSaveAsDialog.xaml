@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xct:Popup xmlns="http://xamarin.com/schemas/2014/forms"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+           xmlns:ct="clr-namespace:CalendarApp.ViewModels.Manage"
+           x:Class="CalendarApp.Views.Manage.CustomSaveAsDialog"
+           Size="350,200"
+           x:Name="this">
+    <xct:Popup.BindingContext>
+        <ct:CustomSaveAsDialogViewModel />
+    </xct:Popup.BindingContext>
+    <ContentView Padding="10">
+        <StackLayout>
+            <RadioButton Content="Chỉ sự kiện này"
+                         IsChecked="True"
+                         CheckedChanged="RadioButton_CheckedChanged" />
+            <RadioButton Content="Sự kiện này và theo sau"
+                         CheckedChanged="RadioButton_CheckedChanged" />
+            <RadioButton Content="Tất cả"
+                         CheckedChanged="RadioButton_CheckedChanged" />
+            <StackLayout Orientation="Horizontal"
+                         Margin="0,30,0,0">
+                <Button Text="Xong"
+                        WidthRequest="70"
+                        HorizontalOptions="EndAndExpand"
+                        VerticalOptions="Center"
+                        Visual="Material"
+                        BackgroundColor="#1a73e8"
+                        FontSize="12"
+                        HeightRequest="30"
+                        Command="{Binding DoneCM}"
+                        CommandParameter="{x:Reference this}" />
+                <Button Text="Hủy"
+                        WidthRequest="70"
+                        HeightRequest="30"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Visual="Material"
+                        FontSize="12"
+                        Clicked="Button_Clicked" />
+            </StackLayout>
+        </StackLayout>
+    </ContentView>
+</xct:Popup>

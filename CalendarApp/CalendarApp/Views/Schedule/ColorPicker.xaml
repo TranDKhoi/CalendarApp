@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xct:Popup xmlns="http://xamarin.com/schemas/2014/forms"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+           xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
+           x:Class="CalendarApp.Views.Schedule.ColorPicker"
+           x:Name="colorPicker"
+           Size="200, 200">
+    <xct:Popup.BindingContext>
+        <context:ColorPickerViewModel />
+    </xct:Popup.BindingContext>
+    
+    <xct:Popup.Content>
+        <StackLayout Padding="10">
+            <Label Text="Chọn màu hiển thị"
+                   TextColor="Black"
+                   FontSize="20"
+                   Margin="0, 0, 0, 10" 
+                   HorizontalOptions="Start"/>
+            <Grid HeightRequest="100"
+                  WidthRequest="200"
+                  HorizontalOptions="Center"
+                  VerticalOptions="End"
+                  Margin="0, 0, 0, 10">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0"
+                      Grid.Column="0">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectYellowCM}" />
+                    </Grid.GestureRecognizers>
+                    <Frame CornerRadius="90"
+                           BackgroundColor="{StaticResource yellowColor}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                    <Label Text="&#xe876;"
+                           VerticalOptions="Center"
+                           TextColor="White"
+                           HorizontalOptions="Center"
+                           FontFamily="Material"
+                           FontSize="20"
+                           Padding="0" 
+                           IsVisible="{Binding IsYellow}"/>
+                </Grid>
+
+                <Grid Grid.Row="0"
+                      Grid.Column="1">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectRedCM}" />
+                    </Grid.GestureRecognizers>
+                    <Frame CornerRadius="90"
+                           BackgroundColor="{StaticResource redColor}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+                    <Label Text="&#xe876;"
+                           VerticalOptions="Center"
+                           TextColor="White"
+                           HorizontalOptions="Center"
+                           FontFamily="Material"
+                           FontSize="20"
+                           Padding="0" 
+                           IsVisible="{Binding IsRed}"/>
+                </Grid>
+
+                <Grid Grid.Row="0"
+                      Grid.Column="2">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectPurpleCM}" />
+                    </Grid.GestureRecognizers>
+                    <Frame CornerRadius="90"
+                           BackgroundColor="{StaticResource purpleColor}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+                    <Label Text="&#xe876;"
+                           VerticalOptions="Center"
+                           TextColor="White"
+                           HorizontalOptions="Center"
+                           FontFamily="Material"
+                           FontSize="20"
+                           Padding="0" 
+                           IsVisible="{Binding IsPurple}"/>
+                </Grid>
+
+                <Grid Grid.Row="1"
+                      Grid.Column="0">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectBlueCM}" />
+                    </Grid.GestureRecognizers>
+                    <Frame CornerRadius="90"
+                           BackgroundColor="{StaticResource blueColor}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+                    <Label Text="&#xe876;"
+                           VerticalOptions="Center"
+                           TextColor="White"
+                           HorizontalOptions="Center"
+                           FontFamily="Material"
+                           FontSize="20"
+                           Padding="0"
+                           IsVisible="{Binding IsBlue}"/>
+                </Grid>
+
+                <Grid Grid.Row="1"
+                      Grid.Column="1">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectGreenCM}" />
+                    </Grid.GestureRecognizers>
+                    <Frame CornerRadius="90"
+                           BackgroundColor="{StaticResource greenColor}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+                    <Label Text="&#xe876;"
+                           VerticalOptions="Center"
+                           TextColor="White"
+                           HorizontalOptions="Center"
+                           FontFamily="Material"
+                           FontSize="20"
+                           Padding="0"
+                           IsVisible="{Binding IsGreen}"/>
+                </Grid>
+
+                <Grid Grid.Row="1"
+                      Grid.Column="2">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectPinkCM}" />
+                    </Grid.GestureRecognizers>
+                    <Frame CornerRadius="90"
+                           BackgroundColor="{StaticResource pinkColor}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+                    <Label Text="&#xe876;"
+                           VerticalOptions="Center"
+                           TextColor="White"
+                           HorizontalOptions="Center"
+                           FontFamily="Material"
+                           FontSize="20"
+                           Padding="0"
+                           IsVisible="{Binding IsPink}"/>
+                </Grid>
+
+
+            </Grid>
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Xong"
+                        WidthRequest="70"
+                        HorizontalOptions="EndAndExpand"
+                        VerticalOptions="Center"
+                        Visual="Material"
+                        BackgroundColor="#1a73e8"
+                        FontSize="12"
+                        HeightRequest="30"
+                        Command="{Binding DoneCM}" 
+                        CommandParameter="{x:Reference colorPicker}"/>
+                <Button Text="Hủy"
+                        WidthRequest="70"
+                        HeightRequest="30"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Visual="Material"
+                        FontSize="12"
+                        Clicked="Button_Clicked" />
+            </StackLayout>
+        </StackLayout>
+    </xct:Popup.Content>
+</xct:Popup>

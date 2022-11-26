@@ -1,5 +1,8 @@
 ﻿using Acr.UserDialogs;
+using CalendarApp.Models;
+using CalendarApp.Services;
 using CalendarApp.Views.Authen;
+using CalendarApp.Views.BottomBarCustom;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +12,7 @@ namespace CalendarApp.ViewModels.Authen
 {
     public class LoginViewModel : BaseViewModel
     {
-        
+
         private string email;
         public string Email
         {
@@ -29,11 +32,24 @@ namespace CalendarApp.ViewModels.Authen
         public Command ToSignupScreenCM { get; set; }
         public LoginViewModel()
         {
-            LoginCM = new Command(() =>
+            LoginCM = new Command(async () =>
             {
                 if (isValidData())
                 {
-                    //API here
+                    UserDialogs.Instance.ShowLoading();
+                    var res = await AuthService.ins.Login(Email, Password);
+                    UserDialogs.Instance.HideLoading();
+
+                    if (res.isSuccess)
+                    {
+                        SharedPreferenceService.ins.SetUserToken(res.data.token);
+                        SharedPreferenceService.ins.SetUserLogin(Email, Password);
+                        Application.Current.MainPage = new NavigationPage(new BottomBarCustom());
+                    }
+                    else
+                    {
+                        UserDialogs.Instance.Toast(res.message);
+                    }
                 }
                 else
                 {
@@ -47,7 +63,6 @@ namespace CalendarApp.ViewModels.Authen
             ToSignupScreenCM = new Command(() =>
             {
                 Application.Current.MainPage.Navigation.PushAsync(new SignupScreen());
-
             });
         }
 

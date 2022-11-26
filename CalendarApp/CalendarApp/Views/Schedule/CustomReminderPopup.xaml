@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xct:Popup xmlns="http://xamarin.com/schemas/2014/forms"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+           xmlns:behaviors="clr-namespace:CalendarApp.Behaviors"
+           xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
+           x:Class="CalendarApp.Views.Schedule.CustomReminderPopup"
+           Size="200, 150"
+           x:Name="ReminderPopup">
+    <xct:Popup.BindingContext>
+        <context:CustomReminderViewModel />
+    </xct:Popup.BindingContext>
+    <ContentView>
+        <Grid Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Text="Tùy chỉnh nhắc nhở"
+                   TextColor="Black"
+                   FontSize="20"
+                   Grid.Row="0"
+                   VerticalOptions="Center"
+                   />
+            <StackLayout Orientation="Horizontal"
+                         Grid.Row="1"
+                         VerticalOptions="Center">
+                <Entry VerticalOptions="Center"
+                       Keyboard="Numeric"
+                       HorizontalTextAlignment="Center"
+                       HorizontalOptions="CenterAndExpand"
+                       WidthRequest="50"
+                       Text="{Binding SelectedCountDay, Mode=OneWayToSource}">
+                    <Entry.Behaviors>
+                        <behaviors:EntryMaxLengthBehavior MaxLength="2" />
+                    </Entry.Behaviors>
+                </Entry>
+                <Picker VerticalOptions="Center"
+                        HorizontalOptions="CenterAndExpand"
+                        HorizontalTextAlignment="Center"
+                        WidthRequest="80"
+                        ItemsSource="{Binding CustomReminders}"
+                        SelectedItem="{Binding SelectedTypeDate, Mode=OneWayToSource}"/>
+            </StackLayout>
+            <StackLayout Grid.Row="2"
+                         Orientation="Horizontal">
+                <Button Text="Xong"
+                        WidthRequest="70"
+                        HorizontalOptions="EndAndExpand"
+                        VerticalOptions="Center"
+                        Visual="Material"
+                        BackgroundColor="#1a73e8"
+                        FontSize="12"
+                        HeightRequest="30" 
+                        Command="{Binding DoneCM}"
+                        CommandParameter="{x:Reference ReminderPopup}"/>
+                <Button Text="Hủy"
+                        WidthRequest="70"
+                        HeightRequest="30"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Visual="Material"
+                        FontSize="12" 
+                        Clicked="Button_Clicked"/>
+            </StackLayout>
+        </Grid>
+    </ContentView>
+</xct:Popup>
