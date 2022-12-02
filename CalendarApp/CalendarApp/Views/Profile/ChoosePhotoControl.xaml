@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView  xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CalendarApp.Views.Profile.ChoosePhotoControl">
+    <ContentView.Content>
+        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto">
+            <Label x:Name="lblFontawesomeText" FontFamily="{StaticResource FontAwesomeSolid}" FontSize="40" HorizontalOptions="Center" Grid.Row="0" TextColor="#08457E"></Label>
+            <Label x:Name="lblText" TextColor="Black" Grid.Row="1"  HorizontalOptions="Center"  FontSize="14"></Label>
+        </Grid>
+    </ContentView.Content>
+</ContentView>
