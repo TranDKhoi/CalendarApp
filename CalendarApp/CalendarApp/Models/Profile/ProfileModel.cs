@@ -3,10 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
 namespace CalendarApp.Models.Profile
 {
     public class ProfileModel : BaseViewModel
     {
+
 
         string nameProfile;
         public string NameProfile
@@ -33,19 +37,39 @@ namespace CalendarApp.Models.Profile
             set { urlAvatar = value; OnPropertyChanged(nameof(UrlAvatar)); }
         }
 
-        public void SetProperty(string prop, string val)
+        string email;
+        public string Email
         {
+            get { return email; }
+            set { email = value; OnPropertyChanged(nameof(Email)); }
+        }
 
-        }
-        public void ClearFields()
+        string nameFull;
+        public string NameFull
         {
-            NameProfile = string.Empty;
-            StatusProfile = string.Empty;
-            UrlBackground = string.Empty;
-            UrlAvatar = string.Empty;
+            get { return nameFull; }
+            set { nameFull = value; OnPropertyChanged(nameof(nameFull)); }
         }
-        
-        
+        public ProfileModel()
+        {
+            NameProfile = "Phap";
+            StatusProfile = "Mai mai ben nhau";
+            UrlBackground = "avatar.jpg";
+            UrlAvatar = "anh.jpg";
+            Email = "ngocphap5@gmail.com";
+            NameFull = "Huỳnh Ngọc Pháp";
+        }
+        public ProfileModel(string _nameProfile, string _statusProfile, string _urlBackground, string _urlAvatar, string _email, string _nameFull)
+        {
+            nameProfile = _nameProfile;
+            statusProfile = _statusProfile;
+            urlBackground = _urlBackground;
+            urlAvatar = _urlAvatar;
+            email = _email;
+            nameFull = _nameFull;
+        }
+
+
 
     }
 }
