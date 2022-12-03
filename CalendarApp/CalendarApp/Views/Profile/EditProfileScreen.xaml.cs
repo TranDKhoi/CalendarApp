@@ -1,5 +1,7 @@
 ﻿using CalendarApp.Models.Profile;
+using CalendarApp.Services;
 using CalendarApp.ViewModels.Profile;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,13 +84,16 @@ namespace CalendarApp.Views.Profile
 
                     if (cout == 1)
 
-                    { img.Source = ImageSource.FromStream(() => stream); }
-
+                    {
+                        img.Source = ImageSource.FromStream(() => stream);
+                        ProfileModel.ins.UrlAvatar = stream;
+                    }
                     else
 
-                    { img_1.Source = ImageSource.FromStream(() => stream); }
-
-
+                    {
+                        img_1.Source = ImageSource.FromStream(() => stream);
+                        //ProfileModel.ins.UrlAvatar = stream;
+                    }
 
                 }
                 CloseDialog();
@@ -115,11 +120,19 @@ namespace CalendarApp.Views.Profile
 
                     if (cout == 1)
 
-                    { img.Source = ImageSource.FromStream(() => stream); }
+                    {
+                        img.Source = ImageSource.FromStream(() => stream);
+                        ProfileModel.ins.UrlAvatar = stream;
+                        CloseDialog();
+                    }
 
                     else
 
-                    { img_1.Source = ImageSource.FromStream(() => stream); }
+                    { 
+                        img_1.Source = ImageSource.FromStream(() => stream);
+                        //ProfileModel.ins.UrlAvatar = stream;
+                        CloseDialog();
+                    }
 
 
 

@@ -1,6 +1,7 @@
 ﻿using CalendarApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 using Xamarin.Forms;
@@ -10,6 +11,18 @@ namespace CalendarApp.Models.Profile
 {
     public class ProfileModel : BaseViewModel
     {
+        private static ProfileModel _ins;
+
+        public static ProfileModel ins
+        {
+            get
+            {
+                if (_ins == null)
+                    _ins = new ProfileModel();
+                return _ins;
+            }
+            set { _ins = value; }
+        }
 
 
         string nameProfile;
@@ -30,8 +43,8 @@ namespace CalendarApp.Models.Profile
             get { return urlBackground; }
             set { urlBackground = value; OnPropertyChanged(nameof(UrlBackground)); }
         }
-        string urlAvatar;
-        public string UrlAvatar
+        Stream urlAvatar;
+        public Stream UrlAvatar
         {
             get { return urlAvatar; }
             set { urlAvatar = value; OnPropertyChanged(nameof(UrlAvatar)); }
@@ -52,23 +65,13 @@ namespace CalendarApp.Models.Profile
         }
         public ProfileModel()
         {
-            NameProfile = "Phap";
-            StatusProfile = "Mai mai ben nhau";
-            UrlBackground = "avatar.jpg";
-            UrlAvatar = "anh.jpg";
+            NameProfile = "Name User";
+            StatusProfile = "Cau chuyen tam dac";
+            UrlBackground = "AvatarDemo.jpg";
+            //UrlAvatar = "anh.jpg";
             Email = "ngocphap5@gmail.com";
-            NameFull = "Huỳnh Ngọc Pháp";
+            NameFull = "Full name";
         }
-        public ProfileModel(string _nameProfile, string _statusProfile, string _urlBackground, string _urlAvatar, string _email, string _nameFull)
-        {
-            nameProfile = _nameProfile;
-            statusProfile = _statusProfile;
-            urlBackground = _urlBackground;
-            urlAvatar = _urlAvatar;
-            email = _email;
-            nameFull = _nameFull;
-        }
-
 
 
     }
