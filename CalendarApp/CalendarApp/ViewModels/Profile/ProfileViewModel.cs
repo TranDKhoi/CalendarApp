@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 using CalendarApp.Views.Authen;
 using Xamarin.Essentials;
+using Newtonsoft.Json;
+using System.IO;
+using CalendarApp.Services;
 
 namespace CalendarApp.ViewModels.Profile
 {
@@ -34,11 +37,11 @@ namespace CalendarApp.ViewModels.Profile
             get { return urlBackground; }
             set { urlBackground = value; OnPropertyChanged(nameof(UrlBackground)); }
         }
-        string urlAvatar;
-        public string UrlAvatar
+        ImageSource urlAvatar;
+        public ImageSource UrlAvatar
         {
             get { return urlAvatar; }
-            set { urlAvatar = value; OnPropertyChanged(nameof(UrlAvatar)); }
+            set { urlAvatar = value; OnPropertyChanged(); }
         }
 
         string email;
@@ -52,11 +55,13 @@ namespace CalendarApp.ViewModels.Profile
         public string NameFull
         {
             get { return nameFull; }
-            set { nameFull = value; OnPropertyChanged(nameof(nameFull)); }
+            set { nameFull = value; OnPropertyChanged(); }
         }
 
 
-        public ProfileModel _ProfileModel { get; set; } = new ProfileModel() { };
+        public ProfileModel _ProfileModel { get; set; } = ProfileModel.ins;
+
+        public Command FetchAvatarCM { get; set; }
 
 
         public ProfileViewModel()
@@ -68,8 +73,6 @@ namespace CalendarApp.ViewModels.Profile
             //ProfileModel.Index = 1;
             ClickEdit();
             ClickLogout();
-
-
         }
 
         public void DataProfile()
@@ -77,8 +80,8 @@ namespace CalendarApp.ViewModels.Profile
             NameProfile = _ProfileModel.NameProfile;
             StatusProfile = _ProfileModel.StatusProfile;
             UrlBackground = _ProfileModel.UrlBackground;
-            UrlAvatar = _ProfileModel.UrlAvatar;
-            Email = _ProfileModel.Email;
+            (string email, string pass) = SharedPreferenceService.ins.GetUserLogin();
+            Email = email;
             NameFull = _ProfileModel.NameFull;
         }
 
@@ -97,24 +100,26 @@ namespace CalendarApp.ViewModels.Profile
             Edit_CM = new Command(async () =>
                        {
                            await Application.Current.MainPage.Navigation.PushAsync(new EditProfileScreen());
+
                        });
 
-           //this.Edit_CM = new Command(async () => {
-           //     await Application.Current.MainPage.Navigation.PushAsync(new EditProfileScreen());
-           // });
+            //this.Edit_CM = new Command(async () => {
+            //     await Application.Current.MainPage.Navigation.PushAsync(new EditProfileScreen());
+            // });
         }
         //logout button
         public Command Logout_CM { get; set; }
         public void ClickLogout()
         {
-           // LogoutCM = new Command(() =>
+            // LogoutCM = new Command(() =>
             //            {
             //                SharedPreferenceService.ins.ClearUserLogin();
             //                SharedPreferenceService.ins.ClearUserToken();
             //                Application.Current.MainPage = new NavigationPage(new LoginScreen());
             //                App.Current.MainPage.Navigation.PopToRootAsync();
             //            });
-            this.Logout_CM = new Command(async () => {
+            this.Logout_CM = new Command(async () =>
+            {
                 await Application.Current.MainPage.Navigation.PushAsync(new LoginScreen());
             });
         }

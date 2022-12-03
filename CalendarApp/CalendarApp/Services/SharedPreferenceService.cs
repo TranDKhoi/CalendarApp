@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CalendarApp.Models.Profile;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Xamarin.Essentials;
 
@@ -18,6 +21,16 @@ namespace CalendarApp.Services
             }
             set { _ins = value; }
         }
+
+
+        public void SetUserData(ProfileModel user)
+        {
+            Preferences.Set("UserData", JsonConvert.SerializeObject(user));
+        }
+
+
+
+
 
 
         public void SetUserToken(string token)
