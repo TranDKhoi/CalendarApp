@@ -26,5 +26,12 @@ namespace CalendarApp.Views.Note
             viewModel.ClickNoteCM.Execute(listNote.SelectedItem);
             listNote.SelectedItem = null;
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            var viewModel = (NoteViewModel)this.BindingContext;
+            viewModel.ReFetchNoteCM.Execute(null);
+        }
     }
 }

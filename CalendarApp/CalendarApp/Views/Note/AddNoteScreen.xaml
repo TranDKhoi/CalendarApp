@@ -19,12 +19,14 @@
         <StackLayout>
             <Frame Padding="10,0,0,0">
                 <local:RoundEntry MinimumHeightRequest="300"
-                                  Placeholder="Tiêu đề" />
+                                  Placeholder="Tiêu đề"
+                                  Text="{Binding Title}" />
             </Frame>
             <Frame>
                 <local:BlankEditor  AutoSize="TextChanges"
                                     MinimumHeightRequest="300"
-                                    Placeholder="Ghi chú ở đây" />
+                                    Placeholder="Ghi chú ở đây"
+                                    Text="{Binding Content}" />
             </Frame>
             <Label Text="Việc cần làm"
                    Margin="10,10,0,0"
@@ -48,7 +50,7 @@
                                    CornerRadius="20"
                                    HasShadow="False"
                                    Padding="0">
-                                <local:RoundEntry Text="{Binding content,Mode=OneWayToSource}" />
+                                <local:RoundEntry Text="{Binding description,Mode=TwoWay}" />
                             </Frame>
                         </StackLayout>
                     </DataTemplate>

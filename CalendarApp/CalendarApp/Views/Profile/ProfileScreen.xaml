@@ -48,11 +48,10 @@
 
                 <Grid Grid.Row="1" Margin="0,30,0,0" ColumnSpacing="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-
                     <StackLayout Grid.Row="0" >
                         <Label Text="Thông tin tài khoản" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="20"/>
                     </StackLayout>
@@ -77,7 +76,8 @@
                     </StackLayout>
 
                 </Grid >
-                <Grid Grid.Row="2" HeightRequest="50">
+                <Grid Grid.Row="2" HeightRequest="50"
+                      Margin="0,0,0,20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
 
@@ -87,8 +87,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Grid.Row="0"  Text="Edit" BorderRadius="40"  BackgroundColor="WhiteSmoke"  HeightRequest="50" Command="{Binding Edit_CM}" />
-                    <Button  Grid.Column="1" Grid.Row="0" Text="Logout" BorderRadius="40"  BackgroundColor="WhiteSmoke"   HeightRequest="50" Command="{Binding Logout_CM}" />
+                    <Button Grid.Column="0" Grid.Row="0"  Text="Chỉnh sửa" BorderRadius="40"  BackgroundColor="WhiteSmoke"  HeightRequest="50" Command="{Binding Edit_CM}" />
+                    <Button  Grid.Column="1" Grid.Row="0" Text="Đăng xuất" BorderRadius="40"  BackgroundColor="WhiteSmoke"   HeightRequest="50" Command="{Binding Logout_CM}" />
 
                 </Grid>
 

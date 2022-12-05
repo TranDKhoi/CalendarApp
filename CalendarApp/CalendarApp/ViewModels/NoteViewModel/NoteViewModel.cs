@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using CalendarApp.Models;
+using CalendarApp.Services;
 using CalendarApp.Views.Note;
 using System;
 using System.Collections.Generic;
@@ -38,28 +39,22 @@ namespace CalendarApp.ViewModels.NoteViewModel
         public Command ToAddNoteScreenCM { get; set; }
         public Command SaveNoteCM { get; set; }
         public Command DeleteNoteCM { get; set; }
+        public Command ReFetchNoteCM { get; set; }
 
         public NoteViewModel()
         {
-            NoteList = new ObservableCollection<Note>();
-            for (int i = 0; i < 5; i++)
+            ReFetchNoteCM = new Command(() =>
             {
-                List<NoteTodo> td = new List<NoteTodo>();
-                td.Add(new NoteTodo { isDone = true, description = "Ăn cơm" });
-                td.Add(new NoteTodo { isDone = false, description = "Ngủ trưa" });
-                td.Add(new NoteTodo { isDone = true, description = "Học bài" });
-
-                NoteList.Add(new Note
+                var res = NoteService.ins.GetAllNote();
+                if (res != null)
                 {
-                    title = "Một ngày bận rộn",
-                    createdAt = DateTime.Now,
-                    content = "Dọn dẹp nhà cửa đồ hết rồi mới được ngủ nghe chưa",
-                    noteTodo = td,
-                }); ;
-            }
-
+                    NoteList = new ObservableCollection<Note>(res);
+                }
+            });
             SearchNoteCM = new Command((p) =>
             {
+                if (NoteList == null || NoteList.Count == 0) return;
+
                 CollectionView cl = p as CollectionView;
 
                 ObservableCollection<Note> searchNote = new ObservableCollection<Note>();
@@ -83,21 +78,26 @@ namespace CalendarApp.ViewModels.NoteViewModel
                 }
 
             });
-            ToAddNoteScreenCM = new Command(async () =>
+            ToAddNoteScreenCM = new Command(() =>
             {
-                await App.Current.MainPage.Navigation.PushAsync(new AddNoteScreen());
-
-                //reload note listview
+                App.Current.MainPage.Navigation.PushAsync(new AddNoteScreen());
             });
-            ClickNoteCM = new Command(async () =>
+            ClickNoteCM = new Command(() =>
             {
-                await App.Current.MainPage.Navigation.PushAsync(new NoteDetails(this));
-                //reload note listview
-
+                App.Current.MainPage.Navigation.PushAsync(new NoteDetails(this));
             });
             SaveNoteCM = new Command(() =>
             {
-                App.Current.MainPage.Navigation.PopAsync();
+                var res = NoteService.ins.UpdateNote(SelectedNote);
+                if (res)
+                {
+                    App.Current.MainPage.Navigation.PopAsync();
+                    UserDialogs.Instance.Toast("Cập nhật thành công");
+                }
+                else
+                {
+                    UserDialogs.Instance.Toast("Lỗi hệ thống");
+                }
             });
             DeleteNoteCM = new Command(() =>
             {
@@ -111,7 +111,11 @@ namespace CalendarApp.ViewModels.NoteViewModel
                     {
                         //Delete here
                         if (isYes)
+                        {
+                            NoteService.ins.DeleteNote(SelectedNote);
                             App.Current.MainPage.Navigation.PopAsync();
+                            UserDialogs.Instance.Toast("Xoá thành công");
+                        }
                     },
                 });
             });
