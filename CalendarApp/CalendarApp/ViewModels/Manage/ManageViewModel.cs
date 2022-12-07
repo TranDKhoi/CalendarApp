@@ -166,425 +166,523 @@ namespace CalendarApp.ViewModels.Manage
 
             FirstLoadSubjectCM = new Command(async () =>
             {
-                SelectedSubject = null;
-                ClearSubjectData();
-
-                UserDialogs.Instance.ShowLoading();
-                var res = await CourseService.ins.GetAllCourse();
-                UserDialogs.Instance.HideLoading();
-
-                if (res.isSuccess)
+                try
                 {
-                    ListSubject = new ObservableCollection<Subject>(res.data);
-                    ListDayOff = new ObservableCollection<DayOffSubject>();
+                    SelectedSubject = null;
+                    ClearSubjectData();
 
+                    UserDialogs.Instance.ShowLoading();
+                    var res = await CourseService.ins.GetAllCourse();
+                    UserDialogs.Instance.HideLoading();
 
-                    for (int i = 0; i < ListSubject.Count; i++)
+                    if (res.isSuccess)
                     {
-                        TimeSpan t = TimeSpan.FromSeconds(ListSubject[i].startTime);
-                        ListSubject[i].StartTimeUI = string.Format("{0:D1}:{1:D2}", t.Hours, t.Minutes);
+                        ListSubject = new ObservableCollection<Subject>(res.data);
+                        ListDayOff = new ObservableCollection<DayOffSubject>();
 
-                        TimeSpan t2 = TimeSpan.FromSeconds(ListSubject[i].startTime + 45 * 60 * ListSubject[i].numOfLessonsPerDay);
-                        ListSubject[i].EndTimeUI = string.Format("{0:D1}:{1:D2}", t2.Hours, t2.Minutes);
 
-                        //create list day off
-                        if (ListSubject[i].dayOffs != null || ListSubject[i].dayOffs.Count != 0)
+                        for (int i = 0; i < ListSubject.Count; i++)
                         {
-                            for (int j = 0; j < ListSubject[i].dayOffs.Count; j++)
+                            TimeSpan t = TimeSpan.FromSeconds(ListSubject[i].startTime);
+                            ListSubject[i].StartTimeUI = string.Format("{0:D1}:{1:D2}", t.Hours, t.Minutes);
+
+                            TimeSpan t2 = TimeSpan.FromSeconds(ListSubject[i].startTime + 45 * 60 * ListSubject[i].numOfLessonsPerDay);
+                            ListSubject[i].EndTimeUI = string.Format("{0:D1}:{1:D2}", t2.Hours, t2.Minutes);
+
+                            //create list day off
+                            if (ListSubject[i].dayOffs != null || ListSubject[i].dayOffs.Count != 0)
                             {
-                                DayOffSubject dayOffSubject = new DayOffSubject
+                                for (int j = 0; j < ListSubject[i].dayOffs.Count; j++)
                                 {
-                                    id = ListSubject[i].id,
-                                    title = ListSubject[i].title,
-                                    description = ListSubject[i].description,
-                                    StartTimeUI = ListSubject[i].StartTimeUI,
-                                    EndTimeUI = ListSubject[i].EndTimeUI,
-                                    date = ListSubject[i].dayOffs[j],
-                                    colorCode = ListSubject[i].colorCode,
-                                };
-                                ListDayOff.Add(dayOffSubject);
+                                    if (ListSubject[i].dayOffs[j] < DateTime.Now)
+                                    {
+                                        continue;
+                                    }
+                                    DayOffSubject dayOffSubject = new DayOffSubject
+                                    {
+                                        id = ListSubject[i].id,
+                                        title = ListSubject[i].title,
+                                        description = ListSubject[i].description,
+                                        StartTimeUI = ListSubject[i].StartTimeUI,
+                                        EndTimeUI = ListSubject[i].EndTimeUI,
+                                        date = ListSubject[i].dayOffs[j],
+                                        colorCode = ListSubject[i].colorCode,
+                                    };
+                                    ListDayOff.Add(dayOffSubject);
+                                }
                             }
                         }
+                        ListDayOff = new ObservableCollection<DayOffSubject>(ListDayOff.OrderBy(item => item.date).ToList());
+
+
                     }
-                    ListDayOff = new ObservableCollection<DayOffSubject>(ListDayOff.OrderBy(item => item.date).ToList());
-
-
+                    else
+                    {
+                        UserDialogs.Instance.Toast(res.message);
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    UserDialogs.Instance.Toast(res.message);
                 }
+                
 
             });
             ToEditSubjectCM = new Command(() =>
             {
-                ApplyDataToSubject();
-                App.Current.MainPage.Navigation.PushAsync(new EditSubjectScreen(this));
+                try
+                {
+                    ApplyDataToSubject();
+                    App.Current.MainPage.Navigation.PushAsync(new EditSubjectScreen(this));
+                }
+                catch (Exception)
+                {
+                }
+                
             });
             UpdateSubjectCM = new Command(async () =>
             {
-                if (!IsValidData())
+                try
                 {
-                    return;
-                }
-                if (LessonPerDay == null)
-                {
-                    await App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập số tiết", "Đóng");
-                    return;
-                }
+                    if (!IsValidData())
+                    {
+                        return;
+                    }
+                    if (LessonPerDay == null)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập số tiết", "Đóng");
+                        return;
+                    }
 
-                Subject subject = new Subject();
-                if (HaveEndDate)
-                {
-                    if (!CheckTime(StartTimeY))
+                    Subject subject = new Subject();
+                    if (HaveEndDate)
                     {
-                        return;
+                        if (!CheckTime(StartTimeY))
+                        {
+                            return;
+                        }
+                        // Gắn data trả về
+                        subject = new Subject
+                        {
+                            id = SelectedSubject.id,
+                            title = TaskName,
+                            //prop code here
+                            //===
+                            description = Description ?? "",
+                            dayOfWeeks = SelectedWeekDay,
+                            numOfLessonsPerDay = (int)LessonPerDay,
+                            startDate = StartDate,
+                            endDate = EndDate,
+                            startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                            notiBeforeTime = GetRemindTime(),
+                            colorCode = ColorTag.ToHexRgbString(),
+                            notiUnit = GetRemindTimeUnit(),
+                        };
                     }
-                    // Gắn data trả về
-                    subject = new Subject
+                    else
                     {
-                        id = SelectedSubject.id,
-                        title = TaskName,
-                        //prop code here
-                        //===
-                        description = Description ?? "",
-                        dayOfWeeks = SelectedWeekDay,
-                        numOfLessonsPerDay = (int)LessonPerDay,
-                        startDate = StartDate,
-                        endDate = EndDate,
-                        startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                        notiBeforeTime = GetRemindTime(),
-                        colorCode = ColorTag.ToHexRgbString(),
-                        notiUnit = GetRemindTimeUnit(),
-                    };
-                }
-                else
-                {
-                    if (TotalLesson == null)
-                    {
-                        await App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập tổng số tiết", "Đóng");
-                        return;
+                        if (TotalLesson == null)
+                        {
+                            await App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập tổng số tiết", "Đóng");
+                            return;
+                        }
+                        if (TotalLesson < LessonPerDay)
+                        {
+                            await App.Current.MainPage.DisplayAlert("Cảnh báo", "Tổng số tiết không được nhỏ hơn số tiết 1 buổi", "Đóng");
+                            return;
+                        }
+                        if (TotalLesson % LessonPerDay != 0)
+                        {
+                            await App.Current.MainPage.DisplayAlert("Cảnh báo", "Tổng số tiết không chia hết cho số tiết một ngày", "Đóng");
+                            return;
+                        }
+                        // Gắn data trả về
+                        subject = new Subject
+                        {
+                            id = SelectedSubject.id,
+                            title = TaskName,
+                            //prop code here
+                            //===
+                            description = Description ?? "",
+                            startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                            dayOfWeeks = SelectedWeekDay,
+                            numOfLessonsPerDay = (int)LessonPerDay,
+                            startDate = StartDate,
+                            numOfLessons = (int)TotalLesson,
+                            notiBeforeTime = GetRemindTime(),
+                            colorCode = ColorTag.ToHexRgbString(),
+                            notiUnit = GetRemindTimeUnit(),
+                        };
                     }
-                    if (TotalLesson < LessonPerDay)
-                    {
-                        await App.Current.MainPage.DisplayAlert("Cảnh báo", "Tổng số tiết không được nhỏ hơn số tiết 1 buổi", "Đóng");
-                        return;
-                    }
-                    if (TotalLesson % LessonPerDay != 0)
-                    {
-                        await App.Current.MainPage.DisplayAlert("Cảnh báo", "Tổng số tiết không chia hết cho số tiết một ngày", "Đóng");
-                        return;
-                    }
-                    // Gắn data trả về
-                    subject = new Subject
-                    {
-                        id = SelectedSubject.id,
-                        title = TaskName,
-                        //prop code here
-                        //===
-                        description = Description ?? "",
-                        startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                        dayOfWeeks = SelectedWeekDay,
-                        numOfLessonsPerDay = (int)LessonPerDay,
-                        startDate = StartDate,
-                        numOfLessons = (int)TotalLesson,
-                        notiBeforeTime = GetRemindTime(),
-                        colorCode = ColorTag.ToHexRgbString(),
-                        notiUnit = GetRemindTimeUnit(),
-                    };
-                }
 
-                UserDialogs.Instance.ShowLoading();
-                var res = await CourseService.ins.UpdateCourse(subject);
-                UserDialogs.Instance.HideLoading();
+                    UserDialogs.Instance.ShowLoading();
+                    var res = await CourseService.ins.UpdateCourse(subject);
+                    UserDialogs.Instance.HideLoading();
 
-                if (res.isSuccess)
-                {
-                    await App.Current.MainPage.DisplayAlert("Thành công", "Cập nhật môn học thành công", "Đóng");
-                    await App.Current.MainPage.Navigation.PopAsync();
+                    if (res.isSuccess)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thành công", "Cập nhật môn học thành công", "Đóng");
+                        await App.Current.MainPage.Navigation.PopAsync();
+                    }
+                    else
+                    {
+                        UserDialogs.Instance.Toast(res.message);
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    UserDialogs.Instance.Toast(res.message);
                 }
+                
 
             });
             DeleteSubjectCM = new Command(async () =>
             {
-                var res = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có chắc muốn xoá môn học này không?", "Có", "Không");
-                if (res)
+                try
                 {
-                    UserDialogs.Instance.ShowLoading();
-                    var result = await CourseService.ins.DeleteCourse(SelectedSubject.id);
+                    var res = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có chắc muốn xoá môn học này không?", "Có", "Không");
+                    if (res)
+                    {
+                        UserDialogs.Instance.ShowLoading();
+                        var result = await CourseService.ins.DeleteCourse(SelectedSubject.id);
 
-                    if (result)
-                    {
-                        _ = App.Current.MainPage.Navigation.PopAsync();
-                        UserDialogs.Instance.Toast("Xoá thành công");
-                    }
-                    else
-                    {
-                        UserDialogs.Instance.Toast("Lỗi hệ thống");
+                        if (result)
+                        {
+                            _ = App.Current.MainPage.Navigation.PopAsync();
+                            UserDialogs.Instance.Toast("Xoá thành công");
+                        }
+                        else
+                        {
+                            UserDialogs.Instance.Toast("Lỗi hệ thống");
+                        }
                     }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
             SearchSubjectCM = new Command((p) =>
             {
-                CollectionView cl = p as CollectionView;
-
-                ObservableCollection<Subject> search = new ObservableCollection<Subject>();
-
-                if (!string.IsNullOrEmpty(SearchSubjectText))
+                try
                 {
+                    CollectionView cl = p as CollectionView;
 
-                    for (int i = 0; i < ListSubject.Count; i++)
+                    ObservableCollection<Subject> search = new ObservableCollection<Subject>();
+
+                    if (!string.IsNullOrEmpty(SearchSubjectText))
                     {
-                        if (ListSubject[i].title.ToLower().Contains(SearchSubjectText.ToLower()))
+
+                        for (int i = 0; i < ListSubject.Count; i++)
                         {
-                            search.Add(ListSubject[i]);
+                            if (ListSubject[i].title.ToLower().Contains(SearchSubjectText.ToLower()))
+                            {
+                                search.Add(ListSubject[i]);
+                            }
                         }
+                        cl.ItemsSource = search;
                     }
-                    cl.ItemsSource = search;
+                    else
+                    {
+                        cl.ItemsSource = ListSubject;
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    cl.ItemsSource = ListSubject;
                 }
+                
             });
             OpenCustomReminderPopupCM = new Command(async () =>
             {
-                var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomReminderPopup());
-                if (res != null)
+                try
                 {
-                    if (!Reminders.Contains(res.ToString()))
-                        Reminders.Add(res.ToString());
-                    TimeRemind = res.ToString();
+                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomReminderPopup());
+                    if (res != null)
+                    {
+                        if (!Reminders.Contains(res.ToString()))
+                            Reminders.Add(res.ToString());
+                        TimeRemind = res.ToString();
+                    }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
             OpenColorPickerCM = new Command(async () =>
             {
-                var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new ColorPicker());
-                if (res != null)
+                try
                 {
-                    ColorTag = (Color)res;
+                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new ColorPicker());
+                    if (res != null)
+                    {
+                        ColorTag = (Color)res;
+                    }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
             OpenSelectDayOfWeekPopupCM = new Command(async (p) =>
             {
-                if (p != null)
+                try
                 {
-                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new SelectDayOfWeekPopup());
-                    if (res != null)
+                    if (p != null)
                     {
-                        List<DayTitle> selectedWeekDay = res as List<DayTitle>;
-                        string temp = "";
-                        List<string> tempList = new List<string>();
-                        for (int i = 0; i < selectedWeekDay.Count; i++)
+                        var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new SelectDayOfWeekPopup());
+                        if (res != null)
                         {
-                            temp += selectedWeekDay[i].Detail;
-                            if (i < selectedWeekDay.Count - 1)
+                            List<DayTitle> selectedWeekDay = res as List<DayTitle>;
+                            string temp = "";
+                            List<string> tempList = new List<string>();
+                            for (int i = 0; i < selectedWeekDay.Count; i++)
                             {
-                                temp += ", ";
+                                temp += selectedWeekDay[i].Detail;
+                                if (i < selectedWeekDay.Count - 1)
+                                {
+                                    temp += ", ";
+                                }
+                                tempList.Add(selectedWeekDay[i].DetailEng);
                             }
-                            tempList.Add(selectedWeekDay[i].DetailEng);
+                            WeekDayLabel = temp;
+                            SelectedWeekDay = tempList;
                         }
-                        WeekDayLabel = temp;
-                        SelectedWeekDay = tempList;
                     }
                 }
+                catch (Exception)
+                {
+                }
+                
 
             });
 
             DeleteDayOffCM = new Command(async (p) =>
             {
-                if (p == null) return;
-                DayOffSubject dayOffSubject = p as DayOffSubject;
-                bool result = await App.Current.MainPage.DisplayAlert("Thay đổi", "Xác nhận buổi này không nghỉ?", "Có", "Không");
-                if (result)
+                try
                 {
-                    //Gọi api xóa ngày nghỉ
-                    dayOffSubject.action = "Delete";
-                    await CourseService.ins.ChangeSubjectStatus(dayOffSubject, dayOffSubject.id);
-                    try
+                    if (p == null) return;
+                    DayOffSubject dayOffSubject = p as DayOffSubject;
+                    bool result = await App.Current.MainPage.DisplayAlert("Thay đổi", "Xác nhận buổi này không nghỉ?", "Có", "Không");
+                    if (result)
                     {
-                        _ = App.Current.MainPage.DisplayAlert("Thành công", "Đánh dấu buổi nghỉ thành công", "Đóng");
-                        ListDayOff.Remove(dayOffSubject);
+                        //Gọi api xóa ngày nghỉ
+                        dayOffSubject.action = "Delete";
+                        await CourseService.ins.ChangeSubjectStatus(dayOffSubject, dayOffSubject.id);
+                        try
+                        {
+                            _ = App.Current.MainPage.DisplayAlert("Thành công", "Đánh dấu buổi nghỉ thành công", "Đóng");
+                            ListDayOff.Remove(dayOffSubject);
+                        }
+                        catch (Exception e)
+                        {
+                            _ = App.Current.MainPage.DisplayAlert("Thất bại", $"Lỗi: {e}", "Đóng");
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        _ = App.Current.MainPage.DisplayAlert("Thất bại", $"Lỗi: {e}", "Đóng");
-                    }
+                    return;
                 }
-                return;
+                catch (Exception)
+                {
+                }
+                
             });
 
             SearchDayOffCM = new Command((p) =>
             {
-                CollectionView cl = p as CollectionView;
-
-                ObservableCollection<DayOffSubject> search = new ObservableCollection<DayOffSubject>();
-
-                if (!string.IsNullOrEmpty(SearchDayOffText))
+                try
                 {
+                    CollectionView cl = p as CollectionView;
 
-                    for (int i = 0; i < ListDayOff.Count; i++)
+                    ObservableCollection<DayOffSubject> search = new ObservableCollection<DayOffSubject>();
+
+                    if (!string.IsNullOrEmpty(SearchDayOffText))
                     {
-                        if (ListDayOff[i].title.ToLower().Contains(SearchDayOffText.ToLower()))
+
+                        for (int i = 0; i < ListDayOff.Count; i++)
                         {
-                            search.Add(ListDayOff[i]);
+                            if (ListDayOff[i].title.ToLower().Contains(SearchDayOffText.ToLower()))
+                            {
+                                search.Add(ListDayOff[i]);
+                            }
                         }
+                        search = new ObservableCollection<DayOffSubject>(search.OrderBy(item => item.date).ToList());
+                        cl.ItemsSource = search;
                     }
-                    search = new ObservableCollection<DayOffSubject>(search.OrderBy(item => item.date).ToList());
-                    cl.ItemsSource = search;
+                    else
+                    {
+                        cl.ItemsSource = ListDayOff;
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    cl.ItemsSource = ListDayOff;
                 }
+                
             });
         }
 
         private void ApplyDataToSubject()
         {
-            TaskName = SelectedSubject.title;
-            StartDate = SelectedSubject.startDate;
+            try
+            {
+                TaskName = SelectedSubject.title;
+                StartDate = SelectedSubject.startDate;
 
-            //đây là chỗ nhắc
-            //if (!Reminders.Contains(SelectedSubject.NotifyTimeString))
-            //    Reminders.Add(SelectedSubject.NotifyTimeString);
-            string timeUnit = "";
-            switch (SelectedSubject.notiUnit)
-            {
-                case "MINUTE":
-                    timeUnit = "phút";
-                    break;
-                case "HOUR":
-                    timeUnit = "tiếng";
-                    break;
-                case "DAY":
-                    timeUnit = "ngày";
-                    break;
-                case "WEEK":
-                    timeUnit = "tuần";
-                    break;
-            }
-            TimeRemind = SelectedSubject.notiBeforeTime + " " + timeUnit;
+                //đây là chỗ nhắc
+                //if (!Reminders.Contains(SelectedSubject.NotifyTimeString))
+                //    Reminders.Add(SelectedSubject.NotifyTimeString);
+                string timeUnit = "";
+                switch (SelectedSubject.notiUnit)
+                {
+                    case "MINUTE":
+                        timeUnit = "phút";
+                        break;
+                    case "HOUR":
+                        timeUnit = "tiếng";
+                        break;
+                    case "DAY":
+                        timeUnit = "ngày";
+                        break;
+                    case "WEEK":
+                        timeUnit = "tuần";
+                        break;
+                }
+                TimeRemind = SelectedSubject.notiBeforeTime + " " + timeUnit;
 
-            ColorTag = Color.FromHex(SelectedSubject.colorCode);
+                ColorTag = Color.FromHex(SelectedSubject.colorCode);
 
-            //đây là giờ bắt đầu
-            TimeSpan t = TimeSpan.FromSeconds(SelectedSubject.startTime);
-            string answer = string.Format("{0:D2}h:{1:D2}m", t.Hours, t.Minutes);
-            StartTimeX = answer.Split(':')[0];
-            StartTimeY = answer.Split(':')[1];
+                //đây là giờ bắt đầu
+                TimeSpan t = TimeSpan.FromSeconds(SelectedSubject.startTime);
+                string answer = string.Format("{0:D2}h:{1:D2}m", t.Hours, t.Minutes);
+                StartTimeX = answer.Split(':')[0];
+                StartTimeY = answer.Split(':')[1];
 
-            //số tiết trong ngày
-            LessonPerDay = SelectedSubject.numOfLessonsPerDay;
+                //số tiết trong ngày
+                LessonPerDay = SelectedSubject.numOfLessonsPerDay;
 
-            //ngày kết thúc hoặc số tiết
-            if (SelectedSubject.numOfLessons != 0)
-            {
-                HaveEndDate = false;
-                TotalLesson = SelectedSubject.numOfLessons;
-            }
-            else if (SelectedSubject.endDate != null)
-            {
-                HaveEndDate = true;
-                EndDate = SelectedSubject.endDate;
-            }
+                //ngày kết thúc hoặc số tiết
+                if (SelectedSubject.numOfLessons != 0)
+                {
+                    HaveEndDate = false;
+                    TotalLesson = SelectedSubject.numOfLessons;
+                }
+                else if (SelectedSubject.endDate != null)
+                {
+                    HaveEndDate = true;
+                    EndDate = SelectedSubject.endDate;
+                }
 
-            //thứ ở đây
-            string result = "";
-            if (SelectedSubject.dayOfWeeks.Contains("Monday"))
-            {
-                result += "Thứ hai,";
+                //thứ ở đây
+                string result = "";
+                if (SelectedSubject.dayOfWeeks.Contains("Monday"))
+                {
+                    result += "Thứ hai,";
+                }
+                if (SelectedSubject.dayOfWeeks.Contains("Tuesday"))
+                {
+                    result += "Thứ ba,";
+                }
+                if (SelectedSubject.dayOfWeeks.Contains("Wednesday"))
+                {
+                    result += "Thứ tư,";
+                }
+                if (SelectedSubject.dayOfWeeks.Contains("Thursday"))
+                {
+                    result += "Thứ năm,";
+                }
+                if (SelectedSubject.dayOfWeeks.Contains("Friday"))
+                {
+                    result += "Thứ sáu,";
+                }
+                if (SelectedSubject.dayOfWeeks.Contains("Saturday"))
+                {
+                    result += "Thứ bảy,";
+                }
+                if (SelectedSubject.dayOfWeeks.Contains("Sunday"))
+                {
+                    result += "Chủ nhật,";
+                }
+                WeekDayLabel = result.Remove(result.Length - 1);
+                Description = SelectedSubject.description;
             }
-            if (SelectedSubject.dayOfWeeks.Contains("Tuesday"))
+            catch (Exception)
             {
-                result += "Thứ ba,";
             }
-            if (SelectedSubject.dayOfWeeks.Contains("Wednesday"))
-            {
-                result += "Thứ tư,";
-            }
-            if (SelectedSubject.dayOfWeeks.Contains("Thursday"))
-            {
-                result += "Thứ năm,";
-            }
-            if (SelectedSubject.dayOfWeeks.Contains("Friday"))
-            {
-                result += "Thứ sáu,";
-            }
-            if (SelectedSubject.dayOfWeeks.Contains("Saturday"))
-            {
-                result += "Thứ bảy,";
-            }
-            if (SelectedSubject.dayOfWeeks.Contains("Sunday"))
-            {
-                result += "Chủ nhật,";
-            }
-            WeekDayLabel = result.Remove(result.Length - 1);
-            Description = SelectedSubject.description;
+            
         }
 
         private void ClearSubjectData()
         {
-            TaskName = null;
-            StartDate = DateTime.Now;
+            try
+            {
+                TaskName = null;
+                StartDate = DateTime.Now;
 
-            //đây là chỗ nhắc
-            InitData();
-            TimeRemind = null;
+                //đây là chỗ nhắc
+                InitData();
+                TimeRemind = null;
 
-            ColorTag = Color.White;
+                ColorTag = Color.White;
 
-            //đây là giờ bắt đầu
-            StartTimeX = null;
-            StartTimeY = null;
+                //đây là giờ bắt đầu
+                StartTimeX = null;
+                StartTimeY = null;
 
-            //số tiết
-            LessonPerDay = null;
+                //số tiết
+                LessonPerDay = null;
 
-            //ngày kết thúc hoặc số tiết
-            TotalLesson = null;
-            EndDate = DateTime.Now;
+                //ngày kết thúc hoặc số tiết
+                TotalLesson = null;
+                EndDate = DateTime.Now;
 
-            Description = null;
+                Description = null;
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         private bool IsValidData()
         {
-            if (string.IsNullOrEmpty(taskName))
+            try
             {
-                App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập tiêu đề", "Đóng");
+                if (string.IsNullOrEmpty(taskName))
+                {
+                    App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập tiêu đề", "Đóng");
+                    return false;
+                }
+                if (ColorTag == Color.White)
+                {
+                    App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn màu hiển thị", "Đóng");
+                    return false;
+                }
+                if (string.IsNullOrEmpty(TimeRemind))
+                {
+                    App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn thời gian nhắc nhở", "Đóng");
+                    return false;
+                }
+                if (string.IsNullOrEmpty(StartTimeX) || string.IsNullOrEmpty(StartTimeY))
+                {
+                    App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn giờ bắt đầu", "Đóng");
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception)
+            {
                 return false;
             }
-            if (ColorTag == Color.White)
-            {
-                App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn màu hiển thị", "Đóng");
-                return false;
-            }
-            if (string.IsNullOrEmpty(TimeRemind))
-            {
-                App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn thời gian nhắc nhở", "Đóng");
-                return false;
-            }
-            if (string.IsNullOrEmpty(StartTimeX) || string.IsNullOrEmpty(StartTimeY))
-            {
-                App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn giờ bắt đầu", "Đóng");
-                return false;
-            }
-            return true;
+            
         }
 
         private void InitData()
         {
-            WeekDayLabel = DateTime.Now.ToString("dddd");
-            SelectedWeekDay = new List<string>
+            try
+            {
+                WeekDayLabel = DateTime.Now.ToString("dddd");
+                SelectedWeekDay = new List<string>
             {
                 DateTime.Now.DayOfWeek.ToString()
             };
-            Reminders = new ObservableCollection<string>
+                Reminders = new ObservableCollection<string>
             {
                 "5 phút",
                 "10 phút",
@@ -594,6 +692,11 @@ namespace CalendarApp.ViewModels.Manage
                 "1 ngày",
                 "30 ngày"
             };
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         private int GetRemindTime()
@@ -614,6 +717,7 @@ namespace CalendarApp.ViewModels.Manage
             }
             return time;
         }
+
         private string GetRemindTimeUnit()
         {
             string[] remind = TimeRemind.Split(' ');
@@ -632,6 +736,7 @@ namespace CalendarApp.ViewModels.Manage
             }
             return time;
         }
+
         private bool CheckTime(string minute)
         {
             if (int.Parse(minute) % 15 != 0)

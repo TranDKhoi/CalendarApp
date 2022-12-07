@@ -37,12 +37,19 @@ namespace CalendarApp.Models.Profile
             get { return statusProfile; }
             set { statusProfile = value; OnPropertyChanged(nameof(StatusProfile)); }
         }
-        string urlBackground;
-        public string UrlBackground
+        ImageSource urlBackground;
+        public ImageSource UrlBackground
         {
             get { return urlBackground; }
             set { urlBackground = value; OnPropertyChanged(nameof(UrlBackground)); }
         }
+        ImageSource avatar;
+        public ImageSource Avatar
+        {
+            get { return avatar; }
+            set { avatar = value; OnPropertyChanged(nameof(Avatar)); }
+        }
+
         Stream urlAvatar;
         public Stream UrlAvatar
         {

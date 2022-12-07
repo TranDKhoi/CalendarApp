@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using CalendarApp.Views.Profile;
 using CalendarApp.Services;
+using CalendarApp.Views.Authen;
 
 namespace CalendarApp.ViewModels.Profile
 {
@@ -17,6 +18,7 @@ namespace CalendarApp.ViewModels.Profile
         public ICommand CM_MyEditProfile { get; set; }
         public ICommand EditAvatar_CM { get; set; }
         public ICommand EditBackground_CM { get; set; }
+        public Command Logout_CM { get; set; }
 
         string nameProfile;
         public string NameProfile
@@ -30,8 +32,8 @@ namespace CalendarApp.ViewModels.Profile
             get { return statusProfile; }
             set { statusProfile = value; OnPropertyChanged(nameof(StatusProfile)); }
         }
-        string urlBackground;
-        public string UrlBackground
+        ImageSource urlBackground;
+        public ImageSource UrlBackground
         {
             get { return urlBackground; }
             set { urlBackground = value; OnPropertyChanged(nameof(UrlBackground)); }
@@ -60,32 +62,31 @@ namespace CalendarApp.ViewModels.Profile
 
         public EditProfileViewModel()
         {
-
-
             NameProfile = profileModel.NameProfile;
             StatusProfile = profileModel.StatusProfile;
             UrlBackground = profileModel.UrlBackground;
             UrlAvatar = ImageSource.FromStream(() => profileModel.UrlAvatar);
             (string email, string pass) = SharedPreferenceService.ins.GetUserLogin();
             Email = email;
+            profileModel.NameFull = "Kiều Bá Dương";
             NameFull = profileModel.NameFull;
 
-            CM_MyEditProfile = new Command(() =>
+            CM_MyEditProfile = new Command((p) =>
             {
-
-
+                ContentPage contentPage = p as ContentPage;
                 profileModel.NameProfile = NameProfile;
                 profileModel.StatusProfile = StatusProfile;
-                profileModel.UrlBackground = UrlBackground;
                 profileModel.Email = Email;
                 profileModel.NameFull = NameFull;
-
                 Application.Current.MainPage.Navigation.PopAsync();
+            });
 
+            Logout_CM = new Command(async () =>
+            {
+                await Application.Current.MainPage.Navigation.PushAsync(new LoginScreen());
             });
 
             // SaveProfile();
-
         }
 
         public void ClearFields()

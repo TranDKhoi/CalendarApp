@@ -19,17 +19,33 @@ namespace CalendarApp.Views.Schedule
         }
         private void ListDay_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ListDay.SelectedItem == null)
+            try
             {
-                return;
+                if (ListDay.SelectedItem == null)
+                {
+                    return;
+                }
+                var viewModel = (SelectDayOfWeekViewModel)this.BindingContext;
+                viewModel.SelectDayCM.Execute(ListDay.SelectedItem);
+                ListDay.SelectedItem = null;
             }
-            var viewModel = (SelectDayOfWeekViewModel)this.BindingContext;
-            viewModel.SelectDayCM.Execute(ListDay.SelectedItem);
-            ListDay.SelectedItem = null;
+            catch (Exception)
+            {
+
+            }
+            
         }
         private void Button_Clicked(object sender, EventArgs e)
         {
-            this.Dismiss(null);
+            try
+            {
+                this.Dismiss(null);
+            }
+            catch (Exception)
+            {
+
+            }
+            
         }
     }
 }

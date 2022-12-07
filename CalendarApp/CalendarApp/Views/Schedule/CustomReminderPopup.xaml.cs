@@ -21,5 +21,10 @@ namespace CalendarApp.Views.Schedule
         {
             this.Dismiss(null);
         }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            App.Current.MainPage.DisplayAlert("Hướng dẫn", "Ô đầu tiên hiển thị giá trị lặp và ô thứ 2 hiển thị đơn vị lặp. Ví dụ: 25 phút", "Đóng");
+        }
     }
 }

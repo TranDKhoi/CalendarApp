@@ -5,7 +5,7 @@
            xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
            x:Class="CalendarApp.Views.Schedule.ColorPicker"
            x:Name="colorPicker"
-           Size="200, 200">
+           Size="300, 200">
     <xct:Popup.BindingContext>
         <context:ColorPickerViewModel />
     </xct:Popup.BindingContext>
@@ -154,7 +154,7 @@
             </Grid>
             <StackLayout Orientation="Horizontal">
                 <Button Text="Xong"
-                        WidthRequest="70"
+                        WidthRequest="100"
                         HorizontalOptions="EndAndExpand"
                         VerticalOptions="Center"
                         Visual="Material"
@@ -164,7 +164,7 @@
                         Command="{Binding DoneCM}" 
                         CommandParameter="{x:Reference colorPicker}"/>
                 <Button Text="Hủy"
-                        WidthRequest="70"
+                        WidthRequest="100"
                         HeightRequest="30"
                         HorizontalOptions="End"
                         VerticalOptions="Center"

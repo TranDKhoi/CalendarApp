@@ -49,11 +49,18 @@ namespace CalendarApp.ViewModels.Schedule
             InitData();
             DoneCM = new Command((p) =>
             {
-                Popup popup = p as Popup;
-                if (!string.IsNullOrEmpty(SelectedCountDay) && !string.IsNullOrEmpty(SelectedTypeDate))
+                try
                 {
-                    popup.Dismiss(SelectedCountDay + " " + SelectedTypeDate);
+                    Popup popup = p as Popup;
+                    if (!string.IsNullOrEmpty(SelectedCountDay) && !string.IsNullOrEmpty(SelectedTypeDate))
+                    {
+                        popup.Dismiss(SelectedCountDay + " " + SelectedTypeDate);
+                    }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
         }
     }

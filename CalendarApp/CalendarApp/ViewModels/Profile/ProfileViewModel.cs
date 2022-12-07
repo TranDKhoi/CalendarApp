@@ -31,8 +31,8 @@ namespace CalendarApp.ViewModels.Profile
             get { return statusProfile; }
             set { statusProfile = value; OnPropertyChanged(nameof(StatusProfile)); }
         }
-        string urlBackground;
-        public string UrlBackground
+        ImageSource urlBackground;
+        public ImageSource UrlBackground
         {
             get { return urlBackground; }
             set { urlBackground = value; OnPropertyChanged(nameof(UrlBackground)); }
@@ -77,9 +77,11 @@ namespace CalendarApp.ViewModels.Profile
 
         public void DataProfile()
         {
+            _ProfileModel = ProfileModel.ins;
             NameProfile = _ProfileModel.NameProfile;
             StatusProfile = _ProfileModel.StatusProfile;
             UrlBackground = _ProfileModel.UrlBackground;
+            UrlAvatar = _ProfileModel.Avatar;
             (string email, string pass) = SharedPreferenceService.ins.GetUserLogin();
             Email = email;
             NameFull = _ProfileModel.NameFull;
@@ -97,9 +99,11 @@ namespace CalendarApp.ViewModels.Profile
             //Email = _dataEdit.Email;
             //NameFull = _dataEdit.NameFull;
 
-            Edit_CM = new Command(async () =>
+            Edit_CM = new Command(async (p) =>
                        {
                            await Application.Current.MainPage.Navigation.PushAsync(new EditProfileScreen());
+                           Image img = p as Image;
+                           img.Source = _ProfileModel.Avatar;
 
                        });
 

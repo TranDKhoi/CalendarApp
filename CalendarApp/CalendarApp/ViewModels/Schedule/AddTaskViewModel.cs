@@ -159,15 +159,17 @@ namespace CalendarApp.ViewModels.Schedule
 
         private void InitData()
         {
-            StartDate = DateTime.Now;
-            EndDate = DateTime.Now;
-            LessonPerDay = null;
-            HaveEndDate = true;
-            TotalLesson = null;
-            ColorTag = Color.White;
-            RemindLabel = "Không lặp lại";
-            WeekDayLabel = DateTime.Now.ToString("dddd");
-            Reminders = new ObservableCollection<string>
+            try
+            {
+                StartDate = DateTime.Now;
+                EndDate = DateTime.Now;
+                LessonPerDay = null;
+                HaveEndDate = true;
+                TotalLesson = null;
+                ColorTag = Color.White;
+                RemindLabel = "Không lặp lại";
+                WeekDayLabel = DateTime.Now.ToString("dddd");
+                Reminders = new ObservableCollection<string>
             {
                 "5 phút",
                 "10 phút",
@@ -177,52 +179,73 @@ namespace CalendarApp.ViewModels.Schedule
                 "1 ngày",
                 "30 ngày"
             };
-            SelectedWeekDay = new List<string>
+                SelectedWeekDay = new List<string>
             {
                 DateTime.Now.DayOfWeek.ToString()
             };
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         private int GetRemindTime()
         {
-            string[] remind = TimeRemind.Split(' ');
-            int time = int.Parse(remind[0]);
-            if (remind[1] == "tiếng")
+            try
             {
-                time *= 60;
+                string[] remind = TimeRemind.Split(' ');
+                int time = int.Parse(remind[0]);
+                if (remind[1] == "tiếng")
+                {
+                    time *= 60;
+                }
+                if (remind[1] == "ngày")
+                {
+                    time *= 60 * 24;
+                }
+                if (remind[1] == "tuần")
+                {
+                    time *= 60 * 24 * 7;
+                }
+                return time;
             }
-            if (remind[1] == "ngày")
+            catch (Exception)
             {
-                time *= 60 * 24;
+                return 0;
             }
-            if (remind[1] == "tuần")
-            {
-                time *= 60 * 24 * 7;
-            }
-            return time;
+            
         }
 
         private string GetRemindTimeUnit()
         {
-            string[] remind = TimeRemind.Split(' ');
-            string unit = "";
-            if (remind[1] == "phút")
+            try
             {
-                unit = "MINUTE";
+                string[] remind = TimeRemind.Split(' ');
+                string unit = "";
+                if (remind[1] == "phút")
+                {
+                    unit = "MINUTE";
+                }
+                if (remind[1] == "tiếng")
+                {
+                    unit = "HOUR";
+                }
+                if (remind[1] == "ngày")
+                {
+                    unit = "DAY";
+                }
+                if (remind[1] == "tuần")
+                {
+                    unit = "WEEK";
+                }
+                return unit;
             }
-            if (remind[1] == "tiếng")
+            catch (Exception)
             {
-                unit = "HOUR";
+                return "";
             }
-            if (remind[1] == "ngày")
-            {
-                unit = "DAY";
-            }
-            if (remind[1] == "tuần")
-            {
-                unit = "WEEK";
-            }
-            return unit;
+            
         }
 
         private bool IsValidData()
@@ -281,201 +304,243 @@ namespace CalendarApp.ViewModels.Schedule
 
             OpenCustomReminderPopupCM = new Command(async () =>
             {
-                var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomReminderPopup());
-                if (res != null)
+                try
                 {
-                    if (!Reminders.Contains(res.ToString()))
-                        Reminders.Add(res.ToString());
-                    TimeRemind = res.ToString();
+                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new CustomReminderPopup());
+                    if (res != null)
+                    {
+                        if (!Reminders.Contains(res.ToString()))
+                            Reminders.Add(res.ToString());
+                        TimeRemind = res.ToString();
+                    }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
 
             OpenColorPickerCM = new Command(async () =>
             {
-                var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new ColorPicker());
-                if (res != null)
+                try
                 {
-                    ColorTag = (Color)res;
+                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new ColorPicker());
+                    if (res != null)
+                    {
+                        ColorTag = (Color)res;
+                    }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
 
             OpenRecurrencePopupCM = new Command(async (p) =>
             {
-                if (p != null)
+                try
                 {
-                    DateTime dateTime = (DateTime)p;
-                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new RecurrencePopup(dateTime));
-                    if (res != null)
+                    if (p != null)
                     {
-                        SelectedRecurrence = res as Recurrence;
-                        RemindLabel = SelectedRecurrence.LabelDisplay;
+                        DateTime dateTime = (DateTime)p;
+                        var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new RecurrencePopup(dateTime));
+                        if (res != null)
+                        {
+                            SelectedRecurrence = res as Recurrence;
+                            RemindLabel = SelectedRecurrence.LabelDisplay;
+                        }
                     }
                 }
+                catch (Exception)
+                {
+                }
+                
 
             });
 
             OpenSelectDayOfWeekPopupCM = new Command(async (p) =>
             {
-                if (p != null)
+                try
                 {
-                    var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new SelectDayOfWeekPopup());
-                    if (res != null)
+                    if (p != null)
                     {
-                        List<DayTitle> selectedWeekDay = res as List<DayTitle>;
-                        string temp = "";
-                        List<string> tempList = new List<string>();
-                        for (int i = 0; i < selectedWeekDay.Count; i++)
+                        var res = await App.Current.MainPage.Navigation.ShowPopupAsync(new SelectDayOfWeekPopup());
+                        if (res != null)
                         {
-                            temp += selectedWeekDay[i].Detail;
-                            if (i < selectedWeekDay.Count - 1)
+                            List<DayTitle> selectedWeekDay = res as List<DayTitle>;
+                            string temp = "";
+                            List<string> tempList = new List<string>();
+                            for (int i = 0; i < selectedWeekDay.Count; i++)
                             {
-                                temp += ",";
+                                temp += selectedWeekDay[i].Detail;
+                                if (i < selectedWeekDay.Count - 1)
+                                {
+                                    temp += ",";
+                                }
+                                tempList.Add(selectedWeekDay[i].DetailEng);
                             }
-                            tempList.Add(selectedWeekDay[i].DetailEng);
+                            WeekDayLabel = temp;
+                            SelectedWeekDay = tempList;
                         }
-                        WeekDayLabel = temp;
-                        SelectedWeekDay = tempList;
                     }
                 }
+                catch (Exception)
+                {
+                }
+                
 
             });
 
             AddSubjectCM = new Command((p) =>
             {
-                if (p != null)
+                try
                 {
-                    if (!IsValidData())
+                    if (p != null)
                     {
-                        return;
-                    }
-                    if (LessonPerDay == null)
-                    {
-                        App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập số tiết", "Đóng");
-                        return;
-                    }
-                    if (HaveEndDate)
-                    {
-                        if (!CheckTime(StartTimeY))
+                        if (!IsValidData())
                         {
                             return;
                         }
-                        // Gắn data trả về
-                        Subject subject = new Subject
+                        if (LessonPerDay == null)
                         {
-                            title = TaskName,
-                            //prop code here
-                            //===
-                            description = Description ?? "",
-                            startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                            dayOfWeeks = SelectedWeekDay,
-                            numOfLessonsPerDay = (int)LessonPerDay,
-                            startDate = StartDate,
-                            endDate = EndDate,
-                            notiBeforeTime = GetRemindTime(),
-                            colorCode = ColorTag.ToHexRgbString(),
-                            notiUnit = GetRemindTimeUnit(),
-                        };
-                        Popup popup = p as Popup;
-                        popup.Dismiss(subject);
-                    }
-                    else
-                    {
-                        if (TotalLesson == null)
-                        {
-                            App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập tổng số tiết", "Đóng");
+                            App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập số tiết", "Đóng");
                             return;
                         }
-                        if (TotalLesson < LessonPerDay)
+                        if (HaveEndDate)
                         {
-                            App.Current.MainPage.DisplayAlert("Cảnh báo", "Tổng số tiết không được nhỏ hơn số tiết 1 buổi", "Đóng");
-                            return;
+                            if (!CheckTime(StartTimeY))
+                            {
+                                return;
+                            }
+                            // Gắn data trả về
+                            Subject subject = new Subject
+                            {
+                                title = TaskName,
+                                //prop code here
+                                //===
+                                description = Description ?? "",
+                                startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                                dayOfWeeks = SelectedWeekDay,
+                                numOfLessonsPerDay = (int)LessonPerDay,
+                                startDate = StartDate,
+                                endDate = EndDate,
+                                notiBeforeTime = GetRemindTime(),
+                                colorCode = ColorTag.ToHexRgbString(),
+                                notiUnit = GetRemindTimeUnit(),
+                            };
+                            Popup popup = p as Popup;
+                            popup.Dismiss(subject);
                         }
-                        if (TotalLesson % LessonPerDay != 0)
+                        else
                         {
-                            App.Current.MainPage.DisplayAlert("Cảnh báo", "Tổng số tiết không chia hết cho số tiết một ngày", "Đóng");
-                            return;
+                            if (TotalLesson == null)
+                            {
+                                App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng nhập tổng số tiết", "Đóng");
+                                return;
+                            }
+                            if (TotalLesson < LessonPerDay)
+                            {
+                                App.Current.MainPage.DisplayAlert("Cảnh báo", "Tổng số tiết không được nhỏ hơn số tiết 1 buổi", "Đóng");
+                                return;
+                            }
+                            if (TotalLesson % LessonPerDay != 0)
+                            {
+                                App.Current.MainPage.DisplayAlert("Cảnh báo", "Tổng số tiết không chia hết cho số tiết một ngày", "Đóng");
+                                return;
+                            }
+                            // Gắn data trả về
+                            Subject subject = new Subject
+                            {
+                                title = TaskName,
+                                //prop code here
+                                //===
+                                description = Description ?? "",
+                                startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
+                                dayOfWeeks = SelectedWeekDay,
+                                numOfLessonsPerDay = (int)LessonPerDay,
+                                startDate = StartDate,
+                                numOfLessons = (int)TotalLesson,
+                                notiBeforeTime = GetRemindTime(),
+                                colorCode = ColorTag.ToHexRgbString(),
+                                notiUnit = GetRemindTimeUnit(),
+                            };
+                            Popup popup = p as Popup;
+                            popup.Dismiss(subject);
                         }
-                        // Gắn data trả về
-                        Subject subject = new Subject
-                        {
-                            title = TaskName,
-                            //prop code here
-                            //===
-                            description = Description ?? "",
-                            startTime = int.Parse(StartTimeX) * 3600 + int.Parse(StartTimeY) * 60,
-                            dayOfWeeks = SelectedWeekDay,
-                            numOfLessonsPerDay = (int)LessonPerDay,
-                            startDate = StartDate,
-                            numOfLessons = (int)TotalLesson,
-                            notiBeforeTime = GetRemindTime(),
-                            colorCode = ColorTag.ToHexRgbString(),
-                            notiUnit = GetRemindTimeUnit(),
-                        };
-                        Popup popup = p as Popup;
-                        popup.Dismiss(subject);
                     }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
 
             AddTodoCM = new Command((p) =>
             {
-                if (p != null)
+                try
                 {
-                    if (!IsValidData())
+                    if (p != null)
                     {
-                        return;
-                    }
-                    if (string.IsNullOrEmpty(EndTimeX) || string.IsNullOrEmpty(EndTimeY))
-                    {
-                        App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn giờ kết thúc", "Đóng");
-                        return;
-                    }
-                    if (!CheckTime(EndTimeY))
-                    {
-                        return;
-                    }
-                    if (int.Parse(StartTimeX) > int.Parse(EndTimeX))
-                    {
-                        App.Current.MainPage.DisplayAlert("Cảnh báo", "Giờ bắt đầu phải lớn hơn giờ kết thúc", "Đóng");
-                        return;
-                    }
-                    if (int.Parse(StartTimeX) == int.Parse(EndTimeX))
-                    {
-                        if (int.Parse(StartTimeY) >= int.Parse(EndTimeY))
+                        if (!IsValidData())
+                        {
+                            return;
+                        }
+                        if (string.IsNullOrEmpty(EndTimeX) || string.IsNullOrEmpty(EndTimeY))
+                        {
+                            App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn giờ kết thúc", "Đóng");
+                            return;
+                        }
+                        if (!CheckTime(EndTimeY))
+                        {
+                            return;
+                        }
+                        if (int.Parse(StartTimeX) > int.Parse(EndTimeX))
                         {
                             App.Current.MainPage.DisplayAlert("Cảnh báo", "Giờ bắt đầu phải lớn hơn giờ kết thúc", "Đóng");
                             return;
                         }
-
-                    }
-                    // Gắn data trả về
-                    Event todo = new Event
-                    {
-                        title = TaskName,
-                        description = Description ?? "",
-                        startTime = new DateTime(year: StartDate.Year, day: StartDate.Day, month: StartDate.Month, hour: int.Parse(StartTimeX), minute: int.Parse(StartTimeY), second: DateTime.Now.Second),
-                        endTime = new DateTime(year: StartDate.Year, day: StartDate.Day, month: StartDate.Month, hour: int.Parse(EndTimeX), minute: int.Parse(EndTimeY), second: DateTime.Now.Second),
-                        colorCode = ColorTag.ToHexRgbString(),
-                        notiBeforeTime = GetRemindTime(),
-                        notiUnit = GetRemindTimeUnit(),
-                    };
-                    if (SelectedRecurrence != null)
-                    {
-                        todo.recurringInterval = SelectedRecurrence.QuantityRecurrence;
-                        todo.recurringUnit = SelectedRecurrence.GetTypeStartRecurrence().ToString();
-                        if (SelectedRecurrence.GetTypeStartRecurrence() == TypeStartRecurrence.WEEK)
+                        if (int.Parse(StartTimeX) == int.Parse(EndTimeX))
                         {
-                            todo.recurringDetails = SelectedRecurrence.WeekDay;
-                        }
-                        if (SelectedRecurrence.GetTypeEndRecurrence() == TypeEndRecurrence.Date)
-                        {
-                            todo.recurringEnd = SelectedRecurrence.EndDate;
-                        }
-                    }
+                            if (int.Parse(StartTimeY) >= int.Parse(EndTimeY))
+                            {
+                                App.Current.MainPage.DisplayAlert("Cảnh báo", "Giờ bắt đầu phải lớn hơn giờ kết thúc", "Đóng");
+                                return;
+                            }
 
-                    Popup popup = p as Popup;
-                    popup.Dismiss(todo);
+                        }
+                        // Gắn data trả về
+                        Event todo = new Event
+                        {
+                            title = TaskName,
+                            description = Description ?? "",
+                            startTime = new DateTime(year: StartDate.Year, day: StartDate.Day, month: StartDate.Month, hour: int.Parse(StartTimeX), minute: int.Parse(StartTimeY), second: DateTime.Now.Second),
+                            endTime = new DateTime(year: StartDate.Year, day: StartDate.Day, month: StartDate.Month, hour: int.Parse(EndTimeX), minute: int.Parse(EndTimeY), second: DateTime.Now.Second),
+                            colorCode = ColorTag.ToHexRgbString(),
+                            notiBeforeTime = GetRemindTime(),
+                            notiUnit = GetRemindTimeUnit(),
+                        };
+                        if (SelectedRecurrence != null)
+                        {
+                            todo.recurringInterval = SelectedRecurrence.QuantityRecurrence;
+                            todo.recurringUnit = SelectedRecurrence.GetTypeStartRecurrence().ToString();
+                            if (SelectedRecurrence.GetTypeStartRecurrence() == TypeStartRecurrence.WEEK)
+                            {
+                                todo.recurringDetails = SelectedRecurrence.WeekDay;
+                            }
+                            if (SelectedRecurrence.GetTypeEndRecurrence() == TypeEndRecurrence.Date)
+                            {
+                                todo.recurringEnd = SelectedRecurrence.EndDate;
+                            }
+                        }
+
+                        Popup popup = p as Popup;
+                        popup.Dismiss(todo);
+                    }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
         }
 
