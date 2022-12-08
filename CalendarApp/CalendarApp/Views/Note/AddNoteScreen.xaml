@@ -7,7 +7,8 @@
              Title="Ghi chú mới">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Lưu"
-                     Command="{Binding AddNewNoteCM}" />
+                     Command="{Binding AddNewNoteCM}"
+                      />
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <context:AddNoteViewModel x:Key="context" />
