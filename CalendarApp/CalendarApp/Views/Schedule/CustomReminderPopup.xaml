@@ -5,7 +5,7 @@
            xmlns:behaviors="clr-namespace:CalendarApp.Behaviors"
            xmlns:context="clr-namespace:CalendarApp.ViewModels.Schedule"
            x:Class="CalendarApp.Views.Schedule.CustomReminderPopup"
-           Size="200, 150"
+           Size="220, 180"
            x:Name="ReminderPopup">
     <xct:Popup.BindingContext>
         <context:CustomReminderViewModel />
@@ -22,6 +22,8 @@
                    FontSize="20"
                    Grid.Row="0"
                    VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
                    />
             <StackLayout Orientation="Horizontal"
                          Grid.Row="1"
@@ -36,6 +38,16 @@
                         <behaviors:EntryMaxLengthBehavior MaxLength="2" />
                     </Entry.Behaviors>
                 </Entry>
+                <Label Text="&#xe887;"
+                       VerticalOptions="Center"
+                       TextColor="{StaticResource blueColor}"
+                       HorizontalOptions="Start"
+                       FontFamily="Material"
+                       FontSize="20">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
                 <Picker VerticalOptions="Center"
                         HorizontalOptions="CenterAndExpand"
                         HorizontalTextAlignment="Center"
@@ -45,8 +57,9 @@
             </StackLayout>
             <StackLayout Grid.Row="2"
                          Orientation="Horizontal">
+                
                 <Button Text="Xong"
-                        WidthRequest="70"
+                        WidthRequest="90"
                         HorizontalOptions="EndAndExpand"
                         VerticalOptions="Center"
                         Visual="Material"
@@ -56,7 +69,7 @@
                         Command="{Binding DoneCM}"
                         CommandParameter="{x:Reference ReminderPopup}"/>
                 <Button Text="Hủy"
-                        WidthRequest="70"
+                        WidthRequest="90"
                         HeightRequest="30"
                         HorizontalOptions="End"
                         VerticalOptions="Center"

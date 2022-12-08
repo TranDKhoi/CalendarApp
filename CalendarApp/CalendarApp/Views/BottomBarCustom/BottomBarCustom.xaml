@@ -14,15 +14,15 @@
             UnselectedTabColor="White"
             SelectedTabColor="{StaticResource greenColor}"
             NavigationPage.HasNavigationBar="False">
-    <home:HomeScreen Title="Trang chủ"
-                     IconImageSource="home.png" />
     <schedule:ScheduleScreen Title="Lịch trình"
                              IconImageSource="calendar.png" />
     <note:NoteScreen Title="Ghi chú"
                      IconImageSource="note.png" />
     <manage:ManageScreen Title="Môn học"
                      IconImageSource="task.png" />
-    <profile:ProfileScreen Title="Tài khoản"
+    <!--<profile:ProfileScreen Title="Tài khoản"
+                           IconImageSource="profile.png" />-->
+    <profile:EditProfileScreen Title="Tài khoản"
                            IconImageSource="profile.png" />
 
 </TabbedPage>

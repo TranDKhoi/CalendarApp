@@ -10,7 +10,8 @@
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Lưu"
-                     Command="{Binding UpdateSubjectCM}" />
+                     Command="{Binding UpdateSubjectCM}" 
+                     />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView>

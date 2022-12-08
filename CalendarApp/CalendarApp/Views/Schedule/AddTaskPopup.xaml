@@ -7,7 +7,7 @@
            xmlns:effect="clr-namespace:CalendarApp.Effects"
            xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
            x:Class="CalendarApp.Views.Schedule.AddTaskPopup"
-           Size="360, 510"
+           Size="400, 510"
            x:Name="addTaskPopup">
     <xct:Popup.Resources>
         <cvt:InverseBooleanConverter x:Key="inverseBooleanCVT" />
@@ -49,7 +49,7 @@
                 <!--#region Tên môn học-->
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="100" />
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
@@ -115,6 +115,7 @@
                                     HorizontalOptions="EndAndExpand"
                                     IsEnabled="True"
                                     x:Name="startDatePicker"
+                                    FontSize="16"
                                     Date="{Binding StartDate, Mode=TwoWay}" />
                     </StackLayout>
                     <!--#endregion-->
@@ -154,7 +155,7 @@
                     <!--#region Giờ bắt đầu-->
                     <Grid Grid.Column="0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="85" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Label Text="Giờ bắt đầu"
@@ -390,9 +391,9 @@
                             WidthRequest="100"
                             HorizontalOptions="EndAndExpand"
                             VerticalOptions="Center"
-                            Visual="Material"
                             BackgroundColor="#1a73e8"
                             Command="{Binding AddSubjectCM}"
+                            Visual="Material"
                             CommandParameter="{x:Reference addTaskPopup}" />
                     <Button Text="Hủy"
                             WidthRequest="100"
@@ -496,6 +497,7 @@
                                     HorizontalOptions="EndAndExpand"
                                     IsEnabled="True"
                                     x:Name="startTodoDatePicker"
+                                    FontSize="16"
                                     Date="{Binding StartDate, Mode=TwoWay}" />
                     </StackLayout>
                     <!--#endregion-->
@@ -537,7 +539,7 @@
                     <!--#region Giờ bắt đầu-->
                     <Grid Grid.Column="0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="85" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Label Text="Giờ bắt đầu"
@@ -583,7 +585,7 @@
                     <!--#region Giờ kết thúc-->
                     <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="85" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Label Text="Giờ kết thúc"

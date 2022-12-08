@@ -1,5 +1,7 @@
 ﻿using CalendarApp.Models.Profile;
+using CalendarApp.Services;
 using CalendarApp.ViewModels.Profile;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,45 +16,49 @@ namespace CalendarApp.Views.Profile
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditProfileScreen : ContentPage
     {
-
-
         public EditProfileScreen()
         {
-
             try
             {
                 InitializeComponent();
             }
             catch (Exception ex)
             {
-
             }
-
-
         }
 
         int cout = 0;
         private async void btn_Clicked(object sender, EventArgs e)
         {
-            double _scale = 0;
-            _scale = gridImageOption.Scale;
-            sl.IsEnabled = false;
-            await gridImageOption.ScaleTo(0, 500);
-            gridImageOption.IsVisible = true;
-            await gridImageOption.ScaleTo(_scale, 300);
-            cout = 1;
-
+            try
+            {
+                double _scale = 0;
+                _scale = gridImageOption.Scale;
+                sl.IsEnabled = false;
+                await gridImageOption.ScaleTo(0, 500);
+                gridImageOption.IsVisible = true;
+                await gridImageOption.ScaleTo(_scale, 300);
+                cout = 1;
+            }
+            catch (Exception)
+            {
+            }
         }
         private async void btn_Clicked1(object sender, EventArgs e)
         {
-            double _scale = 0;
-            _scale = gridImageOption.Scale;
-            sl.IsEnabled = false;
-            await gridImageOption.ScaleTo(0, 500);
-            gridImageOption.IsVisible = true;
-            await gridImageOption.ScaleTo(_scale, 300);
-            cout = 2;
-
+            try
+            {
+                double _scale = 0;
+                _scale = gridImageOption.Scale;
+                sl.IsEnabled = false;
+                await gridImageOption.ScaleTo(0, 500);
+                gridImageOption.IsVisible = true;
+                await gridImageOption.ScaleTo(_scale, 300);
+                cout = 2;
+            }
+            catch (Exception)
+            {
+            }
         }
 
 
@@ -64,7 +70,6 @@ namespace CalendarApp.Views.Profile
         private void CloseDialog()
         {
             sl.IsEnabled = true;
-
             gridImageOption.IsVisible = false;
 
         }
@@ -82,13 +87,16 @@ namespace CalendarApp.Views.Profile
 
                     if (cout == 1)
 
-                    { img.Source = ImageSource.FromStream(() => stream); }
-
+                    {
+                        img.Source = ImageSource.FromStream(() => stream);
+                        ProfileModel.ins.UrlAvatar = stream;
+                    }
                     else
 
-                    { img_1.Source = ImageSource.FromStream(() => stream); }
-
-
+                    {
+                        img_1.Source = ImageSource.FromStream(() => stream);
+                        ProfileModel.ins.UrlAvatar = stream;
+                    }
 
                 }
                 CloseDialog();
@@ -114,15 +122,19 @@ namespace CalendarApp.Views.Profile
                     //img.Source = ImageSource.FromStream(() => stream);
 
                     if (cout == 1)
+                    {
+                        ProfileModel.ins.Avatar = ImageSource.FromStream(() => stream);
+                        img.Source = ProfileModel.ins.Avatar;
+                    }
 
-                    { img.Source = ImageSource.FromStream(() => stream); }
 
                     else
 
-                    { img_1.Source = ImageSource.FromStream(() => stream); }
-
-
-
+                    {
+                        ProfileModel.ins.UrlBackground = ImageSource.FromStream(() => stream);
+                        img_1.Source = ProfileModel.ins.UrlBackground;
+                    }
+                    CloseDialog();
                 }
             }
             catch (Exception ex)

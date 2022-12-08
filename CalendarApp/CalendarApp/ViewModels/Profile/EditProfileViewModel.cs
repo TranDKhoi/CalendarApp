@@ -6,6 +6,8 @@ using CalendarApp.Models.Profile;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using CalendarApp.Views.Profile;
+using CalendarApp.Services;
+using CalendarApp.Views.Authen;
 
 namespace CalendarApp.ViewModels.Profile
 {
@@ -16,6 +18,7 @@ namespace CalendarApp.ViewModels.Profile
         public ICommand CM_MyEditProfile { get; set; }
         public ICommand EditAvatar_CM { get; set; }
         public ICommand EditBackground_CM { get; set; }
+        public Command Logout_CM { get; set; }
 
         string nameProfile;
         public string NameProfile
@@ -29,14 +32,14 @@ namespace CalendarApp.ViewModels.Profile
             get { return statusProfile; }
             set { statusProfile = value; OnPropertyChanged(nameof(StatusProfile)); }
         }
-        string urlBackground;
-        public string UrlBackground
+        ImageSource urlBackground;
+        public ImageSource UrlBackground
         {
             get { return urlBackground; }
             set { urlBackground = value; OnPropertyChanged(nameof(UrlBackground)); }
         }
-        string urlAvatar;
-        public string UrlAvatar
+        ImageSource urlAvatar;
+        public ImageSource UrlAvatar
         {
             get { return urlAvatar; }
             set { urlAvatar = value; OnPropertyChanged(nameof(UrlAvatar)); }
@@ -55,64 +58,44 @@ namespace CalendarApp.ViewModels.Profile
             get { return nameFull; }
             set { nameFull = value; OnPropertyChanged(nameof(nameFull)); }
         }
-        public ProfileViewModel _ProfileViewModel { get; set; } = new ProfileViewModel();
+        public ProfileModel profileModel { get; set; } = ProfileModel.ins;
 
         public EditProfileViewModel()
         {
+            NameProfile = profileModel.NameProfile;
+            StatusProfile = profileModel.StatusProfile;
+            UrlBackground = profileModel.UrlBackground;
+            UrlAvatar = ImageSource.FromStream(() => profileModel.UrlAvatar);
+            (string email, string pass) = SharedPreferenceService.ins.GetUserLogin();
+            Email = email;
+            profileModel.NameFull = "Kiều Bá Dương";
+            NameFull = profileModel.NameFull;
 
+            CM_MyEditProfile = new Command((p) =>
+            {
+                ContentPage contentPage = p as ContentPage;
+                profileModel.NameProfile = NameProfile;
+                profileModel.StatusProfile = StatusProfile;
+                profileModel.Email = Email;
+                profileModel.NameFull = NameFull;
+                Application.Current.MainPage.Navigation.PopAsync();
+            });
 
-            NameProfile = _ProfileViewModel.NameProfile;
-            StatusProfile = _ProfileViewModel.StatusProfile;
-            UrlBackground = _ProfileViewModel.UrlBackground;
-            UrlAvatar = _ProfileViewModel.UrlAvatar;
-            Email = _ProfileViewModel.Email;
-            NameFull = _ProfileViewModel.NameFull;
+            Logout_CM = new Command(async () =>
+            {
+                await Application.Current.MainPage.Navigation.PushAsync(new LoginScreen());
+            });
 
-            // CM_MyEditProfile = new Command(SaveProfile);
-
-            SaveProfile();
-
+            // SaveProfile();
         }
 
         public void ClearFields()
         {
-            _ProfileViewModel.NameProfile = string.Empty;
-            _ProfileViewModel.StatusProfile = string.Empty;
-            _ProfileViewModel.UrlBackground = string.Empty;
-            _ProfileViewModel.UrlAvatar = string.Empty;
-            _ProfileViewModel.Email = string.Empty;
-        }
-
-        public void SaveProfile()
-        {
-
-
-            //string _nameProfile = "ngocphap1";
-            //string _statusProfile = "yeunhaunhieu";
-            //string _urlBackground = "";
-
-            //string _urlAvatar = "";
-            //string _email = "11111111@gmail.com";
-            //string _nameFull = "micosss";
-            //if (CM_MyEditProfile != null)
-            //{
-            //    _ProfileViewModel.NameProfile = _nameProfile;
-            //    _ProfileViewModel.StatusProfile = _statusProfile;
-            //    _ProfileViewModel.UrlBackground = _urlBackground;
-            //    _ProfileViewModel.UrlAvatar = _urlAvatar;
-            //    _ProfileViewModel.Email = _email;
-            //    _ProfileViewModel.NameFull = _nameFull;
-
-            //}
-
-            this.CM_MyEditProfile = new Command(async () =>
-            {
-                await Application.Current.MainPage.Navigation.PushAsync(new ProfileScreen());
-            });
-
-
-            //    //submit new data
-            //ProfileViewModel.ClearFields();
+            //profileModel.NameProfile = string.Empty;
+            //profileModel.StatusProfile = string.Empty;
+            //profileModel.UrlBackground = string.Empty;
+            //profileModel.UrlAvatar = string.Empty;
+            //profileModel.Email = string.Empty;
         }
 
 

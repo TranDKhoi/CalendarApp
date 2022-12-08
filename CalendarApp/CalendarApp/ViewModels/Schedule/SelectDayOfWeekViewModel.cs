@@ -62,32 +62,46 @@ namespace CalendarApp.ViewModels.Schedule
 
             SelectDayCM = new Command((p) =>
             {
-                if (p != null)
+                try
                 {
-                    DayTitle dayTitle = p as DayTitle;
-                    dayTitle.IsSelected = !dayTitle.IsSelected;
-                    if (dayTitle.IsSelected)
+                    if (p != null)
                     {
-                        SelectedWeekDay.Add(dayTitle);
+                        DayTitle dayTitle = p as DayTitle;
+                        dayTitle.IsSelected = !dayTitle.IsSelected;
+                        if (dayTitle.IsSelected)
+                        {
+                            SelectedWeekDay.Add(dayTitle);
+                        }
                     }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
 
             DoneCM = new Command((p) =>
             {
-                if (p != null)
+                try
                 {
-                    if(SelectedWeekDay.Count == 0)
+                    if (p != null)
                     {
-                        App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn thứ", "Đóng");
-                    }
-                    else
-                    {
-                        SelectDayOfWeekPopup popup = p as SelectDayOfWeekPopup;
-                        SelectedWeekDay = SelectedWeekDay.OrderBy(q => q.Title).ToList();
-                        popup.Dismiss(SelectedWeekDay);
+                        if (SelectedWeekDay.Count == 0)
+                        {
+                            App.Current.MainPage.DisplayAlert("Cảnh báo", "Vui lòng chọn thứ", "Đóng");
+                        }
+                        else
+                        {
+                            SelectDayOfWeekPopup popup = p as SelectDayOfWeekPopup;
+                            SelectedWeekDay = SelectedWeekDay.OrderBy(q => q.Title).ToList();
+                            popup.Dismiss(SelectedWeekDay);
+                        }
                     }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
         }
     }

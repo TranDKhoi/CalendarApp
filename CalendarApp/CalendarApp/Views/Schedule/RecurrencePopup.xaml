@@ -7,7 +7,7 @@
            xmlns:effect="clr-namespace:CalendarApp.Effects"
            xmlns:cvt="clr-namespace:CalendarApp.ViewModels.Converter"
            x:Class="CalendarApp.Views.Schedule.RecurrencePopup"
-           Size="360, 450"
+           Size="360, 480"
            x:Name="recurrencePopup">
     <xct:Popup.Resources>
         <cvt:BgColorDayOfWeekConverter x:Key="bgColorDayOfWeekCVT" />
@@ -27,15 +27,15 @@
                    HeightRequest="40"
                    MinimumHeightRequest="40" />
             <StackLayout Orientation="Horizontal"
-                         HeightRequest="50"
-                         MinimumHeightRequest="40">
+                         HeightRequest="60"
+                         MinimumHeightRequest="60">
                 <Label Text="Lặp lại mỗi"
                        TextColor="Black"
                        FontSize="16"
                        VerticalOptions="Center"
                        VerticalTextAlignment="Center" />
                 <Entry BackgroundColor="#f1f3f4"
-                       WidthRequest="60"
+                       WidthRequest="70"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"
                        Keyboard="Numeric"
@@ -50,7 +50,7 @@
                 </Entry>
                 <Frame BackgroundColor="#f1f3f4"
                        Padding="5">
-                    <Picker WidthRequest="60"
+                    <Picker WidthRequest="70"
                             ItemsSource="{Binding TypeRecurrence}"
                             VerticalTextAlignment="Center"
                             HorizontalTextAlignment="Center"
@@ -130,7 +130,7 @@
                    MinimumHeightRequest="40" />
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="180" />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <StackLayout>
@@ -151,9 +151,11 @@
                     <Grid HeightRequest="40" />
                     <StackLayout Orientation="Horizontal"
                                  IsVisible="{Binding EndAtDate}"
-                                 Margin="20, 0, 0, 0">
-                        <DatePicker HeightRequest="40"
+                                 Margin="0, 0, 0, 0">
+                        <DatePicker HeightRequest="50"
                                     HorizontalOptions="Start"
+                                    VerticalOptions="End"
+                                    
                                     x:Name="datePicker"
                                     Date="{Binding EndDate, Mode=TwoWay}"/>
                         <Label FontFamily="Material"
@@ -175,12 +177,12 @@
                            Padding="5"
                            HorizontalOptions="Start"
                            IsVisible="{Binding EndCount}"
-                           Margin="20, 0, 0, 0">
+                           Margin="0, 0, 0, 0">
                         <StackLayout Orientation="Horizontal">
-                            <Entry HeightRequest="40"
+                            <Entry HeightRequest="50"
                                    Keyboard="Numeric"
                                    VerticalOptions="Center"
-                                   VerticalTextAlignment="Center"
+                                   VerticalTextAlignment="End"
                                    HorizontalTextAlignment="Center"
                                    WidthRequest="30"
                                    Text="{Binding EndRecurreneQuantity, Mode=TwoWay}">

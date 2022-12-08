@@ -4,10 +4,12 @@
              x:Class="CalendarApp.Views.Profile.ProfileScreen"
              BackgroundColor="{StaticResource BackgroundColor}"
              xmlns:vm="clr-namespace:CalendarApp.ViewModels.Profile"
-               xmlns:local="clr-namespace:CalendarApp.Resources"
-             NavigationPage.HasNavigationBar="True"        
-             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
-             >
+             xmlns:local="clr-namespace:CalendarApp.Resources"
+             xmlns:control="clr-namespace:CalendarApp.Views.Profile"
+             xmlns:fontawesome="clr-namespace:MyProfileDesign.Utility"
+             NavigationPage.HasNavigationBar="True"
+             x:Name="profileScreen"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
 
     <ContentPage.BindingContext>
         <vm:ProfileViewModel />
@@ -15,84 +17,204 @@
 
     <ContentPage.Content>
         <ScrollView>
-
-            <Grid RowSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="400"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-
-                </Grid.RowDefinitions>
+            <StackLayout HorizontalOptions="FillAndExpand"
+                         VerticalOptions="FillAndExpand">
+                <Grid x:Name="gridImageOption"
+                      BackgroundColor="#80000000"
+                      Padding="20"
+                      Grid.Row="0"
+                      IsVisible="false"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand">
+                    <Frame CornerRadius="10"
+                           HorizontalOptions="FillAndExpand"
+                           HeightRequest="200"
+                           VerticalOptions="CenterAndExpand">
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto"
+                              ColumnDefinitions="*,*">
+                            <Label Text="Update Image"
+                                   HorizontalOptions="Center"
+                                   Padding="0,0,0,20"
+                                   FontSize="25"
+                                   Grid.Row="0"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   TextColor="Black" />
+                            <control:ChoosePhotoControl x:Name="ctrlCamera"
+                                                        Text="Chup Hinh"
+                                                        Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        HorizontalOptions="Center"
+                                                        FontAwesomeText="{x:Static fontawesome:Solid.Camera }">
+                                <control:ChoosePhotoControl.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="ctrlCamera_Tapped"></TapGestureRecognizer>
+                                </control:ChoosePhotoControl.GestureRecognizers>
+                            </control:ChoosePhotoControl>
+                            <control:ChoosePhotoControl Text="Chọn ảnh Thư viện"
+                                                        Grid.Row="1"
+                                                        HorizontalOptions="Center"
+                                                        Grid.Column="1"
+                                                        FontAwesomeText="{x:Static fontawesome:Solid.Image }">
+                                <control:ChoosePhotoControl.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="ctrlGallery_Tapped"></TapGestureRecognizer>
+                                </control:ChoosePhotoControl.GestureRecognizers>
+                            </control:ChoosePhotoControl>
+                            <Button x:Name="btnCancel"
+                                    CornerRadius="10"
+                                    Clicked="btnCancel_Clicked"
+                                    BackgroundColor="{StaticResource ButtonBackgroundColor}"
+                                    TextColor="White"
+                                    Text="Cancel"
+                                    Grid.Row="3"
+                                    Margin="0, 10,0,0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"></Button>
+                        </Grid>
+                    </Frame>
+                </Grid>
 
                 <!--header backgroud-->
-
-                <Image Grid.Row="0" Opacity="0.8" HeightRequest="350" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Source="{Binding UrlBackground}" Aspect="AspectFill"/>
-                <Grid Grid.Row="0" HeightRequest="105" VerticalOptions="EndAndExpand" BackgroundColor="Black" Opacity="0.7">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <pancake:PancakeView Grid.Column="0" CornerRadius="50" BackgroundColor="White" HeightRequest="80" WidthRequest="80" Padding="5" 
-                           HorizontalOptions="Start" 
-                           VerticalOptions="CenterAndExpand">
-                        <pancake:PancakeView.Shadow>
-                            <pancake:DropShadow Color="Black" BlurRadius="30" Offset="0,0"/>
-                        </pancake:PancakeView.Shadow>
-                        <Image Source="{Binding UrlAvatar}" Aspect="AspectFill" Margin="-10" />
-                    </pancake:PancakeView>
-                    <Label Text="{Binding NameProfile}"  Grid.Column="1" Margin="10,30,0,0" VerticalOptions="Start" TextColor="White" FontSize="20"  ></Label>
-                    <Label Text="{Binding StatusProfile}" Grid.Column="1" Margin="10,60,0,0" TextColor="White" FontSize="12"  ></Label>
+                <Grid Grid.Row="0"
+                      HeightRequest="300">
+                    <Image x:Name="bgImg"
+                           Opacity="0.8"
+                           Source="{Binding UrlBackground,Mode=TwoWay}"
+                           Aspect="AspectFill" />
+                    <Grid HeightRequest="105"
+                          VerticalOptions="EndAndExpand"
+                          BackgroundColor="Black"
+                          Opacity="0.7">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <pancake:PancakeView Grid.Column="0"
+                                             CornerRadius="50"
+                                             BackgroundColor="White"
+                                             HeightRequest="80"
+                                             WidthRequest="80"
+                                             Padding="5"
+                                             HorizontalOptions="Start"
+                                             VerticalOptions="CenterAndExpand">
+                            <pancake:PancakeView.Shadow>
+                                <pancake:DropShadow Color="Black"
+                                                    BlurRadius="30"
+                                                    Offset="0,0" />
+                            </pancake:PancakeView.Shadow>
+                            <Image Source="{Binding UrlAvatar,Mode=TwoWay}"
+                                   x:Name="avtImg"
+                                   Aspect="AspectFill"/>
+                        </pancake:PancakeView>
+                        <Label Text="{Binding NameProfile}"
+                               Grid.Column="1"
+                               Margin="10,30,0,0"
+                               VerticalOptions="Start"
+                               TextColor="White"
+                               FontSize="20"></Label>
+                        <Label Text="{Binding StatusProfile}"
+                               Grid.Column="1"
+                               Margin="10,60,0,0"
+                               TextColor="White"
+                               FontSize="12"></Label>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
                 </Grid>
 
 
-                <Grid Grid.Row="1" Margin="0,30,0,0" ColumnSpacing="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
 
-                    <StackLayout Grid.Row="0" >
-                        <Label Text="Thông tin tài khoản" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="20"/>
+
+                <Grid Grid.Row="1"
+                      Margin="0,30,0,0"
+                      ColumnSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackLayout Grid.Row="0">
+                        <Label Text="Thông tin tài khoản"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="CenterAndExpand"
+                               TextColor="Black"
+                               FontAttributes="Bold"
+                               FontSize="20" />
                     </StackLayout>
-                    <StackLayout Grid.Row="1" >
+                    <StackLayout Grid.Row="1">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Row="0" Grid.Column="0" Text="Tên :"  TextColor="Black" FontAttributes="Bold" FontSize="14" Padding="10,0,0,0"  />
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding NameFull}" TextColor="Black" FontAttributes="Bold" FontSize="14"  />
-                            <Label Grid.Row="1" Grid.Column="0" Text="Email :"  TextColor="Black" FontAttributes="Bold" FontSize="14" Padding="10,0,0,0"   />
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding Email}" TextColor="Black" FontAttributes="Bold" FontSize="14"  />
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="Tên :"
+                                   TextColor="Black"
+                                   FontAttributes="Bold"
+                                   FontSize="14"
+                                   Padding="10,0,0,0" />
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   Text="{Binding NameFull}"
+                                   TextColor="Black"
+                                   FontAttributes="Bold"
+                                   FontSize="14" />
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Text="Email :"
+                                   TextColor="Black"
+                                   FontAttributes="Bold"
+                                   FontSize="14"
+                                   Padding="10,0,0,0" />
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="{Binding Email}"
+                                   TextColor="Black"
+                                   FontAttributes="Bold"
+                                   FontSize="14" />
 
                         </Grid>
 
                     </StackLayout>
 
                 </Grid >
-                <Grid Grid.Row="2" HeightRequest="50">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
+                <StackLayout Grid.Row="2"
+                             Margin="20,20,20,0">
 
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                            Grid.Row="0"
+                            Text="Sửa avatar"
+                            BorderRadius="15"
+                            BackgroundColor="{StaticResource redColor}"
+                            HeightRequest="50"
+                            Clicked="Button_Clicked" />
+                    <BoxView HeightRequest="10" />
+                    <Button Grid.Column="0"
+                            Grid.Row="0"
+                            Text="Sửa ảnh bìa"
+                            BorderRadius="15"
+                            BackgroundColor="{StaticResource yellowColor}"
+                            HeightRequest="50"
+                            Clicked="Button_Clicked_1" />
+                    <BoxView HeightRequest="10" />
+                    <Button  Grid.Column="1"
+                             Grid.Row="0"
+                             Text="Đăng xuất"
+                             BorderRadius="15"
+                             TextColor="White"
+                             BackgroundColor="{StaticResource blueColor}"
+                             HeightRequest="50"
+                             Command="{Binding Logout_CM}" />
 
-                    <Button Grid.Column="0" Grid.Row="0"  Text="Edit" BorderRadius="40"  BackgroundColor="WhiteSmoke"  HeightRequest="50" Command="{Binding Edit_CM}" />
-                    <Button  Grid.Column="1" Grid.Row="0" Text="Logout" BorderRadius="40"  BackgroundColor="WhiteSmoke"   HeightRequest="50" Command="{Binding Logout_CM}" />
+                </StackLayout>
 
-                </Grid>
-
-            </Grid>
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

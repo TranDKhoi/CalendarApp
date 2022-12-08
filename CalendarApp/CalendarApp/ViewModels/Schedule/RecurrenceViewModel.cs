@@ -154,15 +154,17 @@ namespace CalendarApp.ViewModels.Schedule
 
         private void InitData()
         {
-            NeverEnd = true;
-            EndAtDate = false;
-            EndCount = false;
-            LoopLabel = false;
-            RecurreneQuantity = 1;
-            EndRecurreneQuantity = 1;
-            TypeRecurrenceIndex = 0;
+            try
+            {
+                NeverEnd = true;
+                EndAtDate = false;
+                EndCount = false;
+                LoopLabel = false;
+                RecurreneQuantity = 1;
+                EndRecurreneQuantity = 1;
+                TypeRecurrenceIndex = 0;
 
-            Days = new ObservableCollection<DayTitle>
+                Days = new ObservableCollection<DayTitle>
             {
                 new DayTitle { Title = "T2", IsSelected = false ,DetailEng = "Monday",},
                 new DayTitle { Title = "T3", IsSelected = false,DetailEng ="Tuesday", },
@@ -173,12 +175,17 @@ namespace CalendarApp.ViewModels.Schedule
                 new DayTitle { Title = "Cn", IsSelected = false,DetailEng = "Sunday" }
             };
 
-            TypeRecurrence = new ObservableCollection<string>
+                TypeRecurrence = new ObservableCollection<string>
             {
                 "ngày",
                 "tuần",
                 "tháng"
             };
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         public RecurrenceViewModel()
@@ -187,113 +194,127 @@ namespace CalendarApp.ViewModels.Schedule
 
             SelectDayCM = new Command((p) =>
             {
-                if (p != null)
+                try
                 {
-                    DayTitle dayTitle = p as DayTitle;
-                    dayTitle.IsSelected = !dayTitle.IsSelected;
+                    if (p != null)
+                    {
+                        DayTitle dayTitle = p as DayTitle;
+                        dayTitle.IsSelected = !dayTitle.IsSelected;
+                    }
                 }
+                catch (Exception)
+                {
+                }
+                
             });
 
             DoneCM = new Command((p) =>
             {
-                if (p != null)
+                try
                 {
-                    Recurrence recurrence = new Recurrence();
-                    recurrence.ChoosenWeeksDay = new List<string>();
-                    recurrence.WeekDay = new List<string>();
-                    if (RecurreneQuantity <= 0)
+                    if (p != null)
                     {
-                        App.Current.MainPage.DisplayAlert("Thông báo", "Vui lòng nhập số lần lặp lớn hơn 0", "Đóng");
-                        return;
-                    }
-                    if (EndCount)
-                    {
-                        if (EndRecurreneQuantity <= 0)
+                        Recurrence recurrence = new Recurrence();
+                        recurrence.ChoosenWeeksDay = new List<string>();
+                        recurrence.WeekDay = new List<string>();
+                        if (RecurreneQuantity <= 0)
                         {
-                            App.Current.MainPage.DisplayAlert("Thông báo", "Vui lòng nhập số lần xuất hiện lớn hơn 0", "Đóng");
+                            App.Current.MainPage.DisplayAlert("Thông báo", "Vui lòng nhập số lần lặp lớn hơn 0", "Đóng");
                             return;
-                        }
-                        recurrence.SetTypeEndRecurrence(TypeEndRecurrence.Count);
-                        recurrence.EndCount = EndRecurreneQuantity;
-                    }
-                    if (NeverEnd)
-                    {
-                        recurrence.SetTypeEndRecurrence(TypeEndRecurrence.Infinity);
-                    }
-                    if (EndAtDate)
-                    {
-                        if (EndDate <= Today)
-                        {
-                            App.Current.MainPage.DisplayAlert("Thông báo", "Vui lòng chọn ngày kết thúc lớn hơn ngày bắt đầu", "Đóng");
-                            return;
-                        }
-                        recurrence.SetTypeEndRecurrence(TypeEndRecurrence.Date);
-                        recurrence.EndDate = EndDate;
-                    }
-                    recurrence.QuantityRecurrence = RecurreneQuantity;
-                    if (SelectedTypeRecurrence == "ngày")
-                    {
-                        recurrence.SetTypeStartRecurrence(TypeStartRecurrence.DAY);
-                        if (NeverEnd)
-                        {
-                            recurrence.LabelDisplay = $"{RecurreneQuantity} ngày một lần";
-                        }
-                        if (EndAtDate)
-                        {
-                            recurrence.LabelDisplay = $"{RecurreneQuantity} ngày một lần, cho tới {EndDate.ToString("dd/MM/yyyy")}";
                         }
                         if (EndCount)
                         {
-                            recurrence.LabelDisplay = $"{RecurreneQuantity} ngày một lần, {EndRecurreneQuantity} lần";
-                        }
-                    }
-                    if (SelectedTypeRecurrence == "tuần")
-                    {
-                        recurrence.SetTypeStartRecurrence(TypeStartRecurrence.WEEK);
-                        string weeksDay = "";
-                        for (int i = 0; i < Days.Count; i++)
-                        {
-                            if (Days[i].IsSelected)
+                            if (EndRecurreneQuantity <= 0)
                             {
-                                recurrence.ChoosenWeeksDay.Add(Days[i].Title);
-                                recurrence.WeekDay.Add(Days[i].DetailEng);
-                                weeksDay += Days[i].Title + ", ";
+                                App.Current.MainPage.DisplayAlert("Thông báo", "Vui lòng nhập số lần xuất hiện lớn hơn 0", "Đóng");
+                                return;
+                            }
+                            recurrence.SetTypeEndRecurrence(TypeEndRecurrence.Count);
+                            recurrence.EndCount = EndRecurreneQuantity;
+                        }
+                        if (NeverEnd)
+                        {
+                            recurrence.SetTypeEndRecurrence(TypeEndRecurrence.Infinity);
+                        }
+                        if (EndAtDate)
+                        {
+                            if (EndDate <= Today)
+                            {
+                                App.Current.MainPage.DisplayAlert("Thông báo", "Vui lòng chọn ngày kết thúc lớn hơn ngày bắt đầu", "Đóng");
+                                return;
+                            }
+                            recurrence.SetTypeEndRecurrence(TypeEndRecurrence.Date);
+                            recurrence.EndDate = EndDate;
+                        }
+                        recurrence.QuantityRecurrence = RecurreneQuantity;
+                        if (SelectedTypeRecurrence == "ngày")
+                        {
+                            recurrence.SetTypeStartRecurrence(TypeStartRecurrence.DAY);
+                            if (NeverEnd)
+                            {
+                                recurrence.LabelDisplay = $"{RecurreneQuantity} ngày một lần";
+                            }
+                            if (EndAtDate)
+                            {
+                                recurrence.LabelDisplay = $"{RecurreneQuantity} ngày một lần, cho tới {EndDate.ToString("dd/MM/yyyy")}";
+                            }
+                            if (EndCount)
+                            {
+                                recurrence.LabelDisplay = $"{RecurreneQuantity} ngày một lần, {EndRecurreneQuantity} lần";
                             }
                         }
-                        weeksDay = weeksDay.Remove(weeksDay.Length - 1);
-                        weeksDay = weeksDay.Remove(weeksDay.Length - 1);
-                        if (NeverEnd)
+                        if (SelectedTypeRecurrence == "tuần")
                         {
-                            recurrence.LabelDisplay = $"{RecurreneQuantity} tuần một lần vào {weeksDay}";
+                            recurrence.SetTypeStartRecurrence(TypeStartRecurrence.WEEK);
+                            string weeksDay = "";
+                            for (int i = 0; i < Days.Count; i++)
+                            {
+                                if (Days[i].IsSelected)
+                                {
+                                    recurrence.ChoosenWeeksDay.Add(Days[i].Title);
+                                    recurrence.WeekDay.Add(Days[i].DetailEng);
+                                    weeksDay += Days[i].Title + ", ";
+                                }
+                            }
+                            weeksDay = weeksDay.Remove(weeksDay.Length - 1);
+                            weeksDay = weeksDay.Remove(weeksDay.Length - 1);
+                            if (NeverEnd)
+                            {
+                                recurrence.LabelDisplay = $"{RecurreneQuantity} tuần một lần vào {weeksDay}";
+                            }
+                            if (EndAtDate)
+                            {
+                                recurrence.LabelDisplay = $"{RecurreneQuantity} tuần một lần vào {weeksDay}, cho tới {EndDate.ToString("dd/MM/yyyy")}";
+                            }
+                            if (EndCount)
+                            {
+                                recurrence.LabelDisplay = $"{RecurreneQuantity} tuần một lần vào {weeksDay}, {EndRecurreneQuantity} lần";
+                            }
                         }
-                        if (EndAtDate)
+                        if (SelectedTypeRecurrence == "tháng")
                         {
-                            recurrence.LabelDisplay = $"{RecurreneQuantity} tuần một lần vào {weeksDay}, cho tới {EndDate.ToString("dd/MM/yyyy")}";
+                            recurrence.SetTypeStartRecurrence(TypeStartRecurrence.MONTH);
+                            if (NeverEnd)
+                            {
+                                recurrence.LabelDisplay = $"{RecurreneQuantity} tháng một lần vào ngày {Today.Day}";
+                            }
+                            if (EndAtDate)
+                            {
+                                recurrence.LabelDisplay = $"{RecurreneQuantity} tháng một lần vào ngày {Today.Day}, cho tới {EndDate.ToString("dd/MM/yyyy")}";
+                            }
+                            if (EndCount)
+                            {
+                                recurrence.LabelDisplay = $"{RecurreneQuantity} tháng một lần vào ngày {Today.Day}, {EndRecurreneQuantity} lần";
+                            }
                         }
-                        if (EndCount)
-                        {
-                            recurrence.LabelDisplay = $"{RecurreneQuantity} tuần một lần vào {weeksDay}, {EndRecurreneQuantity} lần";
-                        }
+                        RecurrencePopup popup = p as RecurrencePopup;
+                        popup.Dismiss(recurrence);
                     }
-                    if (SelectedTypeRecurrence == "tháng")
-                    {
-                        recurrence.SetTypeStartRecurrence(TypeStartRecurrence.MONTH);
-                        if (NeverEnd)
-                        {
-                            recurrence.LabelDisplay = $"{RecurreneQuantity} tháng một lần vào ngày {Today.Day}";
-                        }
-                        if (EndAtDate)
-                        {
-                            recurrence.LabelDisplay = $"{RecurreneQuantity} tháng một lần vào ngày {Today.Day}, cho tới {EndDate.ToString("dd/MM/yyyy")}";
-                        }
-                        if (EndCount)
-                        {
-                            recurrence.LabelDisplay = $"{RecurreneQuantity} tháng một lần vào ngày {Today.Day}, {EndRecurreneQuantity} lần";
-                        }
-                    }
-                    RecurrencePopup popup = p as RecurrencePopup;
-                    popup.Dismiss(recurrence);
                 }
+                catch (Exception)
+                {
+                }
+                
             });
         }
     }

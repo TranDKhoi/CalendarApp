@@ -24,33 +24,60 @@ namespace CalendarApp.Views.Manage
 
         private void listSubject_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (listSubject.SelectedItem == null) return;
-            var vm = (ManageViewModel)this.BindingContext;
-            vm.SelectedSubject = (Models.Subject)listSubject.SelectedItem;
-            vm.ToEditSubjectCM.Execute(null);
-            listSubject.SelectedItem = null;
+            try
+            {
+                if (listSubject.SelectedItem == null) return;
+                var vm = (ManageViewModel)this.BindingContext;
+                vm.SelectedSubject = (Models.Subject)listSubject.SelectedItem;
+                vm.ToEditSubjectCM.Execute(null);
+                listSubject.SelectedItem = null;
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         protected override void OnAppearing()
         {
-            var vm = (ManageViewModel)this.BindingContext;
-            vm.FirstLoadSubjectCM.Execute(null);
-
+            try
+            {
+                var vm = (ManageViewModel)this.BindingContext;
+                vm.FirstLoadSubjectCM.Execute(null);
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            if (((Label)sender).BindingContext is DayOffSubject selectedItem)
+            try
             {
-                var viewModel = (ManageViewModel)this.BindingContext;
-                viewModel.DeleteDayOffCM.Execute(selectedItem);
+                if (((Label)sender).BindingContext is DayOffSubject selectedItem)
+                {
+                    var viewModel = (ManageViewModel)this.BindingContext;
+                    viewModel.DeleteDayOffCM.Execute(selectedItem);
+                }
             }
+            catch (Exception)
+            {
+            }
+            
         }
 
         private void listDayOff_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (listDayOff.SelectedItem == null) return;
-            listDayOff.SelectedItem = null;
+            try
+            {
+                if (listDayOff.SelectedItem == null) return;
+                listDayOff.SelectedItem = null;
+            }
+            catch (Exception)
+            {
+            }
+            
         }
     }
 }

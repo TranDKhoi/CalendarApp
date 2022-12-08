@@ -1,9 +1,12 @@
-﻿using CalendarApp.Models;
+﻿using Acr.UserDialogs;
+using CalendarApp.Models;
+using CalendarApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace CalendarApp.ViewModels.NoteViewModel
 {
@@ -18,6 +21,23 @@ namespace CalendarApp.ViewModels.NoteViewModel
         }
 
 
+        private string title;
+        public string Title
+        {
+            get { return title; }
+            set { title = value; OnPropertyChanged(); }
+        }
+
+        private string content;
+        public string Content
+        {
+            get { return content; }
+            set { content = value; OnPropertyChanged(); }
+        }
+
+
+
+
         public Command AddNewNoteCM { get; set; }
         public Command AddMoreTodoCM { get; set; }
 
@@ -26,12 +46,25 @@ namespace CalendarApp.ViewModels.NoteViewModel
             TodoList = new ObservableCollection<NoteTodo>();
             AddNewNoteCM = new Command(() =>
             {
-                foreach (var item in TodoList)
+                Note newNote = new Note
                 {
-                    if (string.IsNullOrEmpty(item.description))
-                        TodoList.Remove(item);
+                    title = Title,
+                    content = Content,
+                    noteTodo = new List<NoteTodo>(TodoList.Where(i => !string.IsNullOrEmpty(i.description)).ToList()),
+                    createdAt = DateTime.Now,
+                };
+
+                var res = NoteService.ins.CreateNewNote(newNote);
+                if (res)
+                {
+                    App.Current.MainPage.Navigation.PopAsync();
+                    UserDialogs.Instance.Toast("Thêm thành công");
                 }
-                App.Current.MainPage.Navigation.PopAsync();
+                else
+                {
+                    UserDialogs.Instance.Toast("Lỗi hệ thống");
+                }
+
             });
             AddMoreTodoCM = new Command(() =>
             {

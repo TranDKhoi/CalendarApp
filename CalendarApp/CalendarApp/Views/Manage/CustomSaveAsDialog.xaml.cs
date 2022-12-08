@@ -25,9 +25,16 @@ namespace CalendarApp.Views.Manage
 
         private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
-            RadioButton rd = sender as RadioButton;
-            var vm = (CustomSaveAsDialogViewModel)this.BindingContext;
-            vm.SelectedSaveAs = rd.Content.ToString();
+            try
+            {
+                RadioButton rd = sender as RadioButton;
+                var vm = (CustomSaveAsDialogViewModel)this.BindingContext;
+                vm.SelectedSaveAs = rd.Content.ToString();
+            }
+            catch (Exception)
+            {
+            }
+            
         }
     }
 }

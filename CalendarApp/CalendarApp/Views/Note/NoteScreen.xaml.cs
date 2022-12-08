@@ -20,11 +20,25 @@ namespace CalendarApp.Views.Note
 
         private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (listNote.SelectedItem == null) return;
+            try
+            {
+                if (listNote.SelectedItem == null) return;
+                var viewModel = (NoteViewModel)this.BindingContext;
+                viewModel.SelectedNote = (Models.Note)listNote.SelectedItem;
+                viewModel.ClickNoteCM.Execute(listNote.SelectedItem);
+                listNote.SelectedItem = null;
+            }
+            catch (Exception)
+            {
+            }
+            
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
             var viewModel = (NoteViewModel)this.BindingContext;
-            viewModel.SelectedNote = (Models.Note)listNote.SelectedItem;
-            viewModel.ClickNoteCM.Execute(listNote.SelectedItem);
-            listNote.SelectedItem = null;
+            viewModel.ReFetchNoteCM.Execute(null);
         }
     }
 }

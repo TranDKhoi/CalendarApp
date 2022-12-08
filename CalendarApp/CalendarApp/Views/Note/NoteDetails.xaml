@@ -50,7 +50,7 @@
                     HorizontalOptions="Start"
                     TextColor="Green"
                     Command="{Binding AddMoreTodoCM}" />-->
-            <CollectionView ItemsSource="{Binding SelectedNote.todo}"
+            <CollectionView ItemsSource="{Binding SelectedNote.noteTodo}"
                             ItemsUpdatingScrollMode="KeepLastItemInView">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

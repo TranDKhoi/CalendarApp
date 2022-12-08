@@ -23,47 +23,77 @@ namespace CalendarApp.Views.Schedule
 
         private void listDay_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ListDay.SelectedItem == null)
+            try
             {
-                return;
+                if (ListDay.SelectedItem == null)
+                {
+                    return;
+                }
+                var viewModel = (ScheduleViewModel)this.BindingContext;
+                viewModel.SelectDayCM.Execute(ListDay.SelectedItem);
+                ListDay.SelectedItem = null;
             }
-            var viewModel = (ScheduleViewModel)this.BindingContext;
-            viewModel.SelectDayCM.Execute(ListDay.SelectedItem);
-            ListDay.SelectedItem = null;
+            catch (Exception)
+            {
+            }
+            
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            datePicker.Focus();
+            try
+            {
+                datePicker.Focus();
+            }
+            catch (Exception)
+            {
+            }
+           
         }
 
         private void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CollectionViewTask.SelectedItem == null)
+            try
             {
-                return;
+                if (CollectionViewTask.SelectedItem == null)
+                {
+                    return;
+                }
+                var viewModel = (ScheduleViewModel)this.BindingContext;
+                viewModel.SelectTaskCM.Execute(CollectionViewTask.SelectedItem);
+                CollectionViewTask.SelectedItem = null;
             }
-            var viewModel = (ScheduleViewModel)this.BindingContext;
-            viewModel.SelectTaskCM.Execute(CollectionViewTask.SelectedItem);
-            CollectionViewTask.SelectedItem = null;
-
+            catch (Exception)
+            {
+            }
         }
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();
-            var vm = (ScheduleViewModel)this.BindingContext;
-            vm.GetAllTaskCM.Execute(null);
+            try
+            {
+                base.OnAppearing();
+                var vm = (ScheduleViewModel)this.BindingContext;
+                vm.GetAllTaskCM.Execute(null);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
         {
-            if (((Label)sender).BindingContext is Event selectedItem)
+            try
             {
-                var viewModel = (ScheduleViewModel)this.BindingContext;
-                viewModel.SelectRestDayCM.Execute(selectedItem);
+                if (((Label)sender).BindingContext is Event selectedItem)
+                {
+                    var viewModel = (ScheduleViewModel)this.BindingContext;
+                    viewModel.SelectRestDayCM.Execute(selectedItem);
+                }
             }
-
+            catch (Exception)
+            {
+            }
         }
     }
 }
